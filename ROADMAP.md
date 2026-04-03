@@ -10,7 +10,7 @@
 
 ### SCCS init
 
-From a .docx, parse the file with docx2txt, a create a duplicated version in a folder named .sccs and store it in the unzipped version of .docx. Inside .sccs, along with the .txt file, store a history.xml file with the history data of the .docx. 
+From a .docx, parse the file with docx2txt, and create a duplicated version in a folder named .sccs and store it in the unzipped version of .docx. Inside .sccs, along with the .txt file, store a history.xml file with the history data of the .docx. 
 
 ### SCCS commit
 
