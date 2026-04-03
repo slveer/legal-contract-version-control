@@ -14,8 +14,6 @@ A lightweight distributed version control system designed to help legal professi
 - [About](#about)
 - [Features](#features)
 - [Installation](#installation)
-- [Usage](#usage)
-- [Configuration](#configuration)
 - [Contributing](#contributing)
 - [Roadmap](ROADMAP.md)
 - [License](LICENSE)
