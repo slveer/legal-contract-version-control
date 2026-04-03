@@ -58,7 +58,7 @@ pip install -r requirements.txt
 Please refer to [CONTRIBUTING.md](CONTRIBUTING.md) for info on how to get started contributing! It is greatly appreciated 😁 !
 
 ## 🗺️ Roadmap
-The full roadmap is avaliable in [ROADMAP.md](ROADMAP.md)
+The full roadmap is available in [ROADMAP.md](ROADMAP.md)
 
 ## 📃 License
 SCCS uses the GPLv3, which you can find in [LICENSE](LICENSE)
