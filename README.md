@@ -8,7 +8,7 @@ A lightweight distributed version control system designed to help legal professi
 
 ---
 
-## Table of Contents
+## 📁 Table of Contents
 
 - [About](#about)
 - [Features](#features)
