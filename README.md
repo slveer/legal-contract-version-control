@@ -15,7 +15,7 @@ A lightweight distributed version control system designed to help legal professi
 - [Features](#features)
 - [Installation](#installation)
 - [Contributing](#contributing)
-- [Roadmap](ROADMAP.md)
+- [Roadmap](#roadmap)
 - [License](LICENSE)
 - [Contact](mailto:danielaphillion@gmail.com)
 
