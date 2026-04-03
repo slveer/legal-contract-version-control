@@ -21,7 +21,7 @@ A lightweight distributed version control system designed to help legal professi
 
 ## 🧠 About
 
-- While there are many different version control systems, many struggle to track diff of .docx and .pdf files, because they are binary files. SCCS solves this by converting .pdf and .docx to .txt files, a keeping a .txt after each commit.
+- While there are many different version control systems, many struggle to track diffs in .docx and .pdf files because they are binary. SCCS solves this by converting .pdf and .docx files to .txt and keeping a .txt version after each commit.
   
 - SCCS is for legal professionals searching for a better way to track and view file changes of contracts.
   
