@@ -11,11 +11,11 @@ A lightweight distributed version control system designed to help legal professi
 
 ## 📁 Table of Contents
 
-- [About](#about)
-- [Features](#features)
-- [Installation](#installation)
-- [Contributing](#contributing)
-- [Roadmap](#roadmap)
+- [About](#-about)
+- [Features](#-features)
+- [Installation](#-installation)
+- [Contributing](#-contributing)
+- [Roadmap](#-roadmap)
 - [License](LICENSE)
 - [Contact](mailto:danielaphillion@gmail.com)
 
