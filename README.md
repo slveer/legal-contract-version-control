@@ -54,5 +54,7 @@ pip install -r requirements.txt
 
 - No features are fully functional at this time, will update installation guide ASAP
 
-- ## Roadmap
+
+
+## 🗺️ Roadmap
 The full roadmap is avaliable in [ROADMAP.md](ROADMAP.md)
