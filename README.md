@@ -6,6 +6,7 @@ A lightweight distributed version control system designed to help legal professi
 - Build Status: Pre-Alpha
 - License: GPLv3
 
+
 ---
 
 ## 📁 Table of Contents
@@ -39,3 +40,9 @@ A lightweight distributed version control system designed to help legal professi
 - Different Branches
 
 - Graphic diff viewer between .txt files
+
+## 📦 Installation
+
+- Clone the Git Repository from [this link](https://github.com/slveer/legal-contract-version-control.git)
+
+- No features are fully functional at this time, will update installation guide ASAP
