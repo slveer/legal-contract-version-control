@@ -33,6 +33,8 @@ A lightweight distributed version control system designed to help legal professi
 
 ## 🚧 Features to Make 
 
+- **See Roadmap for more details**
+
 - Host repository online like Git
 
 - Different Branches
@@ -51,3 +53,6 @@ pip install -r requirements.txt
 
 
 - No features are fully functional at this time, will update installation guide ASAP
+
+- ## Roadmap
+The full roadmap is avaliable in [ROADMAP.md](ROADMAP.md)
