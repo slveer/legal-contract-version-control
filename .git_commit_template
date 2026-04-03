@@ -1,0 +1,37 @@
+# Lines starting with "#" will be ignored by Git.
+# Write your commit message ABOVE these comments.
+
+# type(scope): short description
+
+# Example:
+# feat(tasks): add recurring task support
+#
+# -------------------------------
+# Commit Types
+# -------------------------------
+#
+# feat:     new feature
+# fix:      bug fix
+# refactor: restructure code without changing behavior
+# perf:     performance improvement
+# style:    formatting only (whitespace, formatting)
+# docs:     documentation changes
+# test:     add or modify tests
+# chore:    maintenance tasks (configs, dependencies)
+# build:    build system changes
+# ci:       CI/CD configuration changes
+# revert:   revert a previous commit
+# wip:      work in progress
+# debug:    debugging changes
+#
+# -------------------------------
+# Optional Body
+# -------------------------------
+#
+# Explain WHY the change was made if needed.
+#
+# -------------------------------
+# Optional Footer
+# -------------------------------
+#
+# Closes #issue_number
