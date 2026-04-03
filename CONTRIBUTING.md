@@ -1,6 +1,6 @@
 # 👥 Contributing to SCCS
 
->Pre-Alpha. SCCS is still in early development, and it likely has many bugs or is missing features. If you discover bugs, or would like to suggest a feature, please open an issue with the relevant label.
+> Pre-Alpha. SCCS is still in early development, and it likely has many bugs or is missing features. If you discover bugs, or would like to suggest a feature, please open an issue with the relevant label.
 
 ## ⚙️ Requirements
 
