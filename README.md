@@ -1,6 +1,6 @@
 # 🎯 Simple Contracts Communication System, or SCCS
 
-A lightweight distributed version control system designed to help legal professionals easily view and understand different versions of .docx and .pdf files.
+A lightweight distributed version control system designed to help legal professionals easily view and understand different versions of .docx files currently. ( .pdf files planned)
 
 ## ⚠️ Please Read
 - Build Status: Pre-Alpha
