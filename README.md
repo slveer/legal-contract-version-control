@@ -1,3 +1,64 @@
-# Simple Contracts Communication System, or SCCS
+# 🎯 Simple Contracts Communication System, or SCCS
 
-The goal of LCVC is to create lightweight distributed version control system similar designed to help lawyers, companies, and anyone who works with contracts to easily view and understand what other parties are looking for in contracts, and negotiate terms in a dedicated environment as apposed to using basic email services.
+A lightweight distributed version control system designed to help legal professionals easily view and understand different versions of .docx files currently. ( .pdf files planned)
+
+## ⚠️ Please Read
+- Build Status: Pre-Alpha
+- License: GPLv3
+
+
+---
+
+## 📁 Table of Contents
+
+- [About](#-about)
+- [Features](#-features)
+- [Installation](#-installation)
+- [Contributing](#-contributing)
+- [Roadmap](#%EF%B8%8F-roadmap)
+- [License](#-license)
+- [Contact](mailto:danielaphillion@gmail.com)
+
+## 🧠 About
+
+- While there are many different version control systems, many struggle to track diffs in .docx and .pdf files because they are binary. SCCS solves this by converting .pdf and .docx files to .txt and keeping a .txt version after each commit.
+  
+- SCCS is for legal professionals searching for a better way to track and view file changes of contracts.
+  
+- Currently, most version control for contracts is just multiple versions of mostly identical files, emailed back and forth between people. Storing .txt files and keeping less XML metadata as files can share it. It also cleanly shows diff between version of a file, instead of between different files
+
+## ✨ Features
+
+- Command line tools to initialize, commit, and revert (currently in progress)
+
+## 🚧 Features to Make 
+
+- **See Roadmap for more details**
+
+- Host repository online like Git
+
+- Different Branches
+
+- Graphic diff viewer between .txt files
+
+## 📦 Installation
+
+```bash
+# Clone the Git Repository
+git clone https://github.com/slveer/legal-contract-version-control.git
+
+# Install all required dependencies
+pip install -r requirements.txt
+```
+
+
+- No features are fully functional at this time, will update installation guide ASAP
+
+## 🤝 Contributing
+Please refer to [CONTRIBUTING.md](CONTRIBUTING.md) for info on how to get started contributing! It is greatly appreciated 😁 !
+
+## 🗺️ Roadmap
+The full roadmap is available in [ROADMAP.md](ROADMAP.md)
+
+## 📃 License
+SCCS uses the GPLv3, which you can find in [LICENSE](LICENSE)
