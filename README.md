@@ -43,6 +43,13 @@ A lightweight distributed version control system designed to help legal professi
 
 ## 📦 Installation
 
-- Clone the Git Repository from [this link](https://github.com/slveer/legal-contract-version-control.git)
+```bash
+# Clone the Git Repository
+git clone https://github.com/slveer/legal-contract-version-control.git
+
+# Install all required dependencies
+pip install -r requirements.txt
+```
+
 
 - No features are fully functional at this time, will update installation guide ASAP
