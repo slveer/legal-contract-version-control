@@ -16,7 +16,7 @@ A lightweight distributed version control system designed to help legal professi
 - [Installation](#-installation)
 - [Contributing](#-contributing)
 - [Roadmap](#-roadmap)
-- [License](LICENSE)
+- [License](#-license)
 - [Contact](mailto:danielaphillion@gmail.com)
 
 ## 🧠 About
@@ -59,3 +59,6 @@ Please refer to [CONTRIBUTING.md](CONTRIBUTING.md) for info on how to get starte
 
 ## 🗺️ Roadmap
 The full roadmap is avaliable in [ROADMAP.md](ROADMAP.md)
+
+## License
+SCCS using the GPLv3, which you can find in [LICENSE](LICENSE)
