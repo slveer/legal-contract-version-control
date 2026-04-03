@@ -2,7 +2,7 @@
 
 A lightweight distributed version control system designed to help legal professionals easily view and understand different versions of .docx and .pdf files.
 
-# ⚠️ Please Read
+## ⚠️ Please Read
 - Build Status: Pre-Alpha
 - License: GPLv3
 
