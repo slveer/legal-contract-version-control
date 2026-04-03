@@ -22,4 +22,4 @@ pip install -r requirements.txt
 
 ## 💬 Find something to do
 
-- If you want to contribute, the easiest way to do so is to go to [ROADMAP.md](ROADMAP.md), pick a feature or bugfix to work on, and go to the corresponding issue.
+- If you want to contribute, the easiest way to do so is to go to the issues tab and select an issue to work on.
