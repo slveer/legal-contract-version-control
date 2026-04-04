@@ -18,7 +18,7 @@ else:
     sys.exit(1)
 
 # Check if the directory already contains an SCCS initialization
-if Path(f"{directory_path}/.sccs").is_dir():
+if Path(os.path.join(directory_path, ".sccs")).is_dir():
     print("This file has already been initialized with SCCS")
     sys.exit(1)
 
