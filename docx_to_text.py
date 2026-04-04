@@ -12,6 +12,9 @@ path = sys.argv[2] if len(sys.argv) > 2 else None
 # Strip .docx extension from the file name to create a directory
 if path: 
     directory_path = Path(path).with_suffix('')
+else:
+    print("No file path provided")
+    sys.exit(1)
 
 # Check if the directory already contains an SCCS initialization
 if Path(f"{directory_path}/.sccs").is_dir():
