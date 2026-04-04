@@ -43,7 +43,7 @@ if not Path(config_path).is_file():
     print("Configuration file not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
     sys.exit(1)
 
-with open(config_path, "r") as config_file:
+with open(config_path, "r", encoding="utf-8", newline="\n") as config_file:
     config = json.load(config_file)
     name = config.get("name")
     email = config.get("email")
@@ -57,7 +57,7 @@ if not Path(history_path).is_file():
     print("History file not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
     sys.exit(1)
 
-with open(history_path, "r") as history_file:
+with open(history_path, "r", encoding="utf-8", newline="\n") as history_file:
     history = json.load(history_file)
     parent_hash = history.get("latest_commit")
 
