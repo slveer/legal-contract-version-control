@@ -1,9 +1,7 @@
 import subprocess
 from pathlib import Path
-import random
 import sys
 import docx2txt 
-import string
 
 path = sys.argv[2] if len(sys.argv) > 1 else None
 
