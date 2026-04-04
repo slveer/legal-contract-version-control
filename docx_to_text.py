@@ -1,3 +1,5 @@
+import os
+import shutil
 import subprocess
 from pathlib import Path
 import sys
@@ -38,13 +40,13 @@ email = input("Enter your email: ")
 sha_hash = hashlib.sha256(f'{datetime.now().isoformat()}/initial_version/{name}/{email}'.encode()).hexdigest()
 
 # Create needed directories
-subprocess.run(["mkdir", "-p", directory_path])
-subprocess.run(["mv", path, directory_path])
-subprocess.run(["mkdir", "-p", f"{directory_path}/.sccs"])
-subprocess.run(["mkdir", "-p", f"{directory_path}/.sccs/commits"])
-subprocess.run(["mkdir", "-p", f"{directory_path}/.sccs/history"])
-subprocess.run(["mkdir", "-p", f"{directory_path}/.sccs/commit_messages"])
-subprocess.run(["mkdir", "-p", f"{directory_path}/.sccs/config"])
+os.makedirs(directory_path, exist_ok=True)
+shutil.move(path, directory_path)
+os.makedirs(f"{directory_path}/.sccs", exist_ok=True)
+os.makedirs(f"{directory_path}/.sccs/commits", exist_ok=True)
+os.makedirs(f"{directory_path}/.sccs/history", exist_ok=True)
+os.makedirs(f"{directory_path}/.sccs/commit_messages", exist_ok=True)
+os.makedirs(f"{directory_path}/.sccs/config", exist_ok=True)
 
 # Add info to the directories, JSON
 with open(f"{directory_path}/.sccs/commits/{sha_hash}.txt", "w", encoding="utf-8", newline="\n") as f:
