@@ -23,8 +23,12 @@ if Path(os.path.join(directory_path, ".sccs")).is_dir():
     sys.exit(1)
 
 # Check if the path ends with .docx and exists
-elif path and Path(path).suffix.lower == ".docx" and Path(path).is_file():
-    docx_to_txt = docx2txt.process(path)
+elif path and Path(path).suffix.lower() == ".docx" and Path(path).is_file():
+    try:
+        docx_to_txt = docx2txt.process(path)
+    except Exception as e:
+        print(f"Error processing .docx file: {e}")
+        sys.exit(1)
 
 # if not, exit  
 else: 
