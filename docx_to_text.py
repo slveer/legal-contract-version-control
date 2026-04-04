@@ -33,3 +33,12 @@ history_data = f"""
 
 with open(f"{path.strip('.docx')}/.sccs/history/commit_history.json", "w") as f:
     f.write(history_data)
+
+commit_message_data = f"""
+{{
+    "{sha_hash}.txt": "initial commit (This is a default commit message for initial version)"
+}}
+"""
+
+with open(f"{path.strip('.docx')}/.sccs/commit_messages/commit_messages.json", "w") as f:
+    f.write(commit_message_data)
