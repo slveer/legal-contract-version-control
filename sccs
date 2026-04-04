@@ -5,6 +5,6 @@ import subprocess
 command = sys.argv[1] if len(sys.argv) > 1 else None
 
 if command == "init":
-    subprocess.run(["python3", "docx_to_text.py"] + sys.argv[1:]) 
+    subprocess.run(["python3", "init.py"] + sys.argv[1:]) 
 
 # If on MacOS / Linux, move this file to /usr/local/bin and make it executable with `chmod +x sccs`
