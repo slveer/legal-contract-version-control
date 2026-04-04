@@ -4,6 +4,7 @@ import sys
 import docx2txt 
 import hashlib
 from datetime import datetime
+import json
 
 # Get user inputted path argument
 path = sys.argv[2] if len(sys.argv) > 2 else None
@@ -50,14 +51,14 @@ history_data = {
 }
 
 with open(f"{directory_path}/.sccs/history/commit_history.json", "w") as f:
-    f.write(history_data)
+    json.dump(history_data, f, indent=4)
 
 commit_message_data = {
     f"{sha_hash}.txt": "initial commit (This is a default commit message for initial version)"
 }
 
 with open(f"{directory_path}/.sccs/commit_messages/commit_messages.json", "w") as f:
-    f.write(commit_message_data)
+    json.dump(commit_message_data, f, indent=4)
 
 config_data = {
     "name": f"{name}",
@@ -65,4 +66,4 @@ config_data = {
 }
 
 with open(f"{directory_path}/.sccs/config/config.json", "w") as f:
-    f.write(config_data)
+    json.dump(config_data, f, indent=4)
