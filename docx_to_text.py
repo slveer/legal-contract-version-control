@@ -4,7 +4,6 @@ import random
 import sys
 import docx2txt 
 import string
-import os
 
 path = sys.argv[2] if len(sys.argv) > 1 else None
 
