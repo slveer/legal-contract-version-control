@@ -12,6 +12,10 @@ if "%command%"=="commit" (
     python commit.py %*
     exit /b %errorlevel%
 )
+else (
+    echo Invalid Command. Please use either "init" or "commit", along with required arguments
+    exit /b 1
+)
 
 @REM Instructions to set up sccs.bat in CLI on Windows:
 
