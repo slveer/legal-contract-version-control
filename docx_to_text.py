@@ -25,3 +25,11 @@ subprocess.run(["mkdir", "-p", f"{path.strip('.docx')}/.sccs/commit_messages"])
 with open(f"{path.strip('.docx')}/.sccs/commits/{sha_hash}.txt", "w") as f:
     f.write(docx_to_txt)
 
+history_data = f"""
+{{
+    "initial commit": "{sha_hash}.txt"
+}}
+"""
+
+with open(f"{path.strip('.docx')}/.sccs/history/commit_history.json", "w") as f:
+    f.write(history_data)
