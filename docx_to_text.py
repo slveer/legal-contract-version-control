@@ -41,28 +41,27 @@ sha_hash = hashlib.sha256(f'{datetime.now().isoformat()}/initial_version/{name}/
 # Create needed directories
 os.makedirs(directory_path, exist_ok=True)
 shutil.move(path, directory_path)
-os.makedirs(f"{directory_path}/.sccs", exist_ok=True)
-os.makedirs(f"{directory_path}/.sccs/commits", exist_ok=True)
-os.makedirs(f"{directory_path}/.sccs/history", exist_ok=True)
-os.makedirs(f"{directory_path}/.sccs/commit_messages", exist_ok=True)
-os.makedirs(f"{directory_path}/.sccs/config", exist_ok=True)
-
+os.makedirs(os.path.join(directory_path, ".sccs"), exist_ok=True)
+os.makedirs(os.path.join(directory_path, ".sccs", "commits"), exist_ok=True)
+os.makedirs(os.path.join(directory_path, ".sccs", "history"), exist_ok=True)
+os.makedirs(os.path.join(directory_path, ".sccs", "commit_messages"), exist_ok=True)
+os.makedirs(os.path.join(directory_path, ".sccs", "config"), exist_ok=True)
 # Add info to the directories, JSON
-with open(f"{directory_path}/.sccs/commits/{sha_hash}.txt", "w", encoding="utf-8", newline="\n") as f:
+with open(os.path.join(directory_path, ".sccs", "commits", f"{sha_hash}.txt"), "w", encoding="utf-8", newline="\n") as f:
     f.write(docx_to_txt)
 
 history_data = {
     "initial commit": f"{sha_hash}.txt"
 }
 
-with open(f"{directory_path}/.sccs/history/commit_history.json", "w", encoding="utf-8", newline="\n") as f:
+with open(os.path.join(directory_path, ".sccs", "history", "commit_history.json"), "w", encoding="utf-8", newline="\n") as f:
     json.dump(history_data, f, indent=4)
 
 commit_message_data = {
     f"{sha_hash}.txt": "initial commit (This is a default commit message for initial version)"
 }
 
-with open(f"{directory_path}/.sccs/commit_messages/commit_messages.json", "w", encoding="utf-8", newline="\n") as f:
+with open(os.path.join(directory_path, ".sccs", "commit_messages", "commit_messages.json"), "w", encoding="utf-8", newline="\n") as f:
     json.dump(commit_message_data, f, indent=4)
 
 config_data = {
@@ -70,5 +69,5 @@ config_data = {
     "email": f"{email}"
 }
 
-with open(f"{directory_path}/.sccs/config/config.json", "w", encoding="utf-8", newline="\n") as f:
+with open(os.path.join(directory_path, ".sccs", "config", "config.json"), "w", encoding="utf-8", newline="\n") as f:
     json.dump(config_data, f, indent=4)
