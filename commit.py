@@ -14,7 +14,7 @@ path = sys.argv[2] if len(sys.argv) > 2 else None
 if path: 
     directory_path = Path(path).with_suffix('')
     # Because sccs init moves the file into the directory, update the path to point to the moved file
-    if Path(path).is_file():
+    if not Path(path).is_file():
         path = os.path.join(directory_path, os.path.basename(path))
 else:
     print("No file path provided")
