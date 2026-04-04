@@ -13,13 +13,10 @@ else:
     print("Invalid file path, make sure the file exists and is a .docx file")
     sys.exit(1)
 
+subprocess.run(["mkdir", "-p", path.strip(".docx")])
+subprocess.run(["mv", path, path.strip(".docx")])
+subprocess.run(["mkdir", "-p", f"{path.strip('.docx')}/.sccs"])
 
-subprocess.run(["unzip", f"{path}", "-d", path.strip(".docx")])
-
-file_hash = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(8))
-
-with open(f"{path.strip('.docx')}/{file_hash}.txt", "w") as f:
+with open(f"{path.strip('.docx')}/.sccs/output.txt", "w") as f:
     f.write(docx_to_txt)
 
-
-    
