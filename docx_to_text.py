@@ -19,7 +19,7 @@ if Path(f"{directory_path}/.sccs").is_dir():
 # Check if the path ends with .docx and exists
 elif path and path.endswith(".docx") and Path(path).is_file():
     docx_to_txt = docx2txt.process(path)
-    
+
 # if not, exit  
 else: 
     print("Invalid file path, make sure the file exists and is a .docx file")
@@ -30,7 +30,7 @@ name = input("Enter your name: ")
 email = input("Enter your email: ")
 
 # Generate a SHA-256 hash for the initial commit
-sha_hash = hashlib.sha256(f'{datetime.now().isoformat()}/initial_version'.encode()).hexdigest()
+sha_hash = hashlib.sha256(f'{datetime.now().isoformat()}/initial_version/{name}/{email}'.encode()).hexdigest()
 
 # Create needed directories
 subprocess.run(["mkdir", "-p", directory_path])
