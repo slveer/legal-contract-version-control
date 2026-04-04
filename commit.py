@@ -13,10 +13,10 @@ path = sys.argv[2] if len(sys.argv) > 2 else None
 # Strip .docx extension from the file name to create a directory
 # Because sccs init moves the file into the directory, update the path to point to the moved file
 if path: 
-    directory_path = Path(path).with_suffix('')
     if not Path(path).is_file():
         path = os.path.join(directory_path, os.path.basename(path))
-        directory_path = Path(path).parent
+        
+    directory_path = Path(path).parent
     if not Path(path).is_file():
         print("File not found. Please provide a valid file path.")
         sys.exit(1)
