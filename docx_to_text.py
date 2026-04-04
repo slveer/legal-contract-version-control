@@ -10,7 +10,8 @@ import json
 path = sys.argv[2] if len(sys.argv) > 2 else None
 
 # Strip .docx extension from the file name to create a directory
-directory_path = Path(path).with_suffix('')
+if path: 
+    directory_path = Path(path).with_suffix('')
 
 # Check if the directory already contains an SCCS initialization
 if Path(f"{directory_path}/.sccs").is_dir():
