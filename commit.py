@@ -16,6 +16,7 @@ if path:
     directory_path = Path(path).with_suffix('')
     if not Path(path).is_file():
         path = os.path.join(directory_path, os.path.basename(path))
+        directory_path = Path(path).parent
     if not Path(path).is_file():
         print("File not found. Please provide a valid file path.")
         sys.exit(1)
