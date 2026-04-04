@@ -1,15 +1,16 @@
 @echo off
+setlocal enabledelayedexpansion
 
 set "command=%1"
 
 if "%command%"=="init" (
     python init.py %*
-    exit /b %errorlevel%
+    exit /b !errorlevel!
 )
 
 if "%command%"=="commit" (
     python commit.py %*
-    exit /b %errorlevel%
+    exit /b !errorlevel!
 )
 
 echo Unknown command: %command%
