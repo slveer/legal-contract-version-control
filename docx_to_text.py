@@ -6,10 +6,9 @@ import hashlib
 from datetime import datetime
 
 path = sys.argv[2] if len(sys.argv) > 1 else None
+directory_path = f"{path.strip('.docx')}"
 
-
-
-if Path("/Users/danielphillion/Documents/Cher-Père-Noël/.sccs").is_dir(): #f"{path.strip('.docx')}/.sccs"
+if Path(f"{directory_path}/.sccs").is_dir():
     print("This file has already been initialized with SCCS")
     sys.exit(1)
 
@@ -24,15 +23,15 @@ email = input("Enter your email: ")
 
 sha_hash = hashlib.sha256(f'{datetime.now().isoformat()}/initial_version'.encode()).hexdigest()
 
-subprocess.run(["mkdir", "-p", path.strip(".docx")])
-subprocess.run(["mv", path, path.strip(".docx")])
-subprocess.run(["mkdir", "-p", f"{path.strip('.docx')}/.sccs"])
-subprocess.run(["mkdir", "-p", f"{path.strip('.docx')}/.sccs/commits"])
-subprocess.run(["mkdir", "-p", f"{path.strip('.docx')}/.sccs/history"])
-subprocess.run(["mkdir", "-p", f"{path.strip('.docx')}/.sccs/commit_messages"])
-subprocess.run(["mkdir", "-p", f"{path.strip('.docx')}/.sccs/config"])
+subprocess.run(["mkdir", "-p", directory_path])
+subprocess.run(["mv", path, directory_path])
+subprocess.run(["mkdir", "-p", f"{directory_path}/.sccs"])
+subprocess.run(["mkdir", "-p", f"{directory_path}/.sccs/commits"])
+subprocess.run(["mkdir", "-p", f"{directory_path}/.sccs/history"])
+subprocess.run(["mkdir", "-p", f"{directory_path}/.sccs/commit_messages"])
+subprocess.run(["mkdir", "-p", f"{directory_path}/.sccs/config"])
 
-with open(f"{path.strip('.docx')}/.sccs/commits/{sha_hash}.txt", "w") as f:
+with open(f"{directory_path}/.sccs/commits/{sha_hash}.txt", "w") as f:
     f.write(docx_to_txt)
 
 history_data = f"""
@@ -41,7 +40,7 @@ history_data = f"""
 }}
 """
 
-with open(f"{path.strip('.docx')}/.sccs/history/commit_history.json", "w") as f:
+with open(f"{directory_path}/.sccs/history/commit_history.json", "w") as f:
     f.write(history_data)
 
 commit_message_data = f"""
@@ -50,7 +49,7 @@ commit_message_data = f"""
 }}
 """
 
-with open(f"{path.strip('.docx')}/.sccs/commit_messages/commit_messages.json", "w") as f:
+with open(f"{directory_path}/.sccs/commit_messages/commit_messages.json", "w") as f:
     f.write(commit_message_data)
 
 config_data = f"""
@@ -60,5 +59,5 @@ config_data = f"""
 }}
 """
 
-with open(f"{path.strip('.docx')}/.sccs/config/config.json", "w") as f:
+with open(f"{directory_path}/.sccs/config/config.json", "w") as f:
     f.write(config_data)
