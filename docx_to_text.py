@@ -23,7 +23,7 @@ else:
     sys.exit(1)
 
 # Strip .docx extension from the file name to create a directory
-directory_path = f"{path.strip('.docx')}"
+directory_path = Path(path).with_suffix('')
 
 # Get user inputted name and email
 name = input("Enter your name: ")
