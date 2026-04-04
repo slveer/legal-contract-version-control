@@ -71,3 +71,5 @@ config_data = {
 
 with open(os.path.join(directory_path, ".sccs", "config", "config.json"), "w", encoding="utf-8", newline="\n") as f:
     json.dump(config_data, f, indent=4)
+
+print("SCCS initialization complete.")
