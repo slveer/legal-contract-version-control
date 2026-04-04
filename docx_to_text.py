@@ -6,7 +6,7 @@ import hashlib
 from datetime import datetime
 
 # Get user inputted path argument
-path = sys.argv[2] if len(sys.argv) > 1 else None
+path = sys.argv[2] if len(sys.argv) > 2 else None
 
 # Strip .docx extension from the file name to create a directory
 directory_path = f"{path.strip('.docx')}"
