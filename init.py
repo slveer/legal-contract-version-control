@@ -55,7 +55,12 @@ with open(os.path.join(directory_path, ".sccs", "commits", f"{sha_hash}.txt"), "
     f.write(docx_to_txt)
 
 history_data = {
-    "initial commit": f"{sha_hash}.txt"
+    "initial commit": f"{sha_hash}.txt",
+    "latest_commit": f"{sha_hash}.txt",
+    "latest_commit_number": 1,
+    "commit_order": {
+        "1": f"{sha_hash}.txt"
+    }
 }
 
 with open(os.path.join(directory_path, ".sccs", "history", "commit_history.json"), "w", encoding="utf-8", newline="\n") as f:
