@@ -45,30 +45,24 @@ subprocess.run(["mkdir", "-p", f"{directory_path}/.sccs/config"])
 with open(f"{directory_path}/.sccs/commits/{sha_hash}.txt", "w") as f:
     f.write(docx_to_txt)
 
-history_data = f"""
-{{
-    "initial commit": "{sha_hash}.txt"
-}}
-"""
+history_data = {
+    "initial commit": f"{sha_hash}.txt"
+}
 
 with open(f"{directory_path}/.sccs/history/commit_history.json", "w") as f:
     f.write(history_data)
 
-commit_message_data = f"""
-{{
-    "{sha_hash}.txt": "initial commit (This is a default commit message for initial version)"
-}}
-"""
+commit_message_data = {
+    f"{sha_hash}.txt": "initial commit (This is a default commit message for initial version)"
+}
 
 with open(f"{directory_path}/.sccs/commit_messages/commit_messages.json", "w") as f:
     f.write(commit_message_data)
 
-config_data = f"""
-{{
-    "name": "{name}",
-    "email": "{email}"
-}}
-"""
+config_data = {
+    "name": f"{name}",
+    "email": f"{email}"
+}
 
 with open(f"{directory_path}/.sccs/config/config.json", "w") as f:
     f.write(config_data)
