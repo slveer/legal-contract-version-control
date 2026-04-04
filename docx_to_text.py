@@ -47,21 +47,21 @@ subprocess.run(["mkdir", "-p", f"{directory_path}/.sccs/commit_messages"])
 subprocess.run(["mkdir", "-p", f"{directory_path}/.sccs/config"])
 
 # Add info to the directories, JSON
-with open(f"{directory_path}/.sccs/commits/{sha_hash}.txt", "w") as f:
+with open(f"{directory_path}/.sccs/commits/{sha_hash}.txt", "w", encoding="utf-8") as f:
     f.write(docx_to_txt)
 
 history_data = {
     "initial commit": f"{sha_hash}.txt"
 }
 
-with open(f"{directory_path}/.sccs/history/commit_history.json", "w") as f:
+with open(f"{directory_path}/.sccs/history/commit_history.json", "w", encoding="utf-8") as f:
     json.dump(history_data, f, indent=4)
 
 commit_message_data = {
     f"{sha_hash}.txt": "initial commit (This is a default commit message for initial version)"
 }
 
-with open(f"{directory_path}/.sccs/commit_messages/commit_messages.json", "w") as f:
+with open(f"{directory_path}/.sccs/commit_messages/commit_messages.json", "w", encoding="utf-8") as f:
     json.dump(commit_message_data, f, indent=4)
 
 config_data = {
@@ -69,5 +69,5 @@ config_data = {
     "email": f"{email}"
 }
 
-with open(f"{directory_path}/.sccs/config/config.json", "w") as f:
+with open(f"{directory_path}/.sccs/config/config.json", "w", encoding="utf-8") as f:
     json.dump(config_data, f, indent=4)
