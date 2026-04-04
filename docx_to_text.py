@@ -19,6 +19,9 @@ else:
     print("Invalid file path, make sure the file exists and is a .docx file")
     sys.exit(1)
 
+name = input("Enter your name: ")
+email = input("Enter your email: ")
+
 sha_hash = hashlib.sha256(f'{datetime.now().isoformat()}/initial_version'.encode()).hexdigest()
 
 subprocess.run(["mkdir", "-p", path.strip(".docx")])
@@ -27,6 +30,7 @@ subprocess.run(["mkdir", "-p", f"{path.strip('.docx')}/.sccs"])
 subprocess.run(["mkdir", "-p", f"{path.strip('.docx')}/.sccs/commits"])
 subprocess.run(["mkdir", "-p", f"{path.strip('.docx')}/.sccs/history"])
 subprocess.run(["mkdir", "-p", f"{path.strip('.docx')}/.sccs/commit_messages"])
+subprocess.run(["mkdir", "-p", f"{path.strip('.docx')}/.sccs/config"])
 
 with open(f"{path.strip('.docx')}/.sccs/commits/{sha_hash}.txt", "w") as f:
     f.write(docx_to_txt)
@@ -48,3 +52,13 @@ commit_message_data = f"""
 
 with open(f"{path.strip('.docx')}/.sccs/commit_messages/commit_messages.json", "w") as f:
     f.write(commit_message_data)
+
+config_data = f"""
+{{
+    "name": "{name}",
+    "email": "{email}"
+}}
+"""
+
+with open(f"{path.strip('.docx')}/.sccs/config/config.json", "w") as f:
+    f.write(config_data)
