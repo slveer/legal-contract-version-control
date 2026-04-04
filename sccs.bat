@@ -6,10 +6,10 @@ import subprocess
 command = sys.argv[1] if len(sys.argv) > 1 else None
 
 if command == "init":
-    subprocess.run(["python3", "init.py"] + sys.argv[1:]) 
+    sys.exit(subprocess.run(["python3", "init.py"] + sys.argv[1:], check=True).returncode)
 
 if command == "commit":
-    subprocess.run(["python3", "commit.py"] + sys.argv[1:])
+    sys.exit(subprocess.run(["python3", "commit.py"] + sys.argv[1:], check=True).returncode)
 
 @REM # Instructions to set up sccs.bat in CLI on Windows
 
