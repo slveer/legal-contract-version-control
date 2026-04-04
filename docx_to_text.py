@@ -18,7 +18,10 @@ sha_hash = hashlib.sha256(f'{datetime.now().isoformat()}/initial_version'.encode
 subprocess.run(["mkdir", "-p", path.strip(".docx")])
 subprocess.run(["mv", path, path.strip(".docx")])
 subprocess.run(["mkdir", "-p", f"{path.strip('.docx')}/.sccs"])
+subprocess.run(["mkdir", "-p", f"{path.strip('.docx')}/.sccs/commits"])
+subprocess.run(["mkdir", "-p", f"{path.strip('.docx')}/.sccs/history"])
+subprocess.run(["mkdir", "-p", f"{path.strip('.docx')}/.sccs/commit_messages"])
 
-with open(f"{path.strip('.docx')}/.sccs/{sha_hash}.txt", "w") as f:
+with open(f"{path.strip('.docx')}/.sccs/commits/{sha_hash}.txt", "w") as f:
     f.write(docx_to_txt)
 
