@@ -39,6 +39,10 @@ else:
 
 # Get name and email entered on init
 config_path = os.path.join(directory_path, ".sccs", "config", "config.json")
+if not Path(config_path).is_file():
+    print("Configuration file not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
+    sys.exit(1)
+
 with open(config_path, "r") as config_file:
     config = json.load(config_file)
     name = config.get("name")
@@ -49,12 +53,13 @@ commit_message = input("Enter commit message: ")
 
 # Get parent hash
 history_path = os.path.join(directory_path, ".sccs", "history", "commit_history.json")
-if os.path.exists(history_path):
-    with open(history_path, "r") as history_file:
-        history = json.load(history_file)
-        parent_hash = history.get("latest_commit")
-else:
-    parent_hash = None
+if not Path(history_path).is_file():
+    print("History file not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
+    sys.exit(1)
+
+with open(history_path, "r") as history_file:
+    history = json.load(history_file)
+    parent_hash = history.get("latest_commit")
 
 # Generate commit hash from time, message, name, email, and previous commit hash
 sha_hash = hashlib.sha256(f'{datetime.now().isoformat()}/{commit_message}/{name}/{email}/{parent_hash}'.encode()).hexdigest()
@@ -72,10 +77,15 @@ with open(history_path, "w", encoding="utf-8", newline="\n") as history_file:
 
 # Update commit messages
 commit_messages_path = os.path.join(directory_path, ".sccs", "commit_messages", "commit_messages.json")
-if os.path.exists(commit_messages_path):
-    with open(commit_messages_path, "r", encoding="utf-8", newline="\n") as commit_messages_file:
-        messages = json.load(commit_messages_file)
+if not Path(commit_messages_path).is_file():
+    print("Commit messages file not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
+    sys.exit(1)
+
+with open(commit_messages_path, "r", encoding="utf-8", newline="\n") as commit_messages_file:
+    messages = json.load(commit_messages_file)
+
 messages[f"{sha_hash}.txt"] = f"{commit_message}"
+
 with open(commit_messages_path, "w", encoding="utf-8", newline="\n") as commit_messages_file:
     json.dump(messages, commit_messages_file, indent=4)
 
