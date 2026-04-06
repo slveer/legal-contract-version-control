@@ -20,7 +20,7 @@ commit_path = input("Enter the path to the commit file (.txt): ")
 
 with open(commit_path, 'r') as file:
     commit = file.read()
-document = Document(path)
+document = Document()
 document.add_paragraph(commit)
 document.save(path)
 
