@@ -43,7 +43,7 @@ with open(commit_path, 'r') as file:
 document = Document()
 document.add_paragraph(commit)
 
-confirm = input(f"Are you sure you want to update '{os.path.basename(path)}' with the contents of '{os.path.basename(commit_path)}'?\nIt will delete all changes since the last commit.(Y/N): ").strip().lower()
+confirm = input(f"Are you sure you want to overwrite '{os.path.basename(path)}' with the contents of '{os.path.basename(commit_path)}'?\nThis action will replace the current content of the .docx file. (Y/N): ").strip().lower()
 if confirm != 'y':
     print("Update canceled.")
     sys.exit(0)
