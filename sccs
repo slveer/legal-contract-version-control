@@ -17,7 +17,7 @@ elif command == "open":
 
 else: 
     print(f"Unknown command: {command}")
-    print("Invalid command. Please use either 'init' or 'commit', along with required arguments.")
+    print("Invalid command. Please use either 'init', 'commit', or 'open', along with required arguments.")
     sys.exit(1)
 
 # If on MacOS / Linux, move this file, commit.py and init.py to /usr/local/bin and make it executable with `chmod +x sccs`
