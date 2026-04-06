@@ -1,1 +1,2 @@
 docx2txt==0.9
+python-docx==0.8.11
