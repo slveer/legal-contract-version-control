@@ -40,4 +40,4 @@ document = Document()
 document.add_paragraph(commit)
 document.save(path)
 
-
+print(f"File '{path}' has been updated with the contents of '{commit_path}'.")
