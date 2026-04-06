@@ -26,6 +26,12 @@ else:
     print("No file path provided")
     sys.exit(1)
 
+# Check if the directory contains an SCCS initialization
+if not Path(os.path.join(directory_path, ".sccs")).is_dir():
+    print("This file has not been initialized with SCCS.")
+    print("Please run 'sccs init <file_path>' to initialize SCCS for this file.")
+    sys.exit(1)
+    
 # Check if the path ends with .docx and exists
 if not Path(path).is_file() or Path(path).suffix.lower() != ".docx":
     print("Invalid file path, make sure the file exists and is a .docx file")
