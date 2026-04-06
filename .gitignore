@@ -178,3 +178,6 @@ pyrightconfig.json
 
 # OS system files
 .DS_Store
+
+# Test Files
+Cher-Père-Noël/
