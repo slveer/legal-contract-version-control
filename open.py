@@ -38,6 +38,12 @@ with open(commit_path, 'r') as file:
     commit = file.read()
 document = Document()
 document.add_paragraph(commit)
+
+confirm = input(f"Are you sure you want to update '{os.path.basename(path)}' with the contents of '{os.path.basename(commit_path)}'?\nIt will delete all changes since the last commit.(Y/N): ").strip().lower()
+if confirm != 'y':
+    print("Update canceled.")
+    sys.exit(0)
+
 document.save(path)
 
-print(f"File '{path}' has been updated with the contents of '{commit_path}'.")
+print(f"File '{os.path.basename(path)}' has been updated with the contents of '{os.path.basename(commit_path)}'.")
