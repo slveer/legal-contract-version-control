@@ -1,3 +1,5 @@
+import os
+
 from docx import Document
 import sys
 from pathlib import Path
@@ -6,7 +8,21 @@ from pathlib import Path
 path = sys.argv[2] if len(sys.argv) > 2 else None
 
 # Check if the path is provided
-if not path: 
+if path: 
+
+    directory_path = Path(path).with_suffix("")
+
+    # if directory basename = parent directory name (eg: user/file/file), use parent directory (eg: user/file).
+    if directory_path.name == directory_path.parent.name:
+        directory_path = directory_path.parent
+
+    # Set path correctly, whether it was correct in the first place or not
+    path = os.path.join(directory_path, os.path.basename(path))
+
+    if not Path(path).is_file():
+        print("Invalid file path, make sure the file exists and is a .docx file")
+        sys.exit(1)
+else:
     print("No file path provided")
     sys.exit(1)
 
