@@ -39,8 +39,10 @@ else:
 name = input("Enter your name: ")
 email = input("Enter your email: ")
 
+timestamp = datetime.now().isoformat()
+
 # Generate a SHA-256 hash for the initial commit
-sha_hash = hashlib.sha256(f'{datetime.now().isoformat()}/initial_version/{name}/{email}'.encode()).hexdigest()
+sha_hash = hashlib.sha256(f'{timestamp}/initial_version/{name}/{email}'.encode()).hexdigest()
 
 # Create needed directories
 os.makedirs(directory_path, exist_ok=True)
@@ -65,6 +67,17 @@ history_data = {
 
 with open(os.path.join(directory_path, ".sccs", "history", "commit_history.json"), "w", encoding="utf-8", newline="\n") as f:
     json.dump(history_data, f, indent=4)
+
+log_data = {
+    f"{sha_hash}.txt": {
+        "timestamp": timestamp,
+        "author": f"{name} <{email}>",
+        "message": "initial commit (This is a default commit message for initial version)"
+    }
+}
+     
+with open(os.path.join(directory_path, ".sccs", "history", "commit_log.json"), "w", encoding="utf-8", newline="\n") as f:
+    json.dump(log_data, f, indent=4)
 
 commit_message_data = {
     f"{sha_hash}.txt": "initial commit (This is a default commit message for initial version)"
