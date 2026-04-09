@@ -32,8 +32,6 @@ A lightweight distributed version control system designed to help legal professi
 
 ## 🚧 Features to Make 
 
-- **See Roadmap for more details**
-
 - Host repository online like Git
 
 - Different Branches
