@@ -44,7 +44,7 @@ with open(log_path, "r", encoding="utf-8", newline="\n") as log_file:
 for entry in log_data:
     print(
         "------------------------------\n"
-        f"Commit ID: {entry}\n"
+        f"Commit File: {entry}\n"
         f"Author: {log_data[entry]['author']}\n"
         f"Date: {log_data[entry]['timestamp']}\n"
         f"Message: {log_data[entry]['message']}\n"
