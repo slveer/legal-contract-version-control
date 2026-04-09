@@ -15,6 +15,17 @@ if "%command%"=="commit" (
     exit /b !errorlevel!
 )
 
+if "%command%"=="open" (
+    set "script_directory=%~dp0"
+    python "%script_directory%open.py" %*
+    exit /b !errorlevel!
+)
+
+if "%command%"=="log" (
+    set "script_directory=%~dp0"
+    python "%script_directory%log.py" %*
+    exit /b !errorlevel!
+)
 echo Unknown command: %command%
-echo Invalid command. Please use either "init" or "commit", along with required arguments
+echo Invalid command. Please use "init", "commit", "open", or "log", along with required arguments
 exit /b 1
