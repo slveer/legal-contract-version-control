@@ -40,6 +40,7 @@ name = input("Enter your name: ")
 email = input("Enter your email: ")
 
 timestamp = datetime.now().isoformat()
+initial_commit_message = "initial commit (This is a default commit message for initial version)"
 
 # Generate a SHA-256 hash for the initial commit
 sha_hash = hashlib.sha256(f'{timestamp}/initial_version/{name}/{email}'.encode()).hexdigest()
@@ -72,7 +73,7 @@ log_data = {
     f"{sha_hash}.txt": {
         "timestamp": timestamp,
         "author": f"{name} <{email}>",
-        "message": "initial commit (This is a default commit message for initial version)"
+        "message": initial_commit_message
     }
 }
      
@@ -80,7 +81,7 @@ with open(os.path.join(directory_path, ".sccs", "history", "commit_log.json"), "
     json.dump(log_data, f, indent=4)
 
 commit_message_data = {
-    f"{sha_hash}.txt": "initial commit (This is a default commit message for initial version)"
+    f"{sha_hash}.txt": initial_commit_message
 }
 
 with open(os.path.join(directory_path, ".sccs", "commit_messages", "commit_messages.json"), "w", encoding="utf-8", newline="\n") as f:
