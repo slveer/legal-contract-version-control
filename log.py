@@ -28,7 +28,7 @@ if not Path(os.path.join(directory_path, ".sccs")).is_dir():
     print("Please run 'sccs init <file_path>' to initialize SCCS for this file.")
     sys.exit(1)
 
-elif not path and Path(path).suffix.lower() == ".docx" and Path(path).is_file():
+elif not path or Path(path).suffix.lower() != ".docx" or not Path(path).is_file():
     print("Invalid file path, make sure the file exists and is a .docx file")
     sys.exit(1)
 
