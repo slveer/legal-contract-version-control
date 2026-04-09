@@ -15,7 +15,6 @@ A lightweight distributed version control system designed to help legal professi
 - [Features](#-features)
 - [Installation](#-installation)
 - [Contributing](#-contributing)
-- [Roadmap](#%EF%B8%8F-roadmap)
 - [License](#-license)
 - [Contact](mailto:danielaphillion@gmail.com)
 
@@ -32,8 +31,6 @@ A lightweight distributed version control system designed to help legal professi
 - Command line tools to initialize, commit, and revert (currently in progress)
 
 ## 🚧 Features to Make 
-
-- **See Roadmap for more details**
 
 - Host repository online like Git
 
@@ -56,9 +53,6 @@ pip install -r requirements.txt
 
 ## 🤝 Contributing
 Please refer to [CONTRIBUTING.md](CONTRIBUTING.md) for info on how to get started contributing! It is greatly appreciated 😁 !
-
-## 🗺️ Roadmap
-The full roadmap is available in [ROADMAP.md](ROADMAP.md)
 
 ## 📃 License
 SCCS uses the GPLv3, which you can find in [LICENSE](LICENSE)
