@@ -27,5 +27,5 @@ if "%command%"=="log" (
     exit /b !errorlevel!
 )
 echo Unknown command: %command%
-echo Invalid command. Please use either "init", "commit", "open", or "log", along with required arguments
+echo Invalid command. Please use "init", "commit", "open", or "log", along with required arguments
 exit /b 1
