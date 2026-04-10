@@ -26,6 +26,13 @@ if "%command%"=="log" (
     python "%script_directory%log.py" %*
     exit /b !errorlevel!
 )
+
+if "%command%"=="diff" (
+    set "script_directory=%~dp0"
+    python "%script_directory%diff.py" %*
+    exit /b !errorlevel!
+)
+
 echo Unknown command: %command%
-echo Invalid command. Please use "init", "commit", "open", or "log", along with required arguments
+echo Invalid command. Please use "init", "commit", "open", "log", or "diff", along with required arguments
 exit /b 1
