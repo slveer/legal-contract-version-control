@@ -45,5 +45,14 @@ if not commit_to_diff:
 elif not Path(commit_to_diff).suffix.lower() == ".txt" or not Path(commit_to_diff).is_file():
     print("Invalid commit file path, make sure the file exists and is a .txt file")
     sys.exit(1)
+else:
+    try:
+        with open(commit_to_diff, "r", encoding="utf-8", newline="\n") as commit_file:
+            commit_text = commit_file.read()
+    except Exception as e:
+        print(f"Error processing commit .txt file: {e}")
+        sys.exit(1)
+
+
 
 
