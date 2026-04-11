@@ -7,7 +7,7 @@ import docx2txt
 base_file = sys.argv[2] if len(sys.argv) > 2 else None
 commit_to_diff = sys.argv[3] if len(sys.argv) > 3 else None
 
-if base_file or commit_to_diff:
+if base_file and commit_to_diff:
     
     directory_path = Path(base_file).with_suffix('')
     if directory_path.name == directory_path.parent.name:
