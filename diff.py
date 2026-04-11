@@ -74,6 +74,7 @@ if first_diff_line is None:
     sys.exit(0)
 
 else:
+    diff = [first_diff_line] + list(diff)
     print("".join(diff))
 
 print("Diff complete.")
