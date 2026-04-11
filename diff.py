@@ -38,9 +38,6 @@ else:
     print("Invalid base file path, make sure the file exists and is a .docx file")
     sys.exit(1)
 
-if not commit_to_diff:
-    print("No commit file path provided to compare.")
-    sys.exit(1)
 
 elif Path(commit_to_diff).suffix.lower() != ".txt" or not Path(commit_to_diff).is_file():
     print("Invalid commit file path, make sure the file exists and is a .txt file")
