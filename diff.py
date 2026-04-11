@@ -1,7 +1,7 @@
 import os
 from pathlib import Path
 import sys
-
+from difflib import unified_diff
 import docx2txt
 
 base_file = sys.argv[2] if len(sys.argv) > 2 else None
@@ -53,6 +53,11 @@ else:
         print(f"Error processing commit .txt file: {e}")
         sys.exit(1)
 
+# Use difflib to compare the two texts and print the differences
+def to_lines(text):
+    return [line + "\n" for line in text.splitlines()]
 
+print("".join(unified_diff(to_lines(base_text), to_lines(commit_text), fromfile=Path(base_file).name, tofile=Path(commit_to_diff).name)))
 
+print("Diff complete.")
 
