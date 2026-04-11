@@ -19,7 +19,7 @@ if base_file or commit_to_diff:
         print("Base file not found. Please provide a valid base file path.")
         sys.exit(1)
 else:
-    print("Please provide both the base file path and the commit hash to compare.")
+    print("Please provide both the base file path and the commit file path to compare.")
     sys.exit(1)
 
 if not Path(os.path.join(directory_path, ".sccs")).is_dir():
@@ -39,7 +39,7 @@ else:
     sys.exit(1)
 
 if not commit_to_diff:
-    print("No commit hash provided to compare.")
+    print("No commit file path provided to compare.")
     sys.exit(1)
 
 elif not Path(commit_to_diff).suffix.lower() == ".txt" or not Path(commit_to_diff).is_file():
