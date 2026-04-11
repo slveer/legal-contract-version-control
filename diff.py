@@ -57,7 +57,12 @@ else:
 def to_lines(text):
     return [line + "\n" for line in text.splitlines()]
 
-print("".join(unified_diff(to_lines(base_text), to_lines(commit_text), fromfile=Path(base_file).name, tofile=Path(commit_to_diff).name)))
+diff = (unified_diff(to_lines(base_text), to_lines(commit_text), fromfile=Path(base_file).name, tofile=Path(commit_to_diff).name))
+
+if not list(diff):
+    print("No differences found between the base file and the commit.")
+else:
+    print("".join(diff))
 
 print("Diff complete.")
 
