@@ -1,7 +1,5 @@
 import os
 import shutil
-
-from docx import Document
 import sys
 from pathlib import Path
 
