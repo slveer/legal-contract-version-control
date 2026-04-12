@@ -1,6 +1,5 @@
 import os
-
-from docx import Document
+import shutil
 import sys
 from pathlib import Path
 
@@ -38,22 +37,21 @@ if not Path(path).is_file() or Path(path).suffix.lower() != ".docx":
     sys.exit(1)
 
 # Get user inputted commit path
-commit_path = input("Enter the path to the commit file (.txt): ")
+commit_path = input("Enter the path to the commit file (.docx): ")
 
-if not Path(commit_path).is_file() or Path(commit_path).suffix.lower() != ".txt":
-    print("Invalid commit file path, make sure the file exists and is a .txt file")
+if not Path(commit_path).is_file() or Path(commit_path).suffix.lower() != ".docx":
+    print("Invalid commit file path, make sure the file exists and is a .docx file")
     sys.exit(1)
-
-with open(commit_path, 'r') as file:
-    commit = file.read()
-document = Document()
-document.add_paragraph(commit)
 
 confirm = input(f"Are you sure you want to overwrite '{os.path.basename(path)}' with the contents of '{os.path.basename(commit_path)}'?\nThis action will replace the current content of the .docx file. (Y/N): ").strip().lower()
 if confirm != 'y':
     print("Update canceled.")
     sys.exit(0)
 
-document.save(path)
+if Path(path).exists() and Path(commit_path).exists() and os.path.samefile(path, commit_path):
+    print("The commit file is the same as the current file. No changes will be made.")
+    sys.exit(0)
+
+shutil.copy2(commit_path, path)
 
 print(f"File '{os.path.basename(path)}' has been updated with the contents of '{os.path.basename(commit_path)}'.")
