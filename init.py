@@ -67,7 +67,7 @@ history_data = {
     "latest_commit": f"{sha_hash}",
     "latest_commit_number": 1,
     "commit_order": {
-        "1": f"{sha_hash}.txt"
+        "1": f"{sha_hash}"
     }
 }
 
