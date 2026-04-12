@@ -85,9 +85,9 @@ with open(os.path.join(directory_path, ".sccs", "commits", "txt-commits", f"{sha
 shutil.copy2(os.path.join(directory_path, Path(path).name) , os.path.join(directory_path, ".sccs", "commits", "docx-commits", f"{sha_hash}.docx"))
 
 # Update history
-history["latest_commit"] = f"{sha_hash}.txt"
+history["latest_commit"] = f"{sha_hash}"
 history["latest_commit_number"] = history.get("latest_commit_number", 0) + 1
-history["commit_order"][str(history["latest_commit_number"])] = f"{sha_hash}.txt"
+history["commit_order"][str(history["latest_commit_number"])] = f"{sha_hash}"
 with open(history_path, "w", encoding="utf-8", newline="\n") as history_file:
     json.dump(history, history_file, indent=4)
 
@@ -100,7 +100,7 @@ if not Path(commit_messages_path).is_file():
 with open(commit_messages_path, "r", encoding="utf-8", newline="\n") as commit_messages_file:
     messages = json.load(commit_messages_file)
 
-messages[f"{sha_hash}.txt"] = f"{commit_message}"
+messages[f"{sha_hash}"] = f"{commit_message}"
 
 with open(commit_messages_path, "w", encoding="utf-8", newline="\n") as commit_messages_file:
     json.dump(messages, commit_messages_file, indent=4)
@@ -114,7 +114,7 @@ if not Path(commit_log_path).is_file():
 with open(commit_log_path, "r", encoding="utf-8", newline="\n") as commit_log_file:
     log = json.load(commit_log_file)
 
-log[f"{sha_hash}.txt"] = {
+log[f"{sha_hash}"] = {
     "timestamp": timestamp,
     "author": f"{name} <{email}>",
     "message": commit_message
