@@ -59,7 +59,7 @@ os.makedirs(os.path.join(directory_path, ".sccs", "config"), exist_ok=True)
 with open(os.path.join(directory_path, ".sccs", "commits", "txt-commits", f"{sha_hash}.txt"), "w", encoding="utf-8", newline="\n") as f:
     f.write(docx_to_txt)
 
-shutil.copy2(os.path.join(directory_path, Path(path).name) , os.path.join(directory_path, ".sccs", "commits", "docx-commits", f"{sha_hash}.docx"))
+shutil.copy2(os.path.join(directory_path, Path(path).name), os.path.join(directory_path, ".sccs", "commits", "docx-commits", f"{sha_hash}.docx"))
     
 
 history_data = {
