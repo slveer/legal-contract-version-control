@@ -38,10 +38,10 @@ if not Path(path).is_file() or Path(path).suffix.lower() != ".docx":
     sys.exit(1)
 
 # Get user inputted commit path
-commit_path = input("Enter the path to the commit file (.txt): ")
+commit_path = input("Enter the path to the commit file (.docx): ")
 
-if not Path(commit_path).is_file() or Path(commit_path).suffix.lower() != ".txt":
-    print("Invalid commit file path, make sure the file exists and is a .txt file")
+if not Path(commit_path).is_file() or Path(commit_path).suffix.lower() != ".docx":
+    print("Invalid commit file path, make sure the file exists and is a .docx file")
     sys.exit(1)
 
 with open(commit_path, 'r') as file:
