@@ -50,12 +50,17 @@ os.makedirs(directory_path, exist_ok=True)
 shutil.move(path, directory_path)
 os.makedirs(os.path.join(directory_path, ".sccs"), exist_ok=True)
 os.makedirs(os.path.join(directory_path, ".sccs", "commits"), exist_ok=True)
+os.makedirs(os.path.join(directory_path, ".sccs", "commits", "txt-commits"), exist_ok=True)
+os.makedirs(os.path.join(directory_path, ".sccs", "commits", "docx-commits"), exist_ok=True)
 os.makedirs(os.path.join(directory_path, ".sccs", "history"), exist_ok=True)
 os.makedirs(os.path.join(directory_path, ".sccs", "commit_messages"), exist_ok=True)
 os.makedirs(os.path.join(directory_path, ".sccs", "config"), exist_ok=True)
 # Add info to the directories, JSON
-with open(os.path.join(directory_path, ".sccs", "commits", f"{sha_hash}.txt"), "w", encoding="utf-8", newline="\n") as f:
+with open(os.path.join(directory_path, ".sccs", "commits", "txt-commits", f"{sha_hash}.txt"), "w", encoding="utf-8", newline="\n") as f:
     f.write(docx_to_txt)
+
+shutil.copy2(os.path.join(directory_path, Path(path).name) , os.path.join(directory_path, ".sccs", "commits", "docx-commits", f"{sha_hash}.docx"))
+    
 
 history_data = {
     "initial_commit": f"{sha_hash}.txt",
