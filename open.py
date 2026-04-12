@@ -50,6 +50,10 @@ if confirm != 'y':
     print("Update canceled.")
     sys.exit(0)
 
+if Path(path).exists() and Path(commit_path).exists() and os.path.samefile(path, commit_path):
+    print("The commit file is the same as the current file. No changes will be made.")
+    sys.exit(0)
+
 shutil.copy2(commit_path, path)
 
 print(f"File '{os.path.basename(path)}' has been updated with the contents of '{os.path.basename(commit_path)}'.")
