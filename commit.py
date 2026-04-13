@@ -42,6 +42,10 @@ elif path and Path(path).suffix.lower() == ".docx" and Path(path).is_file():
         commit = docx2txt.process(path)
         with open(path, "rb") as f:
             hashed_file = hashlib.sha256(f.read()).hexdigest()
+            hasher = hashlib.sha256()
+            for chunk in iter(lambda: f.read(65536), b""):
+                hasher.update(chunk)
+            hashed_file = hasher.hexdigest()
     except Exception as e:
         print(f"Error processing .docx file: {e}")
         sys.exit(1)

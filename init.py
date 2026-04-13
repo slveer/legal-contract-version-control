@@ -27,12 +27,16 @@ elif path and Path(path).suffix.lower() == ".docx" and Path(path).is_file():
     try:
         docx_to_txt = docx2txt.process(path)
         with open(path, "rb") as f:
-            hashed_file = hashlib.sha256(f.read()).hexdigest()
+            hasher = hashlib.sha256()
+            for chunk in iter(lambda: f.read(65536), b""):
+                hasher.update(chunk)
+            hashed_file = hasher.hexdigest()
     except Exception as e:
         print(f"Error processing .docx file: {e}")
         sys.exit(1)
 
 # if not, exit  
+
 else: 
     print("Invalid file path, make sure the file exists and is a .docx file")
     sys.exit(1)
