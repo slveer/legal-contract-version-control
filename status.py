@@ -55,9 +55,17 @@ if not Path(history_path).is_file():
     print("History file not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
     sys.exit(1)
 
-with open(history_path, "r", encoding="utf-8", newline="\n") as history_file:
-    history = json.load(history_file)
-    latest_commit_hash = history["latest_commit"]
+try:
+    with open(history_path, "r", encoding="utf-8", newline="\n") as history_file:
+        history = json.load(history_file)
+        latest_commit_hash = history["latest_commit"]
+except json.JSONDecodeError:
+    print("History file is missing or corrupted. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
+    sys.exit(1)
+
+if not latest_commit_hash:
+    print("History file is missing the latest commit information. Please reinitialize SCCS for this file.") 
+    sys.exit(1)
 
 # get the hash of the latest committed file
 latest_commit_file_hash_path = os.path.join(directory_path, ".sccs", "commit_file_hash", "commit_file_hash.json")
