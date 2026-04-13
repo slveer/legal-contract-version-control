@@ -40,5 +40,5 @@ if "%command%"=="status" (
 )
 
 echo Unknown command: %command%
-echo Invalid command. Please use "init", "commit", "open", "log", or "diff", along with required arguments
+echo Invalid command. Please use "init", "commit", "open", "log", "status", or "diff", along with required arguments
 exit /b 1
