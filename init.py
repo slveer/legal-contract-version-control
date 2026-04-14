@@ -6,6 +6,7 @@ import docx2txt
 import hashlib
 from datetime import datetime
 import json
+import mammoth
 
 # Get user inputted path argument
 path = sys.argv[2] if len(sys.argv) > 2 else None
@@ -33,6 +34,15 @@ elif path and Path(path).suffix.lower() == ".docx" and Path(path).is_file():
             hashed_file = hasher.hexdigest()
     except Exception as e:
         print(f"Error processing .docx file: {e}")
+        sys.exit(1)
+    
+    try: 
+        with open(path, "rb") as f:
+            result = mammoth.convert_to_html(f)
+            html = result.value
+            warnings = result.messages
+    except Exception as e:
+        print(f"Error converting .docx to HTML: {e}")
         sys.exit(1)
 
 # if not, exit  
