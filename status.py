@@ -82,6 +82,10 @@ except (json.JSONDecodeError, KeyError, TypeError, OSError) as e:
     print("Latest commit file hash is missing or corrupted. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
     sys.exit(1)
 
+if not latest_commit_file_hash:
+    print("Latest commit file hash is missing. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
+    sys.exit(1)
+
 if hashed_file == latest_commit_file_hash:
     print("No changes detected since the latest commit. Nothing to commit.")
     sys.exit(0)
