@@ -68,6 +68,7 @@ os.makedirs(os.path.join(directory_path, ".sccs"), exist_ok=True)
 os.makedirs(os.path.join(directory_path, ".sccs", "commits"), exist_ok=True)
 os.makedirs(os.path.join(directory_path, ".sccs", "commits", "txt-commits"), exist_ok=True)
 os.makedirs(os.path.join(directory_path, ".sccs", "commits", "docx-commits"), exist_ok=True)
+os.makedirs(os.path.join(directory_path, ".sccs", "commits", "html-commits"), exist_ok=True)
 os.makedirs(os.path.join(directory_path, ".sccs", "history"), exist_ok=True)
 os.makedirs(os.path.join(directory_path, ".sccs", "commit_messages"), exist_ok=True)
 os.makedirs(os.path.join(directory_path, ".sccs", "config"), exist_ok=True)
@@ -77,7 +78,9 @@ with open(os.path.join(directory_path, ".sccs", "commits", "txt-commits", f"{sha
     f.write(docx_to_txt)
 
 shutil.copy2(os.path.join(directory_path, Path(path).name), os.path.join(directory_path, ".sccs", "commits", "docx-commits", f"{sha_hash}.docx"))
-    
+
+with open(os.path.join(directory_path, ".sccs", "commits", "html-commits", f"{sha_hash}.html"), "w", encoding="utf-8", newline="\n") as f:
+    f.write(html)
 
 history_data = {
     "initial_commit": f"{sha_hash}",
