@@ -26,6 +26,8 @@ if Path(os.path.join(directory_path, ".sccs")).is_dir():
 elif path and Path(path).suffix.lower() == ".docx" and Path(path).is_file():
     try:
         docx_to_txt = docx2txt.process(path)
+        with open(path, "rb") as f:
+            hashed_file = hashlib.sha256(f.read()).hexdigest()
     except Exception as e:
         print(f"Error processing .docx file: {e}")
         sys.exit(1)
@@ -55,6 +57,7 @@ os.makedirs(os.path.join(directory_path, ".sccs", "commits", "docx-commits"), ex
 os.makedirs(os.path.join(directory_path, ".sccs", "history"), exist_ok=True)
 os.makedirs(os.path.join(directory_path, ".sccs", "commit_messages"), exist_ok=True)
 os.makedirs(os.path.join(directory_path, ".sccs", "config"), exist_ok=True)
+os.makedirs(os.path.join(directory_path, ".sccs", "commit_file_hash"), exist_ok=True)
 # Add info to the directories, JSON
 with open(os.path.join(directory_path, ".sccs", "commits", "txt-commits", f"{sha_hash}.txt"), "w", encoding="utf-8", newline="\n") as f:
     f.write(docx_to_txt)
@@ -99,5 +102,12 @@ config_data = {
 
 with open(os.path.join(directory_path, ".sccs", "config", "config.json"), "w", encoding="utf-8", newline="\n") as f:
     json.dump(config_data, f, indent=4)
+
+commit_file_hash_data = {
+    f"{sha_hash}": {hashed_file}
+}
+
+with open (os.path.join(directory_path, ".sccs", "commit_file_hash", f"commit_file_hash.json"), "w", encoding="utf-8", newline="\n") as f:
+    json.dump({commit_file_hash_data}, f, indent=4)
 
 print("SCCS initialization complete.")
