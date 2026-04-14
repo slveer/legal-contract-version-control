@@ -21,7 +21,7 @@ if not Path(commit_to_diff).is_file():
     print("Commit file not found. Please provide a valid commit file path.")
     sys.exit(1)
 
-if Path(commit_to_diff).suffix != ".txt":
+if Path(commit_to_diff).suffix.lower() != ".txt":
     print("Commit file is not a .txt file. Please provide a valid .txt commit file.")
     sys.exit(1)
 
@@ -87,8 +87,7 @@ except Exception as e:
     sys.exit(1)
 
 try: 
-    with open(base_file, "r", encoding="utf-8", newline="\n") as base_file_obj:
-        base_text = base_file_obj.read()
+    base_text = docx2txt.process(base_file)
 
 except Exception as e:
     print(f"Error processing base .docx file: {e}")       
