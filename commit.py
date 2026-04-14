@@ -135,12 +135,17 @@ if not Path(commit_file_hash_path).is_file():
     print("Commit file hash not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
     sys.exit(1)
 
-with open(commit_file_hash_path, "r", encoding="utf-8", newline="\n") as commit_file_hash_file:
-    commit_file_hash = json.load(commit_file_hash_file)
+try: 
+    with open(commit_file_hash_path, "r", encoding="utf-8", newline="\n") as f:
+        commit_file_hash = json.load(f)
+
+except (json.JSONDecodeError, KeyError, TypeError, OSError) as e:
+    print("Commit file hash is missing or corrupted. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
+    sys.exit(1)
 
 commit_file_hash[f"{sha_hash}"] = hashed_file
 
-with open(commit_file_hash_path, "w", encoding="utf-8", newline="\n") as commit_file_hash_file:
-    json.dump(commit_file_hash, commit_file_hash_file, indent=4)
+with open(commit_file_hash_path, "w", encoding="utf-8", newline="\n") as f:
+    json.dump(commit_file_hash, f, indent=4)
 
 print(f"Commit {sha_hash} created successfully.")
