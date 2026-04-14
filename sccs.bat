@@ -47,4 +47,5 @@ if "%command%"=="help" (
 
 echo Unknown command: %command%
 echo Invalid command. Please use "init", "commit", "open", "log", "status", "diff", or "help", along with required arguments
+echo For help, use the 'sccs help' command
 exit /b 1
