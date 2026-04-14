@@ -4,51 +4,87 @@ import sys
 from difflib import unified_diff
 import docx2txt
 
-base_file = sys.argv[2] if len(sys.argv) > 2 else None
-commit_to_diff = sys.argv[3] if len(sys.argv) > 3 else None
+# base_file = sys.argv[2] if len(sys.argv) > 2 else None
+commit_to_diff = sys.argv[2] if len(sys.argv) > 2 else None 
 
-if base_file and commit_to_diff:
-    
-    directory_path = Path(base_file).with_suffix('')
-    if directory_path.name == directory_path.parent.name:
-        directory_path = directory_path.parent
-    
-    base_file = os.path.join(directory_path, os.path.basename(base_file))
+directory_path = os.getcwd()
 
-    if not Path(base_file).is_file():
-        print("Base file not found. Please provide a valid base file path.")
-        sys.exit(1)
-else:
-    print("Please provide both the base file path and the commit file path to compare.")
-    sys.exit(1)
+base_file = os.path.join(directory_path, f"{os.path.basename(directory_path)}.docx")
 
-if not Path(os.path.join(directory_path, ".sccs")).is_dir():
+sccs_dir = os.path.join(directory_path, ".sccs")
+
+if not Path(sccs_dir).is_dir():
     print("This file has not been initialized with SCCS.")
     print("Please run 'sccs init <file_path>' to initialize SCCS for this file.")
     sys.exit(1)
 
-elif base_file and Path(base_file).suffix.lower() == ".docx" and Path(base_file).is_file():
-    try: 
-        base_text = docx2txt.process(base_file)
-    except Exception as e:
-        print(f"Error processing base .docx file: {e}")
-        sys.exit(1)
-
-else: 
-    print("Invalid base file path, make sure the file exists and is a .docx file")
+if not Path(os.path.join(sccs_dir, "commit_file_hash")).is_dir():
+    print("Commit file hash directory not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
     sys.exit(1)
 
-
-if Path(commit_to_diff).suffix.lower() != ".txt" or not Path(commit_to_diff).is_file():
-    print("Invalid commit file path, make sure the file exists and is a .txt file")
+if not Path(os.path.join(sccs_dir, "commit_file_hash.json")).is_file():
+    print("Commit file hash JSON not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
     sys.exit(1)
-else:
-    try:
-        with open(commit_to_diff, "r", encoding="utf-8", newline="\n") as commit_file:
-            commit_text = commit_file.read()
-    except Exception as e:
-        print(f"Error processing commit .txt file: {e}")
-        sys.exit(1)
+
+if not Path(os.path.join(sccs_dir, "commit_messages")).is_dir():
+    print("Commit messages directory not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
+    sys.exit(1)
+
+if not Path(os.path.join(sccs_dir, "commit_messages.json")).is_file():
+    print("Commit messages JSON not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
+    sys.exit(1)
+
+if not Path(os.path.join(sccs_dir, "commits")).is_dir():
+    print("Commits directory not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
+    sys.exit(1)
+
+if not Path(os.path.join(sccs_dir, "commits", "txt-commits")).is_dir():
+    print("Text commits directory not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
+    sys.exit(1)
+
+if not Path(os.path.join(sccs_dir, "commits", "docx-commits")).is_dir():
+    print("Docx commits directory not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
+    sys.exit(1)
+
+if not Path(os.path.join(sccs_dir, "config")).is_dir():
+    print("Config directory not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
+    sys.exit(1)
+
+if not Path(os.path.join(sccs_dir, "config", "config.json")).is_file():
+    print("Config file not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
+    sys.exit(1)
+
+if not Path(os.path.join(sccs_dir, "history")).is_dir():
+    print("History directory not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
+    sys.exit(1)
+
+if not Path(os.path.join(sccs_dir, "history", "commit_history.json")).is_file():
+    print("History file not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
+    sys.exit(1)
+
+if not Path(os.path.join(sccs_dir, "history", "commit_history.json")).is_file():
+    print("History file not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
+    sys.exit(1)
+
+if not Path(base_file).is_file():
+    print("Docx file not found. Re-initialize SCCS for this file with 'sccs init <file_path>'")
+    sys.exit(1)
+
+try:
+    with open(commit_to_diff, "r", encoding="utf-8", newline="\n") as commit_file:
+        commit_text = commit_file.read()
+
+except Exception as e:
+    print(f"Error processing commit .txt file: {e}")       
+    sys.exit(1)
+
+try: 
+    with open(base_file, "r", encoding="utf-8", newline="\n") as base_file_obj:
+        base_text = base_file_obj.read()
+
+except Exception as e:
+    print(f"Error processing base .docx file: {e}")       
+    sys.exit(1)
 
 # Use difflib to compare the two texts and print the differences
 def to_lines(text):
