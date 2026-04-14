@@ -1,0 +1,10 @@
+print("SCCS Help")
+print("Available commands:")
+print("  init    - Initialize a new SCCS repository")
+print("  commit  - Commit changes to a repository")
+print("  open    - Open a commit file")
+print("  log     - Show commit history")
+print("  diff    - Show differences between commits")
+print("  status  - Show the status of a repository")
+print("  help    - Show this help message")
+
