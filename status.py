@@ -17,9 +17,16 @@ if path:
     if directory_path.name == directory_path.parent.name:
         directory_path = directory_path.parent
 
-    # Set path correctly, whether it was correct in the first place or not
-    path = os.path.join(directory_path, os.path.basename(path))
+    if Path(os.path.join(directory_path, ".sccs")).is_dir():
 
+    # Set path correctly, whether it was correct in the first place or not
+        path = os.path.join(directory_path, os.path.basename(path))
+
+    else: 
+        print("This file has not been initialized with SCCS.")
+        print("Please run 'sccs init <file_path>' to initialize SCCS for this file.")
+        sys.exit(1)
+        
     if not Path(path).is_file():
         print("File not found. Please provide a valid file path.")
         sys.exit(1)
