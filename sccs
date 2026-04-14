@@ -33,5 +33,5 @@ else:
     print("For help, use the 'sccs help' command.")
     sys.exit(1)
 
-# If on MacOS / Linux, move this file, commit.py, init.py, open.py, log.py, diff.py, and status.py to /usr/local/bin and make it executable with `chmod +x /usr/local/bin/sccs`
+# If on MacOS / Linux, move this file, commit.py, init.py, open.py, log.py, diff.py, status.py , and help.py to /usr/local/bin and make it executable with `chmod +x /usr/local/bin/sccs`
 
