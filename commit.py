@@ -7,52 +7,76 @@ import hashlib
 from datetime import datetime
 import json
 
+directory_path = os.getcwd()
 
-# Get user inputted path argument
-path = sys.argv[2] if len(sys.argv) > 2 else None
+path = os.path.join(directory_path, f"{os.path.basename(directory_path)}.docx")
 
-# Strip .docx extension from the file name to create a directory
-# Because sccs init moves the file into the directory, update the path to point to the moved file
-if path: 
+sccs_dir = os.path.join(directory_path, ".sccs")
 
-    directory_path = Path(path).with_suffix("")
-
-    # if directory basename = parent directory name (eg: user/file/file), use parent directory (eg: user/file).
-    if directory_path.name == directory_path.parent.name:
-        directory_path = directory_path.parent
-
-    # Set path correctly, whether it was correct in the first place or not
-    path = os.path.join(directory_path, os.path.basename(path))
-
-    if not Path(path).is_file():
-        print("File not found. Please provide a valid file path.")
-        sys.exit(1)
-else:
-    print("No file path provided")
-    sys.exit(1)
-
-# Check if the directory contains an SCCS initialization
-if not Path(os.path.join(directory_path, ".sccs")).is_dir():
+if not Path(sccs_dir).is_dir():
     print("This file has not been initialized with SCCS.")
     print("Please run 'sccs init <file_path>' to initialize SCCS for this file.")
     sys.exit(1)
 
-elif path and Path(path).suffix.lower() == ".docx" and Path(path).is_file():
-    try: 
-        commit = docx2txt.process(path)
-        with open(path, "rb") as f:
-            hashed_file = hashlib.sha256(f.read()).hexdigest()
-            hasher = hashlib.sha256()
-            for chunk in iter(lambda: f.read(65536), b""):
-                hasher.update(chunk)
-            hashed_file = hasher.hexdigest()
-    except Exception as e:
-        print(f"Error processing .docx file: {e}")
-        sys.exit(1)
+if not Path(os.path.join(sccs_dir, "commit_file_hash")).is_dir():
+    print("Commit file hash directory not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
+    sys.exit(1)
 
-# if not, exit  
-else: 
-    print("Invalid file path, make sure the file exists and is a .docx file")
+if not Path(os.path.join(sccs_dir, "commit_file_hash", "commit_file_hash.json")).is_file():
+    print("Commit file hash JSON not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
+    sys.exit(1)
+
+if not Path(os.path.join(sccs_dir, "commit_messages")).is_dir():
+    print("Commit messages directory not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
+    sys.exit(1)
+
+if not Path(os.path.join(sccs_dir, "commit_messages", "commit_messages.json")).is_file():
+    print("Commit messages JSON not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
+    sys.exit(1)
+
+if not Path(os.path.join(sccs_dir, "commits")).is_dir():
+    print("Commits directory not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
+    sys.exit(1)
+
+if not Path(os.path.join(sccs_dir, "commits", "txt-commits")).is_dir():
+    print("Text commits directory not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
+    sys.exit(1)
+
+if not Path(os.path.join(sccs_dir, "commits", "docx-commits")).is_dir():
+    print("Docx commits directory not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
+    sys.exit(1)
+
+if not Path(os.path.join(sccs_dir, "config")).is_dir():
+    print("Config directory not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
+    sys.exit(1)
+
+if not Path(os.path.join(sccs_dir, "config", "config.json")).is_file():
+    print("Config file not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
+    sys.exit(1)
+
+if not Path(os.path.join(sccs_dir, "history")).is_dir():
+    print("History directory not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
+    sys.exit(1)
+
+if not Path(os.path.join(sccs_dir, "history", "commit_history.json")).is_file():
+    print("History file not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
+    sys.exit(1)
+
+if not Path(path).is_file():
+    print("Docx file not found. Re-initialize SCCS for this file with 'sccs init <file_path>'")
+    sys.exit(1)
+
+
+
+try: 
+    commit = docx2txt.process(path)
+    with open(path, "rb") as f:
+        hasher = hashlib.sha256()
+        for chunk in iter(lambda: f.read(65536), b""):
+            hasher.update(chunk)
+        hashed_file = hasher.hexdigest()
+except Exception as e:
+    print(f"Error processing .docx file: {e}")
     sys.exit(1)
 
 # Get name and email entered on init
