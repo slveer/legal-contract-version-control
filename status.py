@@ -37,7 +37,10 @@ if not path or Path(path).suffix.lower() != ".docx" or not Path(path).is_file():
     print("Invalid file path, make sure the file exists and is a .docx file")
     sys.exit(1)
 
-
+else: 
+    print("Invalid file path, make sure the file exists and is a .docx file")
+    sys.exit(1)
+    
 try:
     with open(path, "rb") as f:
         hasher = hashlib.sha256()
@@ -49,9 +52,7 @@ except Exception as e:
     sys.exit(1)
 
 # if not, exit  
-else: 
-    print("Invalid file path, make sure the file exists and is a .docx file")
-    sys.exit(1)
+
 
 # get the latest commit filename hash from commit history
 history_path = os.path.join(directory_path, ".sccs", "history", "commit_history.json")
