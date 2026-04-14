@@ -40,6 +40,8 @@ if not Path(os.path.join(directory_path, ".sccs")).is_dir():
 elif path and Path(path).suffix.lower() == ".docx" and Path(path).is_file():
     try: 
         commit = docx2txt.process(path)
+        with open(path, "rb") as f:
+            hashed_file = hashlib.sha256(f.read()).hexdigest()
     except Exception as e:
         print(f"Error processing .docx file: {e}")
         sys.exit(1)
@@ -122,5 +124,19 @@ log[f"{sha_hash}"] = {
 
 with open(commit_log_path, "w", encoding="utf-8", newline="\n") as commit_log_file:
     json.dump(log, commit_log_file, indent=4)
+
+# Update commit file hash
+commit_file_hash_path = os.path.join(directory_path, ".sccs", "commit_file_hash", "commit_file_hash.json")
+if not Path(commit_file_hash_path).is_file():
+    print("Commit file hash not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
+    sys.exit(1)
+
+with open(commit_file_hash_path, "r", encoding="utf-8", newline="\n") as commit_file_hash_file:
+    commit_file_hash = json.load(commit_file_hash_file)
+
+commit_file_hash[f"{sha_hash}"] = hashed_file
+
+with open(commit_file_hash_path, "w", encoding="utf-8", newline="\n") as commit_file_hash_file:
+    json.dump(commit_file_hash, commit_file_hash_file, indent=4)
 
 print(f"Commit {sha_hash} created successfully.")
