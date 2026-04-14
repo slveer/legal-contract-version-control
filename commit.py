@@ -6,6 +6,7 @@ import docx2txt
 import hashlib
 from datetime import datetime
 import json
+import mammoth
 
 from sccs_layout_check import directory_path
 
@@ -24,6 +25,15 @@ try:
         hashed_file = hasher.hexdigest()
 except Exception as e:
     print(f"Error processing .docx file: {e}")
+    sys.exit(1)
+
+try: 
+    with open(path, "rb") as f:
+        result = mammoth.convert_to_html(f)
+        html = result.value
+        warnings = result.messages
+except Exception as e:
+    print(f"Error converting .docx to HTML: {e}")
     sys.exit(1)
 
 # Get name and email entered on init
