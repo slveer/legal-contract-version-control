@@ -3,8 +3,6 @@ import shutil
 import sys
 from pathlib import Path
 
-from sccs_layout_check import directory_path
-
 from sccs_layout_check import path
 
 from sccs_layout_check import check_sccs
