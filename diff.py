@@ -21,6 +21,10 @@ if not Path(commit_to_diff).is_file():
     print("Commit file not found. Please provide a valid commit file path.")
     sys.exit(1)
 
+if Path(commit_to_diff).suffix != ".txt":
+    print("Commit file is not a .txt file. Please provide a valid .txt commit file.")
+    sys.exit(1)
+
 if not Path(sccs_dir).is_dir():
     print("This file has not been initialized with SCCS.")
     print("Please run 'sccs init <file_path>' to initialize SCCS for this file.")
