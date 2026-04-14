@@ -11,56 +11,58 @@ directory_path = os.getcwd()
 
 path = os.path.join(directory_path, f"{os.path.basename(directory_path)}.docx")
 
-if not Path(os.path.join(directory_path, ".sccs")).is_dir():
+sccs_dir = os.path.join(directory_path, ".sccs")
+
+if not Path(sccs_dir).is_dir():
     print("This file has not been initialized with SCCS.")
     print("Please run 'sccs init <file_path>' to initialize SCCS for this file.")
     sys.exit(1)
 
-if not Path(os.path.join(directory_path, ".sccs", "commit_file_hash")).is_dir():
+if not Path(os.path.join(sccs_dir, "commit_file_hash")).is_dir():
     print("Commit file hash directory not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
     sys.exit(1)
 
-if not Path(os.path.join(directory_path, ".sccs", "commit_file_hash.json")).is_file():
+if not Path(os.path.join(sccs_dir, "commit_file_hash.json")).is_file():
     print("Commit file hash JSON not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
     sys.exit(1)
 
-if not Path(os.path.join(directory_path, ".sccs", "commit_messages")).is_dir():
+if not Path(os.path.join(sccs_dir, "commit_messages")).is_dir():
     print("Commit messages directory not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
     sys.exit(1)
 
-if not Path(os.path.join(directory_path, ".sccs", "commit_messages.json")).is_file():
+if not Path(os.path.join(sccs_dir, "commit_messages.json")).is_file():
     print("Commit messages JSON not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
     sys.exit(1)
 
-if not Path(os.path.join(directory_path, ".sccs", "commits")).is_dir():
+if not Path(os.path.join(sccs_dir, "commits")).is_dir():
     print("Commits directory not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
     sys.exit(1)
 
-if not Path(os.path.join(directory_path, ".sccs", "commits", "txt-commits")).is_dir():
+if not Path(os.path.join(sccs_dir, "commits", "txt-commits")).is_dir():
     print("Text commits directory not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
     sys.exit(1)
 
-if not Path(os.path.join(directory_path, ".sccs", "commits", "docx-commits")).is_dir():
+if not Path(os.path.join(sccs_dir, "commits", "docx-commits")).is_dir():
     print("Docx commits directory not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
     sys.exit(1)
 
-if not Path(os.path.join(directory_path, ".sccs", "config")).is_dir():
+if not Path(os.path.join(sccs_dir, "config")).is_dir():
     print("Config directory not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
     sys.exit(1)
 
-if not Path(os.path.join(directory_path, ".sccs", "config", "config.json")).is_file():
+if not Path(os.path.join(sccs_dir, "config", "config.json")).is_file():
     print("Config file not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
     sys.exit(1)
 
-if not Path(os.path.join(directory_path, ".sccs", "history")).is_dir():
+if not Path(os.path.join(sccs_dir, "history")).is_dir():
     print("History directory not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
     sys.exit(1)
 
-if not Path(os.path.join(directory_path, ".sccs", "history", "commit_history.json")).is_file():
+if not Path(os.path.join(sccs_dir, "history", "commit_history.json")).is_file():
     print("History file not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
     sys.exit(1)
 
-if not Path(os.path.join(directory_path, ".sccs", "history", "commit_history.json")).is_file():
+if not Path(os.path.join(sccs_dir, "history", "commit_history.json")).is_file():
     print("History file not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
     sys.exit(1)
 
