@@ -58,10 +58,6 @@ if not Path(os.path.join(sccs_dir, "history", "commit_history.json")).is_file():
     print("History file not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
     sys.exit(1)
 
-if not Path(os.path.join(sccs_dir, "history", "commit_history.json")).is_file():
-    print("History file not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
-    sys.exit(1)
-
 if not Path(path).is_file():
     print("Docx file not found. Re-initialize SCCS for this file with 'sccs init <file_path>'")
     sys.exit(1)
