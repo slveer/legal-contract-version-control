@@ -1,10 +1,8 @@
 import os
 from pathlib import Path
 import sys
-import docx2txt 
 import hashlib
-from datetime import datetime
-
+import json
 
 # Get user inputted path argument
 path = sys.argv[2] if len(sys.argv) > 2 else None
@@ -48,3 +46,30 @@ else:
     print("Invalid file path, make sure the file exists and is a .docx file")
     sys.exit(1)
 
+# get the latest commit filename hash from commit history
+history_path = os.path.join(directory_path, ".sccs", "history", "commit_history.json")
+if not Path(history_path).is_file():
+    print("History file not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
+    sys.exit(1)
+
+with open(history_path, "r", encoding="utf-8", newline="\n") as history_file:
+    history = json.load(history_file)
+    latest_commit_hash = history["latest_commit"]
+
+# get the hash of the latest committed file
+latest_commit_file_hash_path = os.path.join(directory_path, ".sccs", "commit_file_hash", "commit_file_hash.json")
+if not Path(latest_commit_file_hash_path).is_file():
+    print("Latest commit file hash not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
+    sys.exit(1)
+
+with open(latest_commit_file_hash_path, "r", encoding="utf-8", newline="\n") as f:
+    commit_file_hash_data = json.load(f)
+    latest_commit_file_hash = commit_file_hash_data.get(latest_commit_hash)
+
+if hashed_file == latest_commit_file_hash:
+    print("No changes detected since the latest commit. Nothing to commit.")
+    sys.exit(0)
+
+else: 
+    print("Changes detected since the latest commit. You can proceed with committing these changes.")
+    sys.exit(0)
