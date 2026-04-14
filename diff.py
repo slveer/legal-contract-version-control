@@ -13,6 +13,14 @@ base_file = os.path.join(directory_path, f"{os.path.basename(directory_path)}.do
 
 sccs_dir = os.path.join(directory_path, ".sccs")
 
+if not commit_to_diff:
+    print("No commit file specified.")
+    sys.exit(1)
+
+if not Path(commit_to_diff).is_file():
+    print("Commit file not found. Please provide a valid commit file path.")
+    sys.exit(1)
+
 if not Path(sccs_dir).is_dir():
     print("This file has not been initialized with SCCS.")
     print("Please run 'sccs init <file_path>' to initialize SCCS for this file.")
