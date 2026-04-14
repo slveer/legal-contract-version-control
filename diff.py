@@ -30,7 +30,7 @@ if not Path(os.path.join(sccs_dir, "commit_file_hash")).is_dir():
     print("Commit file hash directory not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
     sys.exit(1)
 
-if not Path(os.path.join(sccs_dir, "commit_file_hash.json")).is_file():
+if not Path(os.path.join(sccs_dir, "commit_file_hash", "commit_file_hash.json")).is_file():
     print("Commit file hash JSON not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
     sys.exit(1)
 
@@ -38,7 +38,7 @@ if not Path(os.path.join(sccs_dir, "commit_messages")).is_dir():
     print("Commit messages directory not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
     sys.exit(1)
 
-if not Path(os.path.join(sccs_dir, "commit_messages.json")).is_file():
+if not Path(os.path.join(sccs_dir, "commit_messages", "commit_messages.json")).is_file():
     print("Commit messages JSON not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
     sys.exit(1)
 
