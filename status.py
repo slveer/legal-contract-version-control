@@ -36,7 +36,7 @@ if path and Path(path).suffix.lower() == ".docx" and Path(path).is_file():
     except Exception as e:
         print(f"Error processing .docx file: {e}")
         sys.exit(1)
-        
+
 # Check if the directory contains an SCCS initialization
 elif not Path(os.path.join(directory_path, ".sccs")).is_dir():
     print("This file has not been initialized with SCCS.")
@@ -60,7 +60,7 @@ try:
     with open(history_path, "r", encoding="utf-8", newline="\n") as history_file:
         history = json.load(history_file)
         latest_commit_hash = history["latest_commit"]
-except json.JSONDecodeError:
+except (json.JSONDecodeError, KeyError, TypeError):
     print("History file is missing or corrupted. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
     sys.exit(1)
 
