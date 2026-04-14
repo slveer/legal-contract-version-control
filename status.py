@@ -74,9 +74,13 @@ if not Path(latest_commit_file_hash_path).is_file():
     print("Latest commit file hash not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
     sys.exit(1)
 
-with open(latest_commit_file_hash_path, "r", encoding="utf-8", newline="\n") as f:
-    commit_file_hash_data = json.load(f)
-    latest_commit_file_hash = commit_file_hash_data.get(latest_commit_hash)
+try:
+    with open(latest_commit_file_hash_path, "r", encoding="utf-8", newline="\n") as f:
+        commit_file_hash_data = json.load(f)
+        latest_commit_file_hash = commit_file_hash_data.get(latest_commit_hash)
+except (json.JSONDecodeError, KeyError, TypeError, OSError) as e:
+    print("Latest commit file hash is missing or corrupted. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
+    sys.exit(1)
 
 if hashed_file == latest_commit_file_hash:
     print("No changes detected since the latest commit. Nothing to commit.")
