@@ -71,7 +71,6 @@ if not Path(path).is_file():
 try: 
     commit = docx2txt.process(path)
     with open(path, "rb") as f:
-        hashed_file = hashlib.sha256(f.read()).hexdigest()
         hasher = hashlib.sha256()
         for chunk in iter(lambda: f.read(65536), b""):
             hasher.update(chunk)
