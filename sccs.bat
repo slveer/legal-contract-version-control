@@ -39,6 +39,13 @@ if "%command%"=="status" (
     exit /b !errorlevel!
 )
 
+if "%command%"=="help" (
+    set "script_directory=%~dp0"
+    python "%script_directory%help.py" %*
+    exit /b !errorlevel!
+)
+
 echo Unknown command: %command%
-echo Invalid command. Please use "init", "commit", "open", "log", "status", or "diff", along with required arguments
+echo Invalid command. Please use "init", "commit", "open", "log", "status", "diff", or "help", along with required arguments
+echo For help, use the 'sccs help' command
 exit /b 1
