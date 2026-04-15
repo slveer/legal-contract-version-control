@@ -1,8 +1,10 @@
 import os
 from pathlib import Path
+from pydoc import html
 import sys
-from difflib import unified_diff
-import docx2txt
+from difflib import HtmlDiff
+
+import mammoth
 
 # base_file = sys.argv[2] if len(sys.argv) > 2 else None
 commit_to_diff = sys.argv[2] if len(sys.argv) > 2 else None 
@@ -21,8 +23,8 @@ if not Path(commit_to_diff).is_file():
     print("Commit file not found. Please provide a valid commit file path.")
     sys.exit(1)
 
-if Path(commit_to_diff).suffix.lower() != ".txt":
-    print("Commit file is not a .txt file. Please provide a valid .txt commit file.")
+if Path(commit_to_diff).suffix.lower() != ".html":
+    print("Commit file is not a .html file. Please provide a valid .html commit file.")
     sys.exit(1)
 
 if not Path(sccs_dir).is_dir():
@@ -78,44 +80,15 @@ if not Path(base_file).is_file():
     print("Docx file not found. Re-initialize SCCS for this file with 'sccs init <file_path>'")
     sys.exit(1)
 
-try:
-    with open(commit_to_diff, "r", encoding="utf-8", newline="\n") as commit_file:
-        commit_text = commit_file.read()
+with open(base_file, "rb") as f:
+    base_html = mammoth.convert_to_html(f).value
 
-except Exception as e:
-    print(f"Error processing commit .txt file: {e}")       
-    sys.exit(1)
+with open(commit_to_diff, "r", encoding="utf-8", newline="\n") as commit_file:
+    commit_html = commit_file.read()
+    
+html_diff = HtmlDiff()
 
-try: 
-    base_text = docx2txt.process(base_file)
+result = html_diff.make_file(base_html.splitlines(), commit_html.splitlines(), fromdesc="Base File", todesc="Commit File")
 
-except Exception as e:
-    print(f"Error processing base .docx file: {e}")       
-    sys.exit(1)
-
-# Use difflib to compare the two texts and print the differences
-def to_lines(text):
-    return [line + "\n" for line in text.splitlines()]
-
-diff = (
-    unified_diff(
-        to_lines(base_text),
-        to_lines(commit_text),
-        fromfile=Path(base_file).name, 
-        tofile=Path(commit_to_diff).name
-    )
-)
-
-first_diff_line = next(diff, None)
-
-if first_diff_line is None:
-    print("No differences found between the base file and the commit.")
-    print("Diff complete.")
-    sys.exit(0)
-
-else:
-    diff = [first_diff_line] + list(diff)
-    print("".join(diff))
-
-print("Diff complete.")
-
+with open("diff.html", "w", encoding="utf-8") as f:
+    f.write(result)
