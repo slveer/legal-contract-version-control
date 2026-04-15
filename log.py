@@ -25,5 +25,5 @@ for entry in log_data:
         f"Author: {log_data[entry]['author']}\n"
         f"Date: {log_data[entry]['timestamp']}\n"
         f"Message: {log_data[entry]['message']}\n"
-        "-----------------------------"
+        "------------------------------"
     )
