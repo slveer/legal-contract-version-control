@@ -5,6 +5,7 @@ import sys
 from difflib import HtmlDiff
 from bs4 import BeautifulSoup
 import mammoth
+import re
 
 # base_file = sys.argv[2] if len(sys.argv) > 2 else None
 commit_to_diff = sys.argv[2] if len(sys.argv) > 2 else None 
@@ -88,30 +89,18 @@ with open(commit_to_diff, "r", encoding="utf-8", newline="\n") as f:
 
 formatted_commit = BeautifulSoup(commit_html, "html.parser")
 
-
 formatted_docx_current_version = BeautifulSoup(docx_current_version_html, "html.parser")
+    
+def strip_tags(html: str) -> str:
 
+    def replace_tag(match):
+        inner = re.sub(r'<[^>]+>', '', match.group(1))
+        return(f'<p>{inner}</p>')
+    
+    return re.sub(r"<p>(.*?)</p>", replace_tag, html, flags=re.DOTALL)
+    
+with open("striped_commit.html", "w", encoding="utf-8", newline="\n") as f:
+    f.write(strip_tags(str(formatted_commit)))
 
-d = HtmlDiff()
-
-
-
-diff = d.make_file(
-    formatted_docx_current_version.prettify().splitlines(), 
-    formatted_commit.prettify().splitlines(),
-    fromdesc="Current", 
-    todesc="Commit"
-)
-        
-
-soup = BeautifulSoup(diff, "html.parser")
-
-for tag in soup.find_all(attrs={"nowrap": True}):
-    del tag["nowrap"]
-
-style = soup.find("style")
-
-style.string += "\ntd { word-wrap: break-word; max-width: 48vw; white-space: pre-wrap; }"
-
-with open("diff.html", "w", encoding="utf-8") as f:
-    f.write(str(soup))
+with open("striped_docx_current_version.html", "w", encoding="utf-8", newline="\n") as f:
+    f.write(strip_tags(str(formatted_docx_current_version)))
