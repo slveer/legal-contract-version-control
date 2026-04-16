@@ -3,7 +3,7 @@ from pathlib import Path
 from pydoc import html
 import sys
 from difflib import HtmlDiff
-
+from bs4 import BeautifulSoup
 import mammoth
 
 # base_file = sys.argv[2] if len(sys.argv) > 2 else None
@@ -85,10 +85,33 @@ with open(base_file, "rb") as f:
 
 with open(commit_to_diff, "r", encoding="utf-8", newline="\n") as commit_file:
     commit_html = commit_file.read()
-    
-html_diff = HtmlDiff()
 
-result = html_diff.make_file(base_html.splitlines(), commit_html.splitlines(), fromdesc="Base File", todesc="Commit File")
+commit = BeautifulSoup(commit_html, "html.parser")
+
+
+current = BeautifulSoup(base_html, "html.parser")
+
+
+d = HtmlDiff()
+
+
+
+diff = d.make_file(
+    current.prettify().splitlines(), 
+    commit.prettify().splitlines(),
+    fromdesc="Current", 
+    todesc="Commit"
+)
+        
+
+soup = BeautifulSoup(diff, "html.parser")
+
+for tag in soup.find_all(attrs={"nowrap": True}):
+    del tag["nowrap"]
+
+style = soup.find("style")
+
+style.string += "\ntd { word-wrap: break-word; max-width: 48vw; white-space: pre-wrap; }"
 
 with open("diff.html", "w", encoding="utf-8") as f:
-    f.write(result)
+    f.write(str(soup))
