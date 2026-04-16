@@ -11,7 +11,7 @@ commit_to_diff = sys.argv[2] if len(sys.argv) > 2 else None
 
 directory_path = os.getcwd()
 
-base_file = os.path.join(directory_path, f"{os.path.basename(directory_path)}.docx")
+docx_current_version = os.path.join(directory_path, f"{os.path.basename(directory_path)}.docx")
 
 sccs_dir = os.path.join(directory_path, ".sccs")
 
@@ -76,20 +76,20 @@ if not Path(os.path.join(sccs_dir, "history", "commit_history.json")).is_file():
     print("History file not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
     sys.exit(1)
 
-if not Path(base_file).is_file():
+if not Path(docx_current_version).is_file():
     print("Docx file not found. Re-initialize SCCS for this file with 'sccs init <file_path>'")
     sys.exit(1)
 
-with open(base_file, "rb") as f:
-    base_html = mammoth.convert_to_html(f).value
+with open(docx_current_version, "rb") as f:
+    docx_current_version_html = mammoth.convert_to_html(f).value
 
-with open(commit_to_diff, "r", encoding="utf-8", newline="\n") as commit_file:
-    commit_html = commit_file.read()
+with open(commit_to_diff, "r", encoding="utf-8", newline="\n") as f:
+    commit_html = f.read()
 
-commit = BeautifulSoup(commit_html, "html.parser")
+formatted_commit = BeautifulSoup(commit_html, "html.parser")
 
 
-current = BeautifulSoup(base_html, "html.parser")
+formatted_docx_current_version = BeautifulSoup(docx_current_version_html, "html.parser")
 
 
 d = HtmlDiff()
@@ -97,8 +97,8 @@ d = HtmlDiff()
 
 
 diff = d.make_file(
-    current.prettify().splitlines(), 
-    commit.prettify().splitlines(),
+    formatted_docx_current_version.prettify().splitlines(), 
+    formatted_commit.prettify().splitlines(),
     fromdesc="Current", 
     todesc="Commit"
 )
