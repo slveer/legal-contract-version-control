@@ -17,17 +17,17 @@ def p_to_list(html: str) -> list:
 def replace_p(html, strings_old, strings_new: str) -> str:
     result = html
     for i in range(min(len(strings_old), len(strings_new))):
-        result = result.replace(strings_old[i], f"{strings_old[i]}||{strings_new[i]}")
+        result = result.replace(strings_old[i], f"<span class=\"removed\">{strings_old[i]}</span>||<span class=\"added\">{strings_new[i]}</span>")
     
     for i in range(len(strings_new), len(strings_old)):
-        result = result.replace(strings_old[i], f"{strings_old[i]}||''")
+        result = result.replace(strings_old[i], f"<span class=\"removed\">{strings_old[i]}</span>")
     
     return result
 
 def delete_p(html, strings_old: str) -> str:
     result = html
     for s in strings_old:
-        result = result.replace(s, f"{s}||''")
+        result = result.replace(s, f"<span class=\"removed\">{s}</span>")
     return result
 
 def insert_p(html, strings_new, i1) -> str:
