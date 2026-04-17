@@ -1,3 +1,5 @@
-font_family = "<style>* {font-family: Arial, Helvetica, sans-serif;}</style>"
-
-   
+styles = """<style>
+* {font-family: Arial, Helvetica, sans-serif;}
+.added {background-color: #d4fcbc;}
+.removed {background-color: #fbb6c2;}
+</style>"""
