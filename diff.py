@@ -8,6 +8,28 @@ import mammoth
 import difflib
 import re
 
+def p_to_list(html: str) -> list:
+    p = re.findall(r'<p number="\d+">(.*?)</p>', html)
+    for i in range(len(p)):
+        p[i] = re.sub(r'<[^>]+>', '', p[i])
+    return p
+
+def insert_to_p(html, text, number: str) -> str:
+    return re.sub(rf'(<p number="{number}">)(.*?)(</p>)', rf'\1\2{text}\3', html)
+
+def delete_p(html, number: str) -> str:
+    return re.sub(rf'(<p number="{number}">)(.*?)(</p>)', '', html)
+
+def strip_tags(html: str) -> str:
+    counter = 0
+    def replace_tag(match):
+        nonlocal counter
+        inner = re.sub(r'<[^>]+>', '', match.group(1))
+        result = f'<p number="{counter}">{inner}</p>'
+        counter += 1
+        return result
+    return re.sub(r"<p>(.*?)</p>", replace_tag, html, flags=re.DOTALL)
+
 # base_file = sys.argv[2] if len(sys.argv) > 2 else None
 commit_to_diff = sys.argv[2] if len(sys.argv) > 2 else None 
 
@@ -92,25 +114,12 @@ formatted_commit = BeautifulSoup(commit_html, "html.parser")
 
 formatted_docx_current_version = BeautifulSoup(docx_current_version_html, "html.parser")
     
-def strip_tags(html: str) -> str:
-    counter = 1
-    def replace_tag(match):
-        nonlocal counter
-        inner = re.sub(r'<[^>]+>', '', match.group(1))
-        result = f'<p number="{counter}">{inner}</p>'
-        counter += 1
-        return result
-    return re.sub(r"<p>(.*?)</p>", replace_tag, html, flags=re.DOTALL)
+
 
 striped_tags_commit = strip_tags(str(formatted_commit))
 
 strip_tags_docx_current_version = strip_tags(str(formatted_docx_current_version))
 
-def p_to_list(html: str) -> list:
-    p = re.findall(r'<p number="\d+">(.*?)</p>', html)
-    for i in range(len(p)):
-        p[i] = re.sub(r'<[^>]+>', '', p[i])
-    return p
 
 p_in_commit = p_to_list(striped_tags_commit)
 
@@ -119,3 +128,16 @@ p_in_docx_current_version = p_to_list(strip_tags_docx_current_version)
 diff = difflib.SequenceMatcher(None, p_in_commit, p_in_docx_current_version)
 
 diff_opcodes = diff.get_opcodes()
+
+redline = striped_tags_commit
+
+for opcode in diff_opcodes:
+    tag, i1, i2, j1, j2 = opcode
+    old = p_in_commit[i1:i2]
+    new = p_in_docx_current_version[j1:j2]
+
+    if tag == 'replace':
+        redline = insert_to_p(redline, new, j1)
+
+with open("redline_diff.html", "w", encoding="utf-8") as f:
+    f.write(redline)
