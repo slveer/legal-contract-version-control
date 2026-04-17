@@ -92,12 +92,13 @@ formatted_commit = BeautifulSoup(commit_html, "html.parser")
 formatted_docx_current_version = BeautifulSoup(docx_current_version_html, "html.parser")
     
 def strip_tags(html: str) -> str:
-
+    counter = 1
     def replace_tag(match):
-        counter = 1
+        nonlocal counter
         inner = re.sub(r'<[^>]+>', '', match.group(1))
-        return(f'<p number="{counter}">{inner}</p>')
+        result = f'<p number="{counter}">{inner}</p>'
         counter += 1
+        return result
     return re.sub(r"<p>(.*?)</p>", replace_tag, html, flags=re.DOTALL)
     
 with open("striped_commit.html", "w", encoding="utf-8", newline="\n") as f:
