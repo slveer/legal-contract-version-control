@@ -1,6 +1,6 @@
 import os
 from pathlib import Path
-from pydoc import html
+from pydoc import html, text
 import sys
 from difflib import HtmlDiff
 from bs4 import BeautifulSoup
@@ -14,8 +14,15 @@ def p_to_list(html: str) -> list:
         p[i] = re.sub(r'<[^>]+>', '', p[i])
     return p
 
-def insert_to_p(html, text, number: str) -> str:
-    return re.sub(rf'(<p number="{number}">)(.*?)(</p>)', rf'\1\2{text}\3', html)
+def insert_to_p(html, strings_old, strings_new: str) -> str:
+    result = html
+    for i in range(min(len(strings_old), len(strings_new))):
+        result = result.replace(strings_old[i], f"{strings_old[i]}||{strings_new[i]}")
+    
+    for i in range(len(strings_new), len(strings_old)):
+        result = result.replace(strings_old[i], f"{strings_old[i]}||''")
+    
+    return result
 
 def delete_p(html, number: str) -> str:
     return re.sub(rf'(<p number="{number}">)(.*?)(</p>)', '', html)
@@ -135,9 +142,11 @@ for opcode in diff_opcodes:
     tag, i1, i2, j1, j2 = opcode
     old = p_in_commit[i1:i2]
     new = p_in_docx_current_version[j1:j2]
+    substring_old = p_in_commit[i1:i2]
+    substring_new = p_in_docx_current_version[j1:j2]
 
     if tag == 'replace':
-        redline = insert_to_p(redline, new, j1)
+        redline = insert_to_p(redline, substring_old, substring_new)
 
 with open("redline_diff.html", "w", encoding="utf-8") as f:
     f.write(redline)
