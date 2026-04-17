@@ -14,7 +14,7 @@ def p_to_list(html: str) -> list:
         p[i] = re.sub(r'<[^>]+>', '', p[i])
     return p
 
-def insert_to_p(html, strings_old, strings_new: str) -> str:
+def replace_p(html, strings_old, strings_new: str) -> str:
     result = html
     for i in range(min(len(strings_old), len(strings_new))):
         result = result.replace(strings_old[i], f"{strings_old[i]}||{strings_new[i]}")
@@ -150,7 +150,7 @@ for opcode in diff_opcodes:
     print(opcode)
 
     if tag == "replace":
-        redline = insert_to_p(redline, substring_old, substring_new)
+        redline = replace_p(redline, substring_old, substring_new)
 
     if tag == "delete":
         redline = delete_p(redline, substring_old)
