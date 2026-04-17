@@ -180,4 +180,4 @@ pyrightconfig.json
 .DS_Store
 
 # Test Files
-Cher-Père-Noël/
+test_data/
