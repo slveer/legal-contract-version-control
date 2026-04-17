@@ -79,8 +79,10 @@ with open(os.path.join(directory_path, ".sccs", "commits", "txt-commits", f"{sha
 
 shutil.copy2(os.path.join(directory_path, Path(path).name), os.path.join(directory_path, ".sccs", "commits", "docx-commits", f"{sha_hash}.docx"))
 
+from default_html_font import font_family
+
 with open(os.path.join(directory_path, ".sccs", "commits", "html-commits", f"{sha_hash}.html"), "w", encoding="utf-8", newline="\n") as f:
-    f.write(html)
+    f.write(font_family + html)
 
 history_data = {
     "initial_commit": f"{sha_hash}",

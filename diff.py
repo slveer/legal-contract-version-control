@@ -101,9 +101,7 @@ def strip_tags(html: str) -> str:
         return result
     return re.sub(r"<p>(.*?)</p>", replace_tag, html, flags=re.DOTALL)
     
-font_family = """<style>
-    font-family: Arial, Helvetica, sans-serif;
-</style>"""
+from default_html_font import font_family 
 
 with open("striped_commit.html", "w", encoding="utf-8", newline="\n") as f:
     f.write(font_family + strip_tags(str(formatted_commit)))
