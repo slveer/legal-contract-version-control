@@ -24,8 +24,11 @@ def insert_to_p(html, strings_old, strings_new: str) -> str:
     
     return result
 
-def delete_p(html, number: str) -> str:
-    return re.sub(rf'(<p number="{number}">)(.*?)(</p>)', '', html)
+def delete_p(html, strings_old: str) -> str:
+    result = html
+    for s in strings_old:
+        result = result.replace(s, f"{s}||''")
+    return result
 
 def strip_tags(html: str) -> str:
     counter = 0
@@ -144,9 +147,13 @@ for opcode in diff_opcodes:
     new = p_in_docx_current_version[j1:j2]
     substring_old = p_in_commit[i1:i2]
     substring_new = p_in_docx_current_version[j1:j2]
+    print(opcode)
 
-    if tag == 'replace':
+    if tag == "replace":
         redline = insert_to_p(redline, substring_old, substring_new)
+
+    if tag == "delete":
+        redline = delete_p(redline, substring_old)
 
 with open("redline_diff.html", "w", encoding="utf-8") as f:
     f.write(redline)
