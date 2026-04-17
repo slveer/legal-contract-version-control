@@ -30,6 +30,16 @@ def delete_p(html, strings_old: str) -> str:
         result = result.replace(s, f"{s}||''")
     return result
 
+def insert_p(html, strings_new, i1, str) -> str:
+    result = html
+
+    def replace_callback(match):
+        matched = match.group(0)
+        matched = matched.replace(f"number={i1}", f"number=new")
+        return f"{matched}{strings_new}"
+    result = re.sub(rf"(<h1|h2|h3|h4|h5|h6|p|li|blockquote|td|a) number={i1}(.*?)</\1>", replace_callback, html)
+    return result
+
 def strip_tags(html: str) -> str:
     counter = 0
     def replace_tag(match):
@@ -155,6 +165,9 @@ for opcode in diff_opcodes:
 
     if tag == "delete":
         redline = delete_p(redline, substring_old)
+
+    if tag == "insert":
+        redline = insert_p(redline, substring_new)
 
 with open("redline_diff.html", "w", encoding="utf-8") as f:
     f.write(redline)
