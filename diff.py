@@ -9,7 +9,7 @@ import difflib
 import re
 
 def p_to_list(html: str) -> list:
-    p = re.findall(r'<(?:h1|h2|h3|h4|h5|h6|p|li|blockquote|td|a) number="\d+">(.*?)</(?:h1|h2|h3|h4|h5|h6|p|li|blockquote|td|a)>', html)
+    p = re.findall(r'<(?:h1|h2|h3|h4|h5|h6|p|li|blockquote|a) number="\d+">(.*?)</(?:h1|h2|h3|h4|h5|h6|p|li|blockquote|a)>', html)
     for i in range(len(p)):
         p[i] = re.sub(r'<[^>]+>', '', p[i])
     return p
@@ -37,7 +37,7 @@ def insert_p(html, strings_new, i1) -> str:
         matched = match.group(0)
         matched = matched.replace(f"number={i1}", f"number=new")
         return f"{matched}{strings_new}"
-    result = re.sub(rf'<(h1|h2|h3|h4|h5|h6|p|li|blockquote|td|a) number="{i1}"(.*?)>(.*?)</\1>', replace_callback, html, flags=re.DOTALL)
+    result = re.sub(rf'<(h1|h2|h3|h4|h5|h6|p|li|blockquote|a) number="{i1}"(.*?)>(.*?)</\1>', replace_callback, html, flags=re.DOTALL)
     return result
 
 def strip_tags(html: str) -> str:
@@ -49,7 +49,7 @@ def strip_tags(html: str) -> str:
         result = f'<{tag} number="{counter}">{inner}</{tag}>'
         counter += 1
         return result
-    return re.sub(r"<(h1|h2|h3|h4|h5|h6|p|li|blockquote|td|a)>(.*?)</\1>", replace_tag, html, flags=re.DOTALL)
+    return re.sub(r"<(h1|h2|h3|h4|h5|h6|p|li|blockquote|a)>(.*?)</\1>", replace_tag, html, flags=re.DOTALL)
 
 # base_file = sys.argv[2] if len(sys.argv) > 2 else None
 commit_to_diff = sys.argv[2] if len(sys.argv) > 2 else None 
