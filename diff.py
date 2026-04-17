@@ -9,7 +9,7 @@ import difflib
 import re
 
 def p_to_list(html: str) -> list:
-    p = re.findall(r'<p number="\d+">(.*?)</p>', html)
+    p = re.findall(r'<(?:h1|h2|h3|h4|h5|h6|p|li|blockquote|td|a) number="\d+">(.*?)</(?:h1|h2|h3|h4|h5|h6|p|li|blockquote|td|a)>', html)
     for i in range(len(p)):
         p[i] = re.sub(r'<[^>]+>', '', p[i])
     return p
@@ -34,11 +34,12 @@ def strip_tags(html: str) -> str:
     counter = 0
     def replace_tag(match):
         nonlocal counter
-        inner = re.sub(r'<[^>]+>', '', match.group(1))
-        result = f'<p number="{counter}">{inner}</p>'
+        tag = match.group(1)
+        inner = re.sub(r'<[^>]+>', '', match.group(2))
+        result = f'<{tag} number="{counter}">{inner}</{tag}>'
         counter += 1
         return result
-    return re.sub(r"<p>(.*?)</p>", replace_tag, html, flags=re.DOTALL)
+    return re.sub(r"<(h1|h2|h3|h4|h5|h6|p|li|blockquote|td|a)>(.*?)</\1>", replace_tag, html, flags=re.DOTALL)
 
 # base_file = sys.argv[2] if len(sys.argv) > 2 else None
 commit_to_diff = sys.argv[2] if len(sys.argv) > 2 else None 
