@@ -5,6 +5,7 @@ import sys
 from difflib import HtmlDiff
 from bs4 import BeautifulSoup
 import mammoth
+import difflib
 import re
 
 # base_file = sys.argv[2] if len(sys.argv) > 2 else None
@@ -100,11 +101,21 @@ def strip_tags(html: str) -> str:
         counter += 1
         return result
     return re.sub(r"<p>(.*?)</p>", replace_tag, html, flags=re.DOTALL)
-    
-from default_html_font import font_family 
 
-with open("striped_commit.html", "w", encoding="utf-8", newline="\n") as f:
-    f.write(font_family + strip_tags(str(formatted_commit)))
+striped_tags_commit = strip_tags(str(formatted_commit))
 
-with open("striped_docx_current_version.html", "w", encoding="utf-8", newline="\n") as f:
-    f.write(font_family + strip_tags(str(formatted_docx_current_version)))
+strip_tags_docx_current_version = strip_tags(str(formatted_docx_current_version))
+
+def p_to_list(html: str) -> list:
+    p = re.findall(r'<p number="\d+">(.*?)</p>', html)
+    for i in range(len(p)):
+        p[i] = re.sub(r'<[^>]+>', '', p[i])
+    return p
+
+p_in_commit = p_to_list(striped_tags_commit)
+
+p_in_docx_current_version = p_to_list(strip_tags_docx_current_version)
+
+diff = difflib.SequenceMatcher(None, p_in_commit, p_in_docx_current_version)
+
+diff_opcodes = diff.get_opcodes()
