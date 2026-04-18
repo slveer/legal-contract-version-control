@@ -48,8 +48,6 @@ CLI interface to:
 
 - Different Branches
 
-- Graphic diff viewer between .txt files
-
 ## 📦 Installation
 
 ```bash
@@ -59,9 +57,6 @@ git clone https://github.com/slveer/legal-contract-version-control.git
 # Install all required dependencies
 pip install -r requirements.txt
 ```
-
-
-- No features are fully functional at this time, will update installation guide ASAP
 
 ## 🤝 Contributing
 Please refer to [CONTRIBUTING.md](CONTRIBUTING.md) for info on how to get started contributing! It is greatly appreciated 😁 !
