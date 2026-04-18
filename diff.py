@@ -36,7 +36,7 @@ def insert_p(html, strings_new, i1) -> str:
     def replace_callback(match):
         matched = match.group(0)
         matched = matched.replace(f"number={i1}", f"number=new")
-        return f"{matched}{strings_new}"
+        return f"{matched}{''.join(f'<p><span class=\"added\">{i}</span></p>' for i in strings_new)}"
     result = re.sub(rf'<(h1|h2|h3|h4|h5|h6|p|li|blockquote|a) number="{i1 - 1}"(.*?)>(.*?)</\1>', replace_callback, html, flags=re.DOTALL)
     return result
 
