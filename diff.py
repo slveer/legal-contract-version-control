@@ -17,7 +17,7 @@ def p_to_list(html: str) -> list:
 def replace_p(html, strings_old, strings_new: str) -> str:
     result = html
     for i in range(min(len(strings_old), len(strings_new))):
-        result = result.replace(strings_old[i], f"<span class=\"removed\">{strings_old[i]}</span>||<span class=\"added\">{strings_new[i]}</span>")
+        result = result.replace(strings_old[i], f"<span class=\"removed\">{strings_old[i]}</span> <span class=\"added\">{strings_new[i]}</span>")
     
     for i in range(len(strings_new), len(strings_old)):
         result = result.replace(strings_old[i], f"<span class=\"removed\">{strings_old[i]}</span>")
@@ -37,7 +37,7 @@ def insert_p(html, strings_new, i1) -> str:
         matched = match.group(0)
         matched = matched.replace(f"number={i1}", f"number=new")
         return f"{matched}{strings_new}"
-    result = re.sub(rf'<(h1|h2|h3|h4|h5|h6|p|li|blockquote|a) number="{i1}"(.*?)>(.*?)</\1>', replace_callback, html, flags=re.DOTALL)
+    result = re.sub(rf'<(h1|h2|h3|h4|h5|h6|p|li|blockquote|a) number="{i1 - 1}"(.*?)>(.*?)</\1>', replace_callback, html, flags=re.DOTALL)
     return result
 
 def strip_tags(html: str) -> str:
