@@ -34,6 +34,8 @@ CLI interface to:
 
 - Commit changes to an existing docx
 
+- Compare the current version of the docx to an earlier commit in HTML
+
 - Open previous commits
 
 - View a history log of all commits
@@ -41,6 +43,7 @@ CLI interface to:
 - Check the status (i.e. have there been changes)
 
 - Get help/tips (i.e. lists all commands and their function)
+
 
 ## 🚧 Features to Make 
 
