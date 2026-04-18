@@ -14,6 +14,11 @@ def p_to_list(html: str) -> list:
         p[i] = re.sub(r'<[^>]+>', '', p[i])
     return p
 
+def tag_number(html: str) -> str:
+    result = strip_tags(html)
+    t = re.findall(r'<(h1|h2|h3|h4|h5|h6|p|li|blockquote|a) number="(\d+)">', result)
+    return t
+
 def replace_p(html, strings_old, strings_new: str) -> str:
     result = html
     for i in range(min(len(strings_old), len(strings_new))):
@@ -134,8 +139,6 @@ with open(commit_to_diff, "r", encoding="utf-8", newline="\n") as f:
 formatted_commit = BeautifulSoup(commit_html, "html.parser")
 
 formatted_docx_current_version = BeautifulSoup(docx_current_version_html, "html.parser")
-    
-
 
 striped_tags_commit = strip_tags(str(formatted_commit))
 
