@@ -28,7 +28,19 @@ A lightweight distributed version control system designed to help legal professi
 
 ## ✨ Features
 
-- Command line tools to initialize, commit, and revert (currently in progress)
+CLI interface to:
+
+- Initalize new docx
+
+- Commit changes to an existing docx
+
+- Open previous commits
+
+- View a history log of all commits
+
+- Check the status (i.e. have there been changes)
+
+- Get help/tips (i.e. lists all commands and their function)
 
 ## 🚧 Features to Make 
 
