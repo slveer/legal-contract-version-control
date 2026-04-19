@@ -28,15 +28,28 @@ A lightweight distributed version control system designed to help legal professi
 
 ## ✨ Features
 
-- Command line tools to initialize, commit, and revert (currently in progress)
+CLI interface to:
 
-## 🚧 Features to Make 
+- Initialize new .docx
+
+- Commit changes to an existing docx
+
+- Compare the current version of the docx to an earlier commit as a plain-text unified diff
+
+- Open previous commits
+
+- View a history log of all commits
+
+- Check the status (i.e. have there been changes)
+
+- Get help/tips (i.e. lists all commands and their function)
+
+
+## 🚧 Features Coming Soon (WIP)
 
 - Host repository online like Git
 
 - Different Branches
-
-- Graphic diff viewer between .txt files
 
 ## 📦 Installation
 
@@ -47,9 +60,6 @@ git clone https://github.com/slveer/legal-contract-version-control.git
 # Install all required dependencies
 pip install -r requirements.txt
 ```
-
-
-- No features are fully functional at this time, will update installation guide ASAP
 
 ## 🤝 Contributing
 Please refer to [CONTRIBUTING.md](CONTRIBUTING.md) for info on how to get started contributing! It is greatly appreciated 😁 !
