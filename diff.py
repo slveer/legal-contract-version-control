@@ -9,46 +9,46 @@ import difflib
 import re
 
 def p_to_list(html: str) -> list:
-    p = re.findall(r'<(?:h1|h2|h3|h4|h5|h6|p|li|blockquote|a) number="\d+">(.*?)</(?:h1|h2|h3|h4|h5|h6|p|li|blockquote|a)>', html)
-    for i in range(len(p)):
-        p[i] = re.sub(r'<[^>]+>', '', p[i])
-    return p
+    text = re.findall(r'<(?:h1|h2|h3|h4|h5|h6|p|li|blockquote|a) number="\d+">(.*?)</(?:h1|h2|h3|h4|h5|h6|p|li|blockquote|a)>', html)
+    for i in range(len(text)):
+        text[i] = re.sub(r'<[^>]+>', '', text[i])
+    return text
 
 def tag_number(html: str) -> str:
     result = html
-    t = re.findall(r'<(h1|h2|h3|h4|h5|h6|p|li|blockquote|a) number="(\d+)">', result)
-    return t
+    text = re.findall(r'<(h1|h2|h3|h4|h5|h6|p|li|blockquote|a) number="(\d+)">', result)
+    return text
 
-def replace_p(html, strings_old, strings_new: str) -> str:
+def replace_p(html, old_strings, new_strings: str) -> str:
     result = html
-    for i in range(min(len(strings_old), len(strings_new))):
-        result = result.replace(strings_old[i], f"<span class=\"removed\">{strings_old[i]}</span> <span class=\"added\">{strings_new[i]}</span>")
+    for i in range(min(len(old_strings), len(new_strings))):
+        result = result.replace(old_strings[i], f"<span class=\"removed\">{old_strings[i]}</span> <span class=\"added\">{new_strings[i]}</span>")
     
-    for i in range(len(strings_new), len(strings_old)):
-        result = result.replace(strings_old[i], f"<span class=\"removed\">{strings_old[i]}</span>")
+    for i in range(len(new_strings), len(old_strings)):
+        result = result.replace(old_strings[i], f"<span class=\"removed\">{old_strings[i]}</span>")
     
     return result
 
-def delete_p(html, strings_old: str) -> str:
+def delete_p(html, old_strings: str) -> str:
     result = html
-    for s in strings_old:
-        result = result.replace(s, f"<span class=\"removed\">{s}</span>")
+    for item in old_strings:
+        result = result.replace(item, f"<span class=\"removed\">{item}</span>")
     return result
 
-def insert_p(html, strings_new, i1, current_striped_tags) -> str:
-    x = i1
+def insert_p(html, new_strings, i1, current_docx_striped_tags) -> str:
+    first_changed_tag = i1
     result = html
-    tags = tag_number(current_striped_tags)
+    tags = tag_number(current_docx_striped_tags)
     print(tags)
     def replace_callback(match):
-        nonlocal x
+        nonlocal first_changed_tag
         matched = match.group(0)
         matched = matched.replace(f"number={i1}", f"number=new")
-        added_spans = []
-        for i in strings_new:
-            added_spans.append(f'<{tags[x][0]}><span class=\"added\">{i}</span></{tags[x][0]}>')
-            x += 1
-        return f"{matched}{''.join(added_spans)}"
+        added_tags = []
+        for i in new_strings:
+            added_tags.append(f'<{tags[first_changed_tag][0]}><span class=\"added\">{i}</span></{tags[first_changed_tag][0]}>')
+            first_changed_tag += 1
+        return f"{matched}{''.join(added_tags)}"
     result = re.sub(rf'<(h1|h2|h3|h4|h5|h6|p|li|blockquote|a) number="{i1 - 1}"(.*?)>(.*?)</\1>', replace_callback, html, flags=re.DOTALL)
     return result
 
@@ -143,14 +143,9 @@ with open(docx_current_version, "rb") as f:
 with open(commit_to_diff, "r", encoding="utf-8", newline="\n") as f:
     commit_html = f.read()
 
-formatted_commit = BeautifulSoup(commit_html, "html.parser")
+striped_tags_commit = strip_tags(str(BeautifulSoup(commit_html, "html.parser")))
 
-formatted_docx_current_version = BeautifulSoup(docx_current_version_html, "html.parser")
-
-striped_tags_commit = strip_tags(str(formatted_commit))
-
-strip_tags_docx_current_version = strip_tags(str(formatted_docx_current_version))
-
+strip_tags_docx_current_version = strip_tags(str(BeautifulSoup(docx_current_version_html, "html.parser")))
 
 p_in_commit = p_to_list(striped_tags_commit)
 
