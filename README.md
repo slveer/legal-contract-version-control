@@ -45,7 +45,7 @@ CLI interface to:
 - Get help/tips (i.e. lists all commands and their function)
 
 
-## 🚧 Features to Make 
+## 🚧 Features Coming Soon (WIP)
 
 - Host repository online like Git
 
