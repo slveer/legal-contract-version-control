@@ -30,7 +30,7 @@ A lightweight distributed version control system designed to help legal professi
 
 CLI interface to:
 
-- Initalize new docx
+- Initialize new .docx
 
 - Commit changes to an existing docx
 
