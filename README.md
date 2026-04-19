@@ -61,6 +61,21 @@ git clone https://github.com/slveer/legal-contract-version-control.git
 pip install -r requirements.txt
 ```
 
+## Setup
+MacOS / Linux
+
+```bash
+# Make SCCS file executable
+sudo chmod +x sccs
+
+# Copy all repo CLI files to /usr/local/bin/
+sudo cp commit.py diff.py help.py init.py default_css_styles.py log.py open.py status.py sccs
+```
+
+Windows
+
+TBA
+
 ## 🤝 Contributing
 Please refer to [CONTRIBUTING.md](CONTRIBUTING.md) for info on how to get started contributing! It is greatly appreciated 😁 !
 
