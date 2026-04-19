@@ -66,11 +66,11 @@ pip install -r requirements.txt
 MacOS / Linux
 
 ```bash
-# Make SCCS file executable
-sudo chmod +x sccs
-
 # Copy all repo CLI files to /usr/local/bin/
 sudo cp commit.py diff.py help.py init.py default_css_styles.py log.py open.py status.py sccs
+
+# Make SCCS file executable
+sudo chmod +x /usr/local/bin/sccs
 ```
 
 Windows
