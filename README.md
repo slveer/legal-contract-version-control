@@ -34,7 +34,7 @@ CLI interface to:
 
 - Commit changes to an existing docx
 
-- Compare the current version of the docx to an earlier commit in HTML
+- Compare the current version of the docx to an earlier commit as a plain-text unified diff
 
 - Open previous commits
 
