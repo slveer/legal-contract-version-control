@@ -15,7 +15,7 @@ def p_to_list(html: str) -> list:
     return p
 
 def tag_number(html: str) -> str:
-    result = strip_tags(html)
+    result = html
     t = re.findall(r'<(h1|h2|h3|h4|h5|h6|p|li|blockquote|a) number="(\d+)">', result)
     return t
 
@@ -35,13 +35,20 @@ def delete_p(html, strings_old: str) -> str:
         result = result.replace(s, f"<span class=\"removed\">{s}</span>")
     return result
 
-def insert_p(html, strings_new, i1) -> str:
+def insert_p(html, strings_new, i1, current_striped_tags) -> str:
+    x = i1
     result = html
-
+    tags = tag_number(current_striped_tags)
+    print(tags)
     def replace_callback(match):
+        nonlocal x
         matched = match.group(0)
         matched = matched.replace(f"number={i1}", f"number=new")
-        return f"{matched}{''.join(f'<p><span class=\"added\">{i}</span></p>' for i in strings_new)}"
+        added_spans = []
+        for i in strings_new:
+            added_spans.append(f'<{tags[x][0]}><span class=\"added\">{i}</span></{tags[x][0]}>')
+            x += 1
+        return f"{matched}{''.join(added_spans)}"
     result = re.sub(rf'<(h1|h2|h3|h4|h5|h6|p|li|blockquote|a) number="{i1 - 1}"(.*?)>(.*?)</\1>', replace_callback, html, flags=re.DOTALL)
     return result
 
@@ -170,7 +177,7 @@ for opcode in diff_opcodes:
         redline = delete_p(redline, substring_old)
 
     if tag == "insert":
-        redline = insert_p(redline, substring_new, i1)
+        redline = insert_p(redline, substring_new, i1, strip_tags_docx_current_version)
 
 with open("redline_diff.html", "w", encoding="utf-8") as f:
     f.write(redline)
