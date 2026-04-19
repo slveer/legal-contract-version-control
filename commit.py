@@ -6,7 +6,8 @@ import docx2txt
 import hashlib
 from datetime import datetime
 import json
-
+import mammoth
+from default_css_styles import styles
 from sccs_layout_check import directory_path
 
 from sccs_layout_check import path
@@ -24,6 +25,14 @@ try:
         hashed_file = hasher.hexdigest()
 except Exception as e:
     print(f"Error processing .docx file: {e}")
+    sys.exit(1)
+
+try: 
+    with open(path, "rb") as f:
+        result = mammoth.convert_to_html(f)
+        html = result.value
+except Exception as e:
+    print(f"Error converting .docx to HTML: {e}")
     sys.exit(1)
 
 # Get name and email entered on init
@@ -60,6 +69,9 @@ with open(os.path.join(directory_path, ".sccs", "commits", "txt-commits", f"{sha
     f.write(commit)
 
 shutil.copy2(os.path.join(directory_path, Path(path).name) , os.path.join(directory_path, ".sccs", "commits", "docx-commits", f"{sha_hash}.docx"))
+
+with open(os.path.join(directory_path, ".sccs", "commits", "html-commits", f"{sha_hash}.html"), "w", encoding="utf-8", newline="\n") as f:
+    f.write(f"{styles}\n{html}")
 
 # Update history
 history["latest_commit"] = f"{sha_hash}"

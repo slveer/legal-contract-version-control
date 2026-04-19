@@ -6,7 +6,8 @@ import docx2txt
 import hashlib
 from datetime import datetime
 import json
-
+import mammoth
+from default_css_styles import styles
 # Get user inputted path argument
 path = sys.argv[2] if len(sys.argv) > 2 else None
 
@@ -34,6 +35,14 @@ elif path and Path(path).suffix.lower() == ".docx" and Path(path).is_file():
     except Exception as e:
         print(f"Error processing .docx file: {e}")
         sys.exit(1)
+    
+    try: 
+        with open(path, "rb") as f:
+            result = mammoth.convert_to_html(f)
+            html = result.value
+    except Exception as e:
+        print(f"Error converting .docx to HTML: {e}")
+        sys.exit(1)
 
 # if not, exit  
 
@@ -58,6 +67,7 @@ os.makedirs(os.path.join(directory_path, ".sccs"), exist_ok=True)
 os.makedirs(os.path.join(directory_path, ".sccs", "commits"), exist_ok=True)
 os.makedirs(os.path.join(directory_path, ".sccs", "commits", "txt-commits"), exist_ok=True)
 os.makedirs(os.path.join(directory_path, ".sccs", "commits", "docx-commits"), exist_ok=True)
+os.makedirs(os.path.join(directory_path, ".sccs", "commits", "html-commits"), exist_ok=True)
 os.makedirs(os.path.join(directory_path, ".sccs", "history"), exist_ok=True)
 os.makedirs(os.path.join(directory_path, ".sccs", "commit_messages"), exist_ok=True)
 os.makedirs(os.path.join(directory_path, ".sccs", "config"), exist_ok=True)
@@ -67,7 +77,9 @@ with open(os.path.join(directory_path, ".sccs", "commits", "txt-commits", f"{sha
     f.write(docx_to_txt)
 
 shutil.copy2(os.path.join(directory_path, Path(path).name), os.path.join(directory_path, ".sccs", "commits", "docx-commits", f"{sha_hash}.docx"))
-    
+
+with open(os.path.join(directory_path, ".sccs", "commits", "html-commits", f"{sha_hash}.html"), "w", encoding="utf-8", newline="\n") as f:
+    f.write(f"{styles}\n{html}")
 
 history_data = {
     "initial_commit": f"{sha_hash}",
