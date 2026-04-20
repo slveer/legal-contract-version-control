@@ -1,8 +1,6 @@
 import os
 from pathlib import Path
-from pydoc import html, text
 import sys
-from difflib import HtmlDiff
 from bs4 import BeautifulSoup
 import mammoth
 import difflib
