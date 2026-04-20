@@ -19,6 +19,8 @@ display: block;
 
 width: fit-content;
 
+}
+
 .center {
 
 display: flex;
