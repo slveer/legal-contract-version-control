@@ -127,11 +127,17 @@ def insert_tag(html, new_strings, i1, current_docx_striped_tags) -> str:
         matched = match.group(0)
         matched = matched.replace(f"number={i1}", f"number=new")
         added_tags = []
-        for i in new_strings:
-            added_tags.append(f'<{tags[first_changed_tag][0]}><span class=\"added\">{i}</span></{tags[first_changed_tag][0]}>')
-            first_changed_tag += 1
-        return f"{matched}{''.join(added_tags)}"
-    result = re.sub(rf'<(h1|h2|h3|h4|h5|h6|p|li|blockquote|a) number="{i1 - 1}"(.*?)>(.*?)</\1>', replace_callback, html, flags=re.DOTALL)
+        if i1 > 0:
+            for i in new_strings:
+                added_tags.append(f'<{tags[first_changed_tag][0]}><span class=\"added\">{i}</span></{tags[first_changed_tag][0]}>')
+                first_changed_tag += 1
+            return f"{matched}{''.join(added_tags)}"
+        else:
+            return f"{''.join(added_tags)}{matched}"
+    if i1 > 0:
+        result = re.sub(rf'<(h1|h2|h3|h4|h5|h6|p|li|blockquote|a) number="{i1 - 1}"(.*?)>(.*?)</\1>', replace_callback, html, flags=re.DOTALL)
+    else:
+        result = re.sub(rf'<(h1|h2|h3|h4|h5|h6|p|li|blockquote|a) number="{i1}"(.*?)>(.*?)</\1>', replace_callback, html, flags=re.DOTALL)
     return result
 
 with open(docx_current_version, "rb") as f:
