@@ -93,14 +93,15 @@ def wrap_html(html):
     div = soup.new_tag("div", **{"class": "center"})
     soup.wrap(div)
     return div
+bs4_docx_current_version_soup = BeautifulSoup(docx_current_version_html, "html.parser")
 
 docx_current_version_list = tags_to_list(number_tags(remove_inline_semantics(docx_current_version_html)))
 
+bs4_commit_soup = BeautifulSoup(commit_html, "html.parser")
 commit_list = tags_to_list(number_tags(remove_inline_semantics(commit_html)))
 
-opcodes = difflib.SequenceMatcher(None, tags_to_list(remove_inline_semantics(commit_html)), tags_to_list(remove_inline_semantics(docx_current_version_html))).get_opcodes()
-
-redline = BeautifulSoup(number_tags(remove_inline_semantics(commit_html)), "html.parser")
+opcodes = difflib.SequenceMatcher(None, tags_to_list(remove_inline_semantics(bs4_commit_soup)), tags_to_list(remove_inline_semantics(bs4_docx_current_version_soup))).get_opcodes()
+redline = number_tags(remove_inline_semantics(bs4_commit_soup))
 
 def delete_tag(html, old_changed_strings):
     old_data_numbers = get_data_number(old_changed_strings)
