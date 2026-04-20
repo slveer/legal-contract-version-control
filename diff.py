@@ -122,7 +122,6 @@ def insert_tag(html, new_strings, i1, current_docx_striped_tags) -> str:
     first_changed_tag = i1
     result = html
     tags = html_el_to_tag_and_number(current_docx_striped_tags)
-    print(tags)
     def replace_callback(match):
         nonlocal first_changed_tag
         matched = match.group(0)
