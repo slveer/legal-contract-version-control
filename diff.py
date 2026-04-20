@@ -82,17 +82,6 @@ if not Path(docx_current_version).is_file():
     print("Docx file not found. Re-initialize SCCS for this file with 'sccs init <file_path>'")
     sys.exit(1)
 
-def html_el_to_list(html: str) -> list:
-    text = re.findall(r'<(?:h1|h2|h3|h4|h5|h6|p|li|blockquote|a) number="\d+">(.*?)</(?:h1|h2|h3|h4|h5|h6|p|li|blockquote|a)>', html)
-    for i in range(len(text)):
-        text[i] = re.sub(r'<[^>]+>', '', text[i])
-    return text
-
-def html_el_to_tag_and_number(html: str) -> list:
-    result = html
-    text = re.findall(r'<(h1|h2|h3|h4|h5|h6|p|li|blockquote|a) number="(\d+)">', result)
-    return text
-
 def strip_tags(html: str) -> str:
     counter = 0
     def replace_tag(match):
@@ -103,6 +92,17 @@ def strip_tags(html: str) -> str:
         counter += 1
         return result
     return re.sub(r"<(h1|h2|h3|h4|h5|h6|p|li|blockquote|a)>(.*?)</\1>", replace_tag, html, flags=re.DOTALL)
+
+def html_el_to_list(html: str) -> list:
+    text = re.findall(r'<(?:h1|h2|h3|h4|h5|h6|p|li|blockquote|a) number="\d+">(.*?)</(?:h1|h2|h3|h4|h5|h6|p|li|blockquote|a)>', html)
+    for i in range(len(text)):
+        text[i] = re.sub(r'<[^>]+>', '', text[i])
+    return text
+
+def html_el_to_tag_and_number(html: str) -> list:
+    result = html
+    text = re.findall(r'<(h1|h2|h3|h4|h5|h6|p|li|blockquote|a) number="(\d+)">', result)
+    return text
 
 def replace_tag(html, old_strings, new_strings: str) -> str:
     result = html
