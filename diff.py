@@ -161,7 +161,6 @@ for opcode in diff_opcodes:
     new = p_in_docx_current_version[j1:j2]
     substring_old = p_in_commit[i1:i2]
     substring_new = p_in_docx_current_version[j1:j2]
-    print(opcode)
 
     if tag == "replace":
         redline = replace_tag(redline, substring_old, substring_new)
