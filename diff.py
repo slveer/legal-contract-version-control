@@ -102,7 +102,7 @@ def html_el_to_tag_and_number(html: str) -> list:
     text = re.findall(r'<(h1|h2|h3|h4|h5|h6|p|li|blockquote|a) number="(\d+)">', result)
     return text
 
-def replace_tag(html, old_strings, new_strings: str) -> str:
+def replace_tag(html, old_strings, new_strings) -> str:
     result = html
     for i in range(min(len(old_strings), len(new_strings))):
         result = result.replace(old_strings[i], f"<span class=\"removed\">{old_strings[i]}</span> <span class=\"added\">{new_strings[i]}</span>")
@@ -112,7 +112,7 @@ def replace_tag(html, old_strings, new_strings: str) -> str:
     
     return result
 
-def delete_tag(html, old_strings: str) -> str:
+def delete_tag(html, old_strings) -> str:
     result = html
     for item in old_strings:
         result = result.replace(item, f"<span class=\"removed\">{item}</span>")
