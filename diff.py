@@ -127,10 +127,10 @@ def insert_tag(html, new_strings, i1, current_docx_striped_tags) -> str:
         matched = match.group(0)
         matched = matched.replace(f'number="{i1}"', f'number="new"')
         added_tags = []
+        for i in new_strings:
+            added_tags.append(f'<{tags[first_changed_tag][0]}><span class=\"added\">{i}</span></{tags[first_changed_tag][0]}>')
+            first_changed_tag += 1
         if i1 > 0:
-            for i in new_strings:
-                added_tags.append(f'<{tags[first_changed_tag][0]}><span class=\"added\">{i}</span></{tags[first_changed_tag][0]}>')
-                first_changed_tag += 1
             return f"{matched}{''.join(added_tags)}"
         else:
             return f"{''.join(added_tags)}{matched}"
