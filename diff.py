@@ -141,7 +141,12 @@ def insert_tag(html, new_strings, i1, current_docx_stripped_tags) -> str:
     return result
 
 with open(docx_current_version, "rb") as f:
-    docx_current_version_html = mammoth.convert_to_html(f).value
+    try:
+        docx_current_version_html = mammoth.convert_to_html(f).value
+
+    except Exception as e:
+        print(f"Error converting .docx to HTML: {e}")
+        sys.exit(1)
 
 with open(commit_to_diff, "r", encoding="utf-8", newline="\n") as f:
     commit_html = f.read()
