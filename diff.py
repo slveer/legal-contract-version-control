@@ -122,8 +122,6 @@ redline = stripped_tags_commit
 
 for opcode in diff_opcodes:
     tag, i1, i2, j1, j2 = opcode
-    old = p_in_commit[i1:i2]
-    new = p_in_docx_current_version[j1:j2]
     substring_old = p_in_commit[i1:i2]
     substring_new = p_in_docx_current_version[j1:j2]
 
