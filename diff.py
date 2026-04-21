@@ -89,7 +89,7 @@ def strip_tags(html: str) -> str:
         result = f'<{tag} number="{counter}">{inner}</{tag}>'
         counter += 1
         return result
-    return re.sub(r"<(h1|h2|h3|h4|h5|h6|p|li|blockquote|a)>(.*?)</\1>", add_number_attribute, html, flags=re.DOTALL)
+    return re.sub(r"<(h1|h2|h3|h4|h5|h6|p|li|blockquote|a)\b[^>]*>(.*?)</\1>", add_number_attribute, html, flags=re.DOTALL)
 
 def html_el_to_list(html: str) -> list:
     text = re.findall(r'<(?:h1|h2|h3|h4|h5|h6|p|li|blockquote|a) number="\d+">(.*?)</(?:h1|h2|h3|h4|h5|h6|p|li|blockquote|a)>', html)
