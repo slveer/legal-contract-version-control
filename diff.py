@@ -125,7 +125,7 @@ def insert_tag(html, new_strings, i1, current_docx_striped_tags) -> str:
     def replace_callback(match):
         nonlocal first_changed_tag
         matched = match.group(0)
-        matched = matched.replace(f"number={i1}", f"number=new")
+        matched = matched.replace(f'number="{i1}"', f'number="new"')
         added_tags = []
         if i1 > 0:
             for i in new_strings:
