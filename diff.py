@@ -89,11 +89,7 @@ def get_data_number(tag_list):
     return data_number
 
 def wrap_html(html):
-    soup = html
-    div = soup.new_tag("div", **{"class": "center"})
-    soup.wrap(div)
-    return div
-bs4_docx_current_version_soup = BeautifulSoup(docx_current_version_html, "html.parser")
+    return f"<!DOCTYPE html><html><head><meta charset='UTF-8'>{styles}</head><body><div class='center'>{html}</div></body></html>"
 
 docx_current_version_list = tags_to_list(number_tags(remove_inline_semantics(bs4_docx_current_version_soup)))
 
@@ -180,4 +176,4 @@ for opcode in reversed(opcodes):
     if tag =="delete":
         redline = delete_tag(redline, old_changed_strings)
 with open("redline.html", "w", encoding="utf-8", newline="\n") as f:
-    f.write(f"{styles}\n{str(strip_number_attribute(redline))}")
+    f.write(f"{wrap_html(str(strip_number_attribute(redline)))}")
