@@ -43,6 +43,10 @@ def check_sccs():
         print("Docx commits directory not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
         sys.exit(1)
 
+    if not Path(os.path.join(sccs_dir, "commits", "html-commits")).is_dir():
+        print("HTML commits directory not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
+        sys.exit(1)
+
     if not Path(os.path.join(sccs_dir, "config")).is_dir():
         print("Config directory not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
         sys.exit(1)
