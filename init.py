@@ -7,6 +7,7 @@ import hashlib
 from datetime import datetime
 import json
 import mammoth
+from default_css_styles import styles
 
 # Get user inputted path argument
 path = sys.argv[2] if len(sys.argv) > 2 else None
@@ -77,8 +78,6 @@ with open(os.path.join(directory_path, ".sccs", "commits", "txt-commits", f"{sha
     f.write(docx_to_txt)
 
 shutil.copy2(os.path.join(directory_path, Path(path).name), os.path.join(directory_path, ".sccs", "commits", "docx-commits", f"{sha_hash}.docx"))
-
-from default_css_styles import styles
 
 with open(os.path.join(directory_path, ".sccs", "commits", "html-commits", f"{sha_hash}.html"), "w", encoding="utf-8", newline="\n") as f:
     f.write(styles + html)
