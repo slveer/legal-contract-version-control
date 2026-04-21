@@ -118,10 +118,10 @@ def delete_tag(html, old_strings) -> str:
         result = result.replace(item, f"<span class=\"removed\">{item}</span>")
     return result
 
-def insert_tag(html, new_strings, i1, current_docx_striped_tags) -> str:
+def insert_tag(html, new_strings, i1, current_docx_stripped_tags) -> str:
     first_changed_tag = i1
     result = html
-    tags = html_el_to_tag_and_number(current_docx_striped_tags)
+    tags = html_el_to_tag_and_number(current_docx_stripped_tags)
     def replace_callback(match):
         nonlocal first_changed_tag
         matched = match.group(0)
@@ -146,11 +146,11 @@ with open(docx_current_version, "rb") as f:
 with open(commit_to_diff, "r", encoding="utf-8", newline="\n") as f:
     commit_html = f.read()
 
-striped_tags_commit = strip_tags(str(BeautifulSoup(commit_html, "html.parser")))
+stripped_tags_commit = strip_tags(str(BeautifulSoup(commit_html, "html.parser")))
 
 strip_tags_docx_current_version = strip_tags(str(BeautifulSoup(docx_current_version_html, "html.parser")))
 
-p_in_commit = html_el_to_list(striped_tags_commit)
+p_in_commit = html_el_to_list(stripped_tags_commit)
 
 p_in_docx_current_version = html_el_to_list(strip_tags_docx_current_version)
 
@@ -158,7 +158,7 @@ diff = difflib.SequenceMatcher(None, p_in_commit, p_in_docx_current_version)
 
 diff_opcodes = diff.get_opcodes()
 
-redline = striped_tags_commit
+redline = stripped_tags_commit
 
 for opcode in diff_opcodes:
     tag, i1, i2, j1, j2 = opcode
