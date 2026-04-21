@@ -98,7 +98,7 @@ docx_current_version_list = tags_to_list(number_tags(remove_inline_semantics(bs4
 bs4_commit_soup = BeautifulSoup(commit_html, "html.parser")
 commit_list = tags_to_list(number_tags(remove_inline_semantics(bs4_commit_soup)))
 
-opcodes = difflib.SequenceMatcher(None, tags_to_list(remove_inline_semantics(bs4_commit_soup)), tags_to_list(remove_inline_semantics(bs4_docx_current_version_soup))).get_opcodes()
+opcodes = difflib.SequenceMatcher(None, tags_to_list(remove_inline_semantics(BeautifulSoup(commit_html, "html.parser"))), tags_to_list(remove_inline_semantics(BeautifulSoup(docx_current_version_html, "html.parser")))).get_opcodes()
 redline = number_tags(remove_inline_semantics(bs4_commit_soup))
 
 def delete_tag(html, old_changed_strings):
