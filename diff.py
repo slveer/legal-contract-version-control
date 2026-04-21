@@ -102,13 +102,13 @@ def html_el_to_tag_and_number(html: str) -> list:
     text = re.findall(r'<(h1|h2|h3|h4|h5|h6|p|li|blockquote|a) number="(\d+)">', result)
     return text
 
-def replace_tag(html, old_strings, new_strings) -> str:
+def replace_tag(html, old_strings, new_strings, i1) -> str:
     result = html
     for i in range(min(len(old_strings), len(new_strings))):
-        result = re.sub(rf'<(h1|h2|h3|h4|h5|h6|p|li|blockquote|a) number="{i}">{old_strings[i]}</\1>', rf'<\1 number="{i}"><span class=\"removed\">{old_strings[i]}</span> <span class=\"added\">{new_strings[i]}</span></\1>', result)
+        result = re.sub(re.escape(rf'<(h1|h2|h3|h4|h5|h6|p|li|blockquote|a) number="{i}">{old_strings[i]}</\1>'), rf'<\1 number="{i}"><span class=\"removed\">{old_strings[i]}</span> <span class=\"added\">{new_strings[i]}</span></\1>', result)
 
     for i in range(len(new_strings), len(old_strings)):
-        result = re.sub(rf'<(h1|h2|h3|h4|h5|h6|p|li|blockquote|a) number="{i1}">{old_strings[i]}</\1>', rf'<(h1|h2|h3|h4|h5|h6|p|li|blockquote|a) number="{i1}"><span class=\"removed\">{old_strings[i]}</span></\1>', result)
+        result = re.sub(re.escape(rf'<(h1|h2|h3|h4|h5|h6|p|li|blockquote|a) number="{i1}">{old_strings[i]}</\1>'), rf'<(h1|h2|h3|h4|h5|h6|p|li|blockquote|a) number="{i1}"><span class=\"removed\">{old_strings[i]}</span></\1>', result)
         
     return result
 
@@ -168,7 +168,7 @@ for opcode in diff_opcodes:
     substring_new = p_in_docx_current_version[j1:j2]
 
     if tag == "replace":
-        redline = replace_tag(redline, substring_old, substring_new)
+        redline = replace_tag(redline, substring_old, substring_new, i1)
 
     if tag == "delete":
         redline = delete_tag(redline, substring_old)
