@@ -6,10 +6,6 @@ import mammoth
 import difflib
 import re
 
-from sccs_layout_check import directory_path
-
-from sccs_layout_check import path
-
 from sccs_layout_check import check_sccs
 
 check_sccs()
