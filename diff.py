@@ -178,4 +178,4 @@ for opcode in reversed(opcodes):
     if tag =="delete":
         redline = delete_tag(redline, old_changed_strings)
 with open("redline.html", "w", encoding="utf-8", newline="\n") as f:
-    f.write(f"{wrap_html(str(strip_number_attribute(redline)))}")
+    f.write(wrap_html(str(strip_number_attribute(redline))))
