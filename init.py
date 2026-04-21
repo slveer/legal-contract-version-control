@@ -40,7 +40,6 @@ elif path and Path(path).suffix.lower() == ".docx" and Path(path).is_file():
         with open(path, "rb") as f:
             result = mammoth.convert_to_html(f)
             html = result.value
-            warnings = result.messages
     except Exception as e:
         print(f"Error converting .docx to HTML: {e}")
         sys.exit(1)
