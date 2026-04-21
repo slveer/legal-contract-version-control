@@ -60,10 +60,10 @@ def html_el_to_tag_and_number(html: str) -> list:
 def replace_tag(html, old_strings, new_strings, i1) -> str:
     result = html
     for i in range(min(len(old_strings), len(new_strings))):
-        result = re.sub(re.escape(rf'<(h1|h2|h3|h4|h5|h6|p|li|blockquote|a) number="{i}">{old_strings[i]}</\1>'), rf'<\1 number="{i}"><span class=\"removed\">{old_strings[i]}</span> <span class=\"added\">{new_strings[i]}</span></\1>', result)
+        result = re.sub(rf'<(h1|h2|h3|h4|h5|h6|p|li|blockquote|a) number="{i}">{re.escape(old_strings[i])}</\1>', rf'<\1 number="{i}"><span class=\"removed\">{re.escape(old_strings[i])}</span> <span class=\"added\">{re.escape(new_strings[i])}</span></\1>', result)
 
     for i in range(len(new_strings), len(old_strings)):
-        result = re.sub(re.escape(rf'<(h1|h2|h3|h4|h5|h6|p|li|blockquote|a) number="{i1}">{old_strings[i]}</\1>'), rf'<(h1|h2|h3|h4|h5|h6|p|li|blockquote|a) number="{i1}"><span class=\"removed\">{old_strings[i]}</span></\1>', result)
+        result = re.sub(rf'<(h1|h2|h3|h4|h5|h6|p|li|blockquote|a) number="{i1}">{re.escape(old_strings[i])}</\1>', rf'<(h1|h2|h3|h4|h5|h6|p|li|blockquote|a) number="{i1}"><span class=\"removed\">{re.escape(old_strings[i])}</span></\1>', result)
         
     return result
 
