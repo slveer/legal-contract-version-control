@@ -27,9 +27,10 @@ display: flex;
 
 justify-content: center;
 
-align-items: center;
-
-width: 50vw;
-
 }
+
+.document {
+    width: 50%;
+}
+
 </style>"""

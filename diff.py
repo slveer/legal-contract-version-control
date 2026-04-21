@@ -89,7 +89,7 @@ def get_data_number(tag_list):
     return data_number
 
 def wrap_html(html):
-    return f"<!DOCTYPE html><html><head><meta charset='UTF-8'>{styles}</head><body><div class='center'><div>{html}</div></div></body></html>"
+    return f"<!DOCTYPE html><html><head><meta charset='UTF-8'>{styles}</head><body><div class='center'><div class='document'>{html}</div></div></body></html>"
 
 bs4_docx_current_version_soup = BeautifulSoup(docx_current_version_html, "html.parser")
 
