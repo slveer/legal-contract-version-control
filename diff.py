@@ -68,7 +68,7 @@ def replace_tag(html, old_strings, new_strings, i1) -> str:
 def delete_tag(html, old_strings) -> str:
     result = html
     for item in old_strings:
-        result = result.replace(item, f"<span class=\"removed\">{item}</span>")
+        result = result.replace(item, f"<span class=\"removed\">{html.escape(item)}</span>")
     return result
 
 def insert_tag(html, new_strings, i1, current_docx_stripped_tags) -> str:
@@ -81,7 +81,7 @@ def insert_tag(html, new_strings, i1, current_docx_stripped_tags) -> str:
         matched = matched.replace(f'number="{i1}"', f'number="new"')
         added_tags = []
         for i in new_strings:
-            added_tags.append(f'<{tags[first_changed_tag][0]}><span class=\"added\">{i}</span></{tags[first_changed_tag][0]}>')
+            added_tags.append(f'<{tags[first_changed_tag][0]}><span class=\"added\">{html.escape(i)}</span></{tags[first_changed_tag][0]}>')
             first_changed_tag += 1
         if i1 > 0:
             return f"{matched}{''.join(added_tags)}"
