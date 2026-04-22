@@ -128,7 +128,7 @@ for opcode in diff_opcodes:
         redline = replace_tag(redline, substring_old, substring_new, i1)
 
     if tag == "delete":
-        redline = delete_tag(redline, substring_old)
+        redline = delete_tag(redline, substring_old, i1, i2)
 
     if tag == "insert":
         redline = insert_tag(redline, substring_new, i1, strip_tags_docx_current_version)
