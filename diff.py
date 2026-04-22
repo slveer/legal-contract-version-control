@@ -67,8 +67,9 @@ def replace_tag(html, old_strings, new_strings, i1) -> str:
 
 def delete_tag(html, old_strings, i1, i2) -> str:
     result = html
-    for item in old_strings:
-        re.sub(rf"<(h1|h2|h3|h4|h5|h6|p|li|blockquote|a) number=\"{item[i1:i2]}\">{re.escape(item)}</\1>", f"<span class=\"removed\">{html.escape(item)}</span>", result)
+    for i in range(i1, i2):
+        for item in old_strings:
+            re.sub(rf"<(h1|h2|h3|h4|h5|h6|p|li|blockquote|a) number=\"{i}\">{re.escape(item)}</\1>", f"<span class=\"removed\">{html.escape(item)}</span>", result)
     return result
 
 def insert_tag(html, new_strings, i1, current_docx_stripped_tags) -> str:
