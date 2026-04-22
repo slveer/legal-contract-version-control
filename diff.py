@@ -6,7 +6,7 @@ import mammoth
 import difflib
 from sccs_layout_check import check_sccs
 from default_css_styles import styles
-
+import copy
 
 
 commit_to_diff = sys.argv[2] if len(sys.argv) > 2 else None 
@@ -91,12 +91,15 @@ def get_data_number(tag_list):
 def wrap_html(html):
     return f"<!DOCTYPE html><html><head><meta charset='UTF-8'>{styles}</head><body><div class='center'><div>{html}</div></div></body></html>"
 
-docx_current_version_list = tags_to_list(number_tags(remove_inline_semantics(BeautifulSoup(docx_current_version_html, "html.parser"))))
+bs4_docx_current_version_soup = BeautifulSoup(docx_current_version_html, "html.parser")
 
-commit_list = tags_to_list(number_tags(remove_inline_semantics(BeautifulSoup(commit_html, "html.parser"))))
+docx_current_version_list = tags_to_list(number_tags(remove_inline_semantics(copy.copy(bs4_docx_current_version_soup))))
 
-opcodes = difflib.SequenceMatcher(None, tags_to_list(remove_inline_semantics(BeautifulSoup(commit_html, "html.parser"))), tags_to_list(remove_inline_semantics(BeautifulSoup(docx_current_version_html, "html.parser")))).get_opcodes()
-redline = number_tags(remove_inline_semantics(BeautifulSoup(commit_html, "html.parser")))
+bs4_commit_soup = BeautifulSoup(commit_html, "html.parser")
+commit_list = tags_to_list(number_tags(remove_inline_semantics(copy.copy(bs4_commit_soup))))
+
+opcodes = difflib.SequenceMatcher(None, tags_to_list(remove_inline_semantics(copy.copy(bs4_commit_soup))), tags_to_list(remove_inline_semantics(copy.copy(bs4_docx_current_version_soup)))).get_opcodes()
+redline = number_tags(remove_inline_semantics(copy.copy(bs4_commit_soup)))
 
 def delete_tag(html, old_changed_strings):
     old_data_numbers = get_data_number(old_changed_strings)
