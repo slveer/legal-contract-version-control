@@ -91,15 +91,12 @@ def get_data_number(tag_list):
 def wrap_html(html):
     return f"<!DOCTYPE html><html><head><meta charset='UTF-8'>{styles}</head><body><div class='center'><div>{html}</div></div></body></html>"
 
-bs4_docx_current_version_soup = BeautifulSoup(docx_current_version_html, "html.parser")
+docx_current_version_list = tags_to_list(number_tags(remove_inline_semantics(BeautifulSoup(docx_current_version_html, "html.parser"))))
 
-docx_current_version_list = tags_to_list(number_tags(remove_inline_semantics(bs4_docx_current_version_soup)))
-
-bs4_commit_soup = BeautifulSoup(commit_html, "html.parser")
-commit_list = tags_to_list(number_tags(remove_inline_semantics(bs4_commit_soup)))
+commit_list = tags_to_list(number_tags(remove_inline_semantics(BeautifulSoup(commit_html, "html.parser"))))
 
 opcodes = difflib.SequenceMatcher(None, tags_to_list(remove_inline_semantics(BeautifulSoup(commit_html, "html.parser"))), tags_to_list(remove_inline_semantics(BeautifulSoup(docx_current_version_html, "html.parser")))).get_opcodes()
-redline = number_tags(remove_inline_semantics(bs4_commit_soup))
+redline = number_tags(remove_inline_semantics(BeautifulSoup(commit_html, "html.parser")))
 
 def delete_tag(html, old_changed_strings):
     old_data_numbers = get_data_number(old_changed_strings)
