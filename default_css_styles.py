@@ -29,8 +29,4 @@ justify-content: center;
 
 }
 
-.document {
-    width: 50%;
-}
-
 </style>"""
