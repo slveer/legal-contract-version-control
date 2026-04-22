@@ -65,10 +65,10 @@ def replace_tag(html, old_strings, new_strings, i1) -> str:
         
     return result
 
-def delete_tag(html, old_strings) -> str:
+def delete_tag(html, old_strings, i1, i2) -> str:
     result = html
     for item in old_strings:
-        result = result.replace(item, f"<span class=\"removed\">{html.escape(item)}</span>")
+        re.sub(rf"<(h1|h2|h3|h4|h5|h6|p|li|blockquote|a) number=\"{item[i1:i2]}\">{re.escape(item)}</\1>", f"<span class=\"removed\">{html.escape(item)}</span>", result)
     return result
 
 def insert_tag(html, new_strings, i1, current_docx_stripped_tags) -> str:
@@ -78,7 +78,7 @@ def insert_tag(html, new_strings, i1, current_docx_stripped_tags) -> str:
     def replace_callback(match):
         nonlocal first_changed_tag
         matched = match.group(0)
-        matched = matched.replace(f'number="{i1}"', f'number="new"')
+        matched = re.sub(rf'number="\d+"', f'number="new"', matched, count=1)
         added_tags = []
         for i in new_strings:
             added_tags.append(f'<{tags[first_changed_tag][0]}><span class=\"added\">{html.escape(i)}</span></{tags[first_changed_tag][0]}>')
