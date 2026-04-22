@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 import mammoth
 import difflib
 import re
-
+from html import escape
 from sccs_layout_check import check_sccs
 
 check_sccs()
@@ -69,7 +69,7 @@ def delete_tag(html, old_strings, i1, i2) -> str:
     result = html
     for i in range(i1, i2):
         for item in old_strings:
-            re.sub(rf"<(h1|h2|h3|h4|h5|h6|p|li|blockquote|a) number=\"{i}\">{re.escape(item)}</\1>", f"<span class=\"removed\">{html.escape(item)}</span>", result)
+            re.sub(rf"<(h1|h2|h3|h4|h5|h6|p|li|blockquote|a) number=\"{i}\">{re.escape(item)}</\1>", f"<span class=\"removed\">{escape(item)}</span>", result)
     return result
 
 def insert_tag(html, new_strings, i1, current_docx_stripped_tags) -> str:
@@ -82,7 +82,7 @@ def insert_tag(html, new_strings, i1, current_docx_stripped_tags) -> str:
         matched = re.sub(rf'number="\d+"', f'number="new"', matched, count=1)
         added_tags = []
         for i in new_strings:
-            added_tags.append(f'<{tags[first_changed_tag][0]}><span class=\"added\">{html.escape(i)}</span></{tags[first_changed_tag][0]}>')
+            added_tags.append(f'<{tags[first_changed_tag][0]}><span class=\"added\">{escape(i)}</span></{tags[first_changed_tag][0]}>')
             first_changed_tag += 1
         if i1 > 0:
             return f"{matched}{''.join(added_tags)}"
