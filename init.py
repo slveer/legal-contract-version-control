@@ -11,6 +11,9 @@ from default_css_styles import styles
 # Get user inputted path argument
 path = sys.argv[2] if len(sys.argv) > 2 else None
 
+def wrap_html(html):
+    return f"<!DOCTYPE html><html><head><meta charset='UTF-8'>{styles}</head><body><div class='center'><div>{html}</div></div></body></html>"
+
 # Strip .docx extension from the file name to create a directory
 if path: 
     directory_path = Path(path).with_suffix('')
@@ -79,7 +82,7 @@ with open(os.path.join(directory_path, ".sccs", "commits", "txt-commits", f"{sha
 shutil.copy2(os.path.join(directory_path, Path(path).name), os.path.join(directory_path, ".sccs", "commits", "docx-commits", f"{sha_hash}.docx"))
 
 with open(os.path.join(directory_path, ".sccs", "commits", "html-commits", f"{sha_hash}.html"), "w", encoding="utf-8", newline="\n") as f:
-    f.write(f"{styles}\n{html}")
+    f.write(wrap_html(html))
 
 history_data = {
     "initial_commit": f"{sha_hash}",
