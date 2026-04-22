@@ -14,9 +14,6 @@ from sccs_layout_check import path
 
 from sccs_layout_check import check_sccs
 
-def wrap_html(html):
-    return f"<!DOCTYPE html><html><head><meta charset='UTF-8'>{styles}</head><body><div class='center'><div>{html}</div></div></body></html>"
-
 check_sccs()
 
 try: 
@@ -74,7 +71,7 @@ with open(os.path.join(directory_path, ".sccs", "commits", "txt-commits", f"{sha
 shutil.copy2(os.path.join(directory_path, Path(path).name) , os.path.join(directory_path, ".sccs", "commits", "docx-commits", f"{sha_hash}.docx"))
 
 with open(os.path.join(directory_path, ".sccs", "commits", "html-commits", f"{sha_hash}.html"), "w", encoding="utf-8", newline="\n") as f:
-    f.write(wrap_html(html))
+    f.write(f"{styles}\n{html}")
 
 # Update history
 history["latest_commit"] = f"{sha_hash}"
