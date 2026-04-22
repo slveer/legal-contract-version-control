@@ -17,8 +17,6 @@ directory_path = os.getcwd()
 
 docx_current_version = os.path.join(directory_path, f"{os.path.basename(directory_path)}.docx")
 
-sccs_dir = os.path.join(directory_path, ".sccs")
-
 if not commit_to_diff:
     print("No commit file specified.")
     sys.exit(1)
