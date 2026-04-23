@@ -33,7 +33,7 @@ def check_sccs():
         sys.exit(1)
 
     if not Path(os.path.join(sccs_dir, "data-commits")).is_dir():
-        print("Commits directory not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
+        print("Commits data directory not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
         sys.exit(1)
 
     if not Path(os.path.join(sccs_dir, "data-commits", "txt-commits")).is_dir():
@@ -47,6 +47,14 @@ def check_sccs():
     if not Path(os.path.join(sccs_dir, "data-commits", "html-commits")).is_dir():
         print("HTML commits directory not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
         sys.exit(1)
+
+    if not Path(os.path.join(sccs_dir, "view-commits")).is_dir():
+        print("View commits directory not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
+        sys.exit(1)
+
+    if not Path(os.path.join(sccs_dir, "view-commits", "html-commits")).is_dir():
+        print("View HTML commits directory not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
+        sys.exit(1)    
 
     if not Path(os.path.join(sccs_dir, "config")).is_dir():
         print("Config directory not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
