@@ -32,19 +32,19 @@ def check_sccs():
         print("Commit messages JSON not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
         sys.exit(1)
 
-    if not Path(os.path.join(sccs_dir, "commits")).is_dir():
+    if not Path(os.path.join(sccs_dir, "data-commits")).is_dir():
         print("Commits directory not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
         sys.exit(1)
 
-    if not Path(os.path.join(sccs_dir, "commits", "txt-commits")).is_dir():
+    if not Path(os.path.join(sccs_dir, "data-commits", "txt-commits")).is_dir():
         print("Text commits directory not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
         sys.exit(1)
 
-    if not Path(os.path.join(sccs_dir, "commits", "docx-commits")).is_dir():
+    if not Path(os.path.join(sccs_dir, "data-commits", "docx-commits")).is_dir():
         print("Docx commits directory not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
         sys.exit(1)
 
-    if not Path(os.path.join(sccs_dir, "commits", "html-commits")).is_dir():
+    if not Path(os.path.join(sccs_dir, "data-commits", "html-commits")).is_dir():
         print("HTML commits directory not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
         sys.exit(1)
 

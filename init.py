@@ -8,6 +8,7 @@ from datetime import datetime
 import json
 import mammoth
 from default_css_styles import styles
+from sccs_layout_check import wrap_html
 # Get user inputted path argument
 path = sys.argv[2] if len(sys.argv) > 2 else None
 
@@ -64,22 +65,27 @@ sha_hash = hashlib.sha256(f'{timestamp}/initial_version/{name}/{email}'.encode()
 os.makedirs(directory_path, exist_ok=True)
 shutil.move(path, directory_path)
 os.makedirs(os.path.join(directory_path, ".sccs"), exist_ok=True)
-os.makedirs(os.path.join(directory_path, ".sccs", "commits"), exist_ok=True)
-os.makedirs(os.path.join(directory_path, ".sccs", "commits", "txt-commits"), exist_ok=True)
-os.makedirs(os.path.join(directory_path, ".sccs", "commits", "docx-commits"), exist_ok=True)
-os.makedirs(os.path.join(directory_path, ".sccs", "commits", "html-commits"), exist_ok=True)
+os.makedirs(os.path.join(directory_path, ".sccs", "data-commits"), exist_ok=True)
+os.makedirs(os.path.join(directory_path, ".sccs", "data-commits", "txt-commits"), exist_ok=True)
+os.makedirs(os.path.join(directory_path, ".sccs", "data-commits", "docx-commits"), exist_ok=True)
+os.makedirs(os.path.join(directory_path, ".sccs", "data-commits", "html-commits"), exist_ok=True)
+os.makedirs(os.path.join(directory_path, ".sccs", "view-commits"), exist_ok=True)
+os.makedirs(os.path.join(directory_path, ".sccs", "view-commits", "html-commits"), exist_ok=True)
 os.makedirs(os.path.join(directory_path, ".sccs", "history"), exist_ok=True)
 os.makedirs(os.path.join(directory_path, ".sccs", "commit_messages"), exist_ok=True)
 os.makedirs(os.path.join(directory_path, ".sccs", "config"), exist_ok=True)
 os.makedirs(os.path.join(directory_path, ".sccs", "commit_file_hash"), exist_ok=True)
 # Add info to the directories, JSON
-with open(os.path.join(directory_path, ".sccs", "commits", "txt-commits", f"{sha_hash}.txt"), "w", encoding="utf-8", newline="\n") as f:
+with open(os.path.join(directory_path, ".sccs", "data-commits", "txt-commits", f"{sha_hash}.txt"), "w", encoding="utf-8", newline="\n") as f:
     f.write(docx_to_txt)
 
-shutil.copy2(os.path.join(directory_path, Path(path).name), os.path.join(directory_path, ".sccs", "commits", "docx-commits", f"{sha_hash}.docx"))
+shutil.copy2(os.path.join(directory_path, Path(path).name), os.path.join(directory_path, ".sccs", "data-commits", "docx-commits", f"{sha_hash}.docx"))
 
-with open(os.path.join(directory_path, ".sccs", "commits", "html-commits", f"{sha_hash}.html"), "w", encoding="utf-8", newline="\n") as f:
+with open(os.path.join(directory_path, ".sccs", "data-commits", "html-commits", f"{sha_hash}.html"), "w", encoding="utf-8", newline="\n") as f:
     f.write(styles + html)
+
+with open (os.path.join(directory_path, ".sccs", "view-commits", "html-commits", f"{sha_hash}.html"), "w", encoding="utf-8", newline="\n") as f:
+    f.write(wrap_html(html))
 
 history_data = {
     "initial_commit": f"{sha_hash}",
