@@ -8,16 +8,10 @@ from datetime import datetime
 import json
 import mammoth
 from default_css_styles import styles
-from sccs_layout_check import directory_path
+from sccs_layout_check import check_sccs, wrap_html, path, directory_path
 
-from sccs_layout_check import path
-
-from sccs_layout_check import check_sccs
 
 check_sccs()
-
-def wrap_html(html):
-    return f"<!DOCTYPE html><html><head><meta charset='UTF-8'>{styles}</head><body><div class='center'><div>{html}</div></div></body></html>"
 
 try: 
     commit = docx2txt.process(path)

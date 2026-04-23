@@ -1,6 +1,7 @@
 import os
 from pathlib import Path
-import sys 
+import sys
+from default_css_styles import styles
 
 directory_path = os.getcwd()
 
@@ -66,3 +67,6 @@ def check_sccs():
     if not Path(path).is_file():
         print("Docx file not found. Re-initialize SCCS for this file with 'sccs init <file_path>'")
         sys.exit(1)
+
+def wrap_html(html):
+    return f"<!DOCTYPE html><html><head><meta charset='UTF-8'>{styles}</head><body><div class='center'><div>{html}</div></div></body></html>"

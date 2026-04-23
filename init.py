@@ -7,12 +7,9 @@ import hashlib
 from datetime import datetime
 import json
 import mammoth
-from default_css_styles import styles
+from sccs_layout_check import wrap_html
 # Get user inputted path argument
 path = sys.argv[2] if len(sys.argv) > 2 else None
-
-def wrap_html(html):
-    return f"<!DOCTYPE html><html><head><meta charset='UTF-8'>{styles}</head><body><div class='center'><div>{html}</div></div></body></html>"
 
 # Strip .docx extension from the file name to create a directory
 if path: 
