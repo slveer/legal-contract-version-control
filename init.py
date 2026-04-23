@@ -7,7 +7,7 @@ import hashlib
 from datetime import datetime
 import json
 import mammoth
-from sccs_layout_check import wrap_html
+from default_css_styles import styles
 # Get user inputted path argument
 path = sys.argv[2] if len(sys.argv) > 2 else None
 
@@ -79,7 +79,7 @@ with open(os.path.join(directory_path, ".sccs", "commits", "txt-commits", f"{sha
 shutil.copy2(os.path.join(directory_path, Path(path).name), os.path.join(directory_path, ".sccs", "commits", "docx-commits", f"{sha_hash}.docx"))
 
 with open(os.path.join(directory_path, ".sccs", "commits", "html-commits", f"{sha_hash}.html"), "w", encoding="utf-8", newline="\n") as f:
-    f.write(wrap_html(html))
+    f.write(styles + html)
 
 history_data = {
     "initial_commit": f"{sha_hash}",
