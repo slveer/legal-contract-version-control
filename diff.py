@@ -84,7 +84,8 @@ def replace_tag(html, old_changed_strings, i1, i2, new_changed_strings, j1, j2):
     for tag in soup.find_all():
         for i in old_changed_strings:
             if str(tag) == i:
-                tag.insert_after("".join(new_changed_strings))
+                frag = BeautifulSoup("".join(new_changed_strings), "html.parser")
+                tag.insert_after(frag)
     return str(soup)
 
 def insert_tag(html, old_changed_strings, i1, i2, new_changed_strings, j1, j2):
@@ -92,7 +93,8 @@ def insert_tag(html, old_changed_strings, i1, i2, new_changed_strings, j1, j2):
     for tag in soup.find_all():
         for i in old_changed_strings:
             if str(tag) == i:
-                tag.insert_before("".join(new_changed_strings))
+                frag = BeautifulSoup("".join(new_changed_strings), "html.parser")
+                tag.insert_before(frag)
     return str(soup)
 
 for opcode in opcodes:
