@@ -44,3 +44,19 @@ with open(docx_current_version, "rb") as f:
 with open(commit_to_diff, "r", encoding="utf-8", newline="\n") as f:
     commit_html = f.read()
 
+def remove_inline_semantics(html):
+    soup = BeautifulSoup(html, "html.parser")
+    for tag in soup.find_all():
+        if tag.name in ["b", "i", "u", "strong", "em"]:
+            tag.unwrap()
+    return str(soup)
+
+def number_tags(html):
+    soup = BeautifulSoup(html, "html.parser")
+    for i, tag in enumerate(soup.find_all()):
+        tag['data-number'] = str(i)
+    return str(soup)
+
+def tags_to_list(html):
+    soup = BeautifulSoup(html, "html.parser")
+    return [str(tag) for tag in soup.find_all()]
