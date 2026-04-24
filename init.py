@@ -84,7 +84,7 @@ shutil.copy2(os.path.join(directory_path, Path(path).name), os.path.join(directo
 with open(os.path.join(directory_path, ".sccs", "data-commits", "html-commits", f"{sha_hash}.html"), "w", encoding="utf-8", newline="\n") as f:
     f.write(styles + html)
 
-with open (os.path.join(directory_path, ".sccs", "view-commits", "html-commits", f"{sha_hash}.html"), "w", encoding="utf-8", newline="\n") as f:
+with open(os.path.join(directory_path, ".sccs", "view-commits", "html-commits", f"{sha_hash}.html"), "w", encoding="utf-8", newline="\n") as f:
     f.write(wrap_html(html))
 
 history_data = {
