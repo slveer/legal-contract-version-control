@@ -60,3 +60,5 @@ def number_tags(html):
 def tags_to_list(html):
     soup = BeautifulSoup(html, "html.parser")
     return [str(tag) for tag in soup.find_all()]
+
+opcodes = difflib.SequenceMatcher(None, tags_to_list(number_tags(remove_inline_semantics(docx_current_version_html))), tags_to_list(number_tags(remove_inline_semantics(commit_html)))).get_opcodes()
