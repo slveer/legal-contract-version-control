@@ -50,7 +50,7 @@ except Exception as e:
     sys.exit(1)
 
 def remove_inline_semantics(html):
-    soup = BeautifulSoup(html, "html.parser")
+    soup = html
     for tag in soup.find_all():
         if tag.name in ["b", "i", "u", "strong", "em"]:
             tag.unwrap()
@@ -61,7 +61,7 @@ def remove_inline_semantics(html):
     return str(soup)
 
 def number_tags(html):
-    soup = BeautifulSoup(html, "html.parser")
+    soup = html
     for i, tag in enumerate(soup.find_all()):
         if tag.name == "style":
             continue
@@ -69,7 +69,7 @@ def number_tags(html):
     return str(soup)
 
 def tags_to_list(html):
-    soup = BeautifulSoup(html, "html.parser")
+    soup = html
     return [str(tag) for tag in soup.find_all()]
 
 def get_data_number(tag_list):
@@ -87,24 +87,27 @@ commit_list = tags_to_list(number_tags(remove_inline_semantics(commit_html)))
 
 opcodes = difflib.SequenceMatcher(None, tags_to_list(remove_inline_semantics(commit_html)), tags_to_list(remove_inline_semantics(docx_current_version_html))).get_opcodes()
 
-redline = number_tags(remove_inline_semantics(commit_html))
+redline = BeautifulSoup(number_tags(remove_inline_semantics(commit_html)), "html.parser")
 
 def delete_tag(html, old_changed_strings):
     old_data_numbers = get_data_number(old_changed_strings)
-    soup = BeautifulSoup(html, "html.parser")
+    soup = html
     for tag in soup.find_all():
         if tag.name == 'style':
             tag.decompose()
             continue
 
         if tag.get('data-number') in old_data_numbers:
-            tag['class'].append('deleted') if 'class' in tag.attrs else tag['class'] = ['deleted']
+            if 'class' in tag.attrs:
+                tag['class'].append('deleted')
+            else:
+                tag['class'] = ['deleted']
     return str(soup)
 
 def replace_tag(html, old_changed_strings, new_changed_strings):
     old_data_numbers = get_data_number(old_changed_strings)
     frag = BeautifulSoup("".join(new_changed_strings), "html.parser")
-    soup = BeautifulSoup(html, "html.parser")
+    soup = html
     match = []
     for tag in soup.find_all():
         
@@ -116,16 +119,22 @@ def replace_tag(html, old_changed_strings, new_changed_strings):
 
     for i in frag.find_all():
         if i.name:
-            i['class'].append('inserted') if 'class' in i.attrs else i['class'] = ['inserted']
+            if 'class' in i.attrs:
+                i['class'].append('inserted')
+            else:
+                i['class'] = ['inserted']
     
     if match:
         match[-1].insert_after(frag)
         for tag in match:
-            tag['class'].append('deleted') if 'class' in tag.attrs else tag['class'] = ['deleted']
+            if 'class' in tag.attrs:
+                tag['class'].append('deleted')
+            else:
+                tag['class'] = ['deleted']
     return str(soup)
 
 def insert_tag(html, new_changed_strings, i1):
-    soup = BeautifulSoup(html, "html.parser")
+    soup = html
     for tag in soup.find_all():
         if tag.name == 'style':
             tag.decompose()
@@ -134,7 +143,10 @@ def insert_tag(html, new_changed_strings, i1):
     frag = BeautifulSoup("".join(new_changed_strings), "html.parser")
     for i in frag.find_all():
         if i.name:
-            i['class'].append('inserted') if 'class' in i.attrs else i['class'] = ['inserted']
+            if 'class' in i.attrs:
+                i['class'].append('inserted')
+            else:
+                i['class'] = ['inserted']
     if i1 < len(tags):
         tags[i1].insert_before(frag)
     else:
