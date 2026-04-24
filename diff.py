@@ -7,7 +7,6 @@ import difflib
 import re
 from html import escape
 from sccs_layout_check import check_sccs
-from default_css_styles import styles
 
 check_sccs()
 
@@ -55,6 +54,8 @@ def remove_inline_semantics(html):
 def number_tags(html):
     soup = BeautifulSoup(html, "html.parser")
     for i, tag in enumerate(soup.find_all()):
+        if tag.name == "style":
+            continue
         tag['data-number'] = str(i)
     return str(soup)
 
@@ -74,7 +75,7 @@ def delete_tag(html, old_changed_strings, i1, i2):
     soup = BeautifulSoup(html, "html.parser")
     for tag in soup.find_all():
         for i in old_changed_strings[i1:i2]:
-            if tag == i:
+            if str(tag) == i:
                 tag.decompose()
     return str(soup)
 
@@ -82,16 +83,16 @@ def replace_tag(html, old_changed_strings, i1, i2, new_changed_strings, j1, j2):
     soup = BeautifulSoup(html, "html.parser")
     for tag in soup.find_all():
         for i in old_changed_strings[i1:i2]:
-            if tag == i:
-                tag.insert_after(new_changed_strings[j1:j2])
+            if str(tag) == i:
+                tag.insert_after("".join(new_changed_strings[j1:j2]))
     return str(soup)
 
 def insert_tag(html, old_changed_strings, i1, i2, new_changed_strings, j1, j2):
     soup = BeautifulSoup(html, "html.parser")
     for tag in soup.find_all():
         for i in old_changed_strings[i1:i2]:
-            if tag == i:
-                tag.insert_before(new_changed_strings[j1:j2])
+            if str(tag) == i:
+                tag.insert_before("".join(new_changed_strings[j1:j2]))
     return str(soup)
 
 for opcode in opcodes:
@@ -103,12 +104,10 @@ for opcode in opcodes:
 
     if tag == "replace":
         redline = replace_tag(redline, old_changed_strings, i1, i2, new_changed_strings, j1, j2)
-
     if tag =="insert":
         redline = insert_tag(redline, old_changed_strings, i1, i2, new_changed_strings, j1, j2)
-
     if tag =="delete":
         redline = delete_tag(redline, old_changed_strings, i1, i2)
 
 with open("redline.html", "w", encoding="utf-8", newline="\n") as f:
-    f.write(styles + redline)
+    f.write(redline)
