@@ -88,7 +88,7 @@ opcodes = difflib.SequenceMatcher(None, tags_to_list(remove_inline_semantics(com
 
 redline = number_tags(remove_inline_semantics(commit_html))
 
-def delete_tag(html, old_changed_strings, i1, i2):
+def delete_tag(html, old_changed_strings):
     old_data_numbers = get_data_number(old_changed_strings)
     soup = BeautifulSoup(html, "html.parser")
     for tag in soup.find_all():
@@ -100,15 +100,16 @@ def delete_tag(html, old_changed_strings, i1, i2):
             tag['class'] = 'deleted'
     return str(soup)
 
-def replace_tag(html, old_changed_strings, i1, i2, new_changed_strings, j1, j2):
+def replace_tag(html, old_changed_strings, new_changed_strings):
     old_data_numbers = get_data_number(old_changed_strings)
     soup = BeautifulSoup(html, "html.parser")
     for tag in soup.find_all():
+        frag = BeautifulSoup("".join(new_changed_strings), "html.parser")
         if tag.name == 'style':
             tag.decompose()
             continue
         if tag.get('data-number') in old_data_numbers:
-            frag = BeautifulSoup("".join(new_changed_strings), "html.parser")
+            
             for i in frag.find_all():
                 if i.name:
                     if 'class' in i.attrs:
@@ -133,7 +134,11 @@ def insert_tag(html, new_changed_strings, i1):
                 i['class'].append('inserted')
             else:
                 i['class'] = ['inserted']
-    tags[i1].insert_before(frag)
+    if i1 < len(tags):
+        tags[i1].insert_before(frag)
+    else:
+        soup.append(frag)    
+    
     return str(soup)
 
 for opcode in reversed(opcodes):
@@ -141,13 +146,11 @@ for opcode in reversed(opcodes):
     
     old_changed_strings = commit_list[i1:i2]
     new_changed_strings = docx_current_version_list[j1:j2]
-
     if tag == "replace":
-        redline = replace_tag(redline, old_changed_strings, i1, i2, new_changed_strings, j1, j2)
+        redline = replace_tag(redline, old_changed_strings, new_changed_strings)
     if tag =="insert":
         redline = insert_tag(redline, new_changed_strings, i1)
     if tag =="delete":
-        redline = delete_tag(redline, old_changed_strings, i1, i2)
-
+        redline = delete_tag(redline, old_changed_strings)
 with open("redline.html", "w", encoding="utf-8", newline="\n") as f:
     f.write(f"{styles}\n{redline}")
