@@ -76,7 +76,7 @@ def delete_tag(html, old_changed_strings, i1, i2):
     for tag in soup.find_all():
         for i in old_changed_strings:
             if str(tag) == i:
-                tag.decompose()
+                tag['class'] = 'deleted'
     return str(soup)
 
 def replace_tag(html, old_changed_strings, i1, i2, new_changed_strings, j1, j2):
@@ -85,13 +85,16 @@ def replace_tag(html, old_changed_strings, i1, i2, new_changed_strings, j1, j2):
         for i in old_changed_strings:
             if str(tag) == i:
                 frag = BeautifulSoup("".join(new_changed_strings), "html.parser")
+                frag['class'] = 'inserted'
                 tag.insert_after(frag)
+                tag['class'] = 'deleted'
     return str(soup)
 
 def insert_tag(html, new_changed_strings):
     soup = BeautifulSoup(html, "html.parser")
     tags = soup.find_all()
     frag = BeautifulSoup("".join(new_changed_strings), "html.parser")
+    frag['class'] = 'inserted'
     tags[i1].insert_before(frag)
     return str(soup)
 
