@@ -3,6 +3,7 @@
 A lightweight distributed version control system designed to help legal professionals easily view and understand different versions of .docx files currently. ( .pdf files planned)
 
 ## ⚠️ Please Read
+- **THEIR IS CURRENTLY NO WAY TO MIGRATE FROM VERSION TO VERSION BETWEEN PULL REQUESTS**
 - Build Status: Pre-Alpha
 - License: GPLv3
 
