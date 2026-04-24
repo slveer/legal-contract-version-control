@@ -136,7 +136,7 @@ def insert_tag(html, new_changed_strings, i1):
     tags[i1].insert_before(frag)
     return str(soup)
 
-for opcode in opcodes:
+for opcode in reversed(opcodes):
     tag, i1, i2, j1, j2 = opcode
     
     old_changed_strings = commit_list[i1:i2]
