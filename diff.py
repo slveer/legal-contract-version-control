@@ -120,7 +120,8 @@ def replace_tag(html, old_changed_strings, new_changed_strings):
     
     if match:
         match[-1].insert_after(frag)
-        match[-1]['class'].append('deleted') if 'class' in match[-1].attrs else match[-1]['class'] = ['deleted']
+        for tag in match:
+            tag['class'].append('deleted') if 'class' in tag.attrs else tag['class'] = ['deleted']
     return str(soup)
 
 def insert_tag(html, new_changed_strings, i1):
