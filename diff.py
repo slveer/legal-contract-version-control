@@ -88,6 +88,12 @@ def get_data_number(tag_list):
                 data_number.add(parsed_tag.get('data-number'))
     return data_number
 
+def wrap_html(html):
+    soup = html
+    div = soup.new_tag("div", **{"class": "center"})
+    soup.wrap(div)
+    return div
+
 docx_current_version_list = tags_to_list(number_tags(remove_inline_semantics(docx_current_version_html)))
 
 commit_list = tags_to_list(number_tags(remove_inline_semantics(commit_html)))

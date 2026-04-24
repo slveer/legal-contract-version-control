@@ -18,5 +18,16 @@ background-color: #fbb6c2;
 display: block;
 
 width: fit-content;
+
+.center {
+
+display: flex;
+
+justify-content: center;
+
+align-items: center;
+
+width: 50vw;
+
 }
 </style>"""
