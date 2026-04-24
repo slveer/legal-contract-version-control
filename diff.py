@@ -9,7 +9,6 @@ from default_css_styles import styles
 
 
 
-# base_file = sys.argv[2] if len(sys.argv) > 2 else None
 commit_to_diff = sys.argv[2] if len(sys.argv) > 2 else None 
 
 directory_path = os.getcwd()
