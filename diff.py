@@ -49,6 +49,10 @@ def remove_inline_semantics(html):
     for tag in soup.find_all():
         if tag.name in ["b", "i", "u", "strong", "em"]:
             tag.unwrap()
+        
+        if tag.name == "style":
+            tag.decompose()
+            continue
     return str(soup)
 
 def number_tags(html):
@@ -74,6 +78,9 @@ redline = number_tags(remove_inline_semantics(commit_html))
 def delete_tag(html, old_changed_strings, i1, i2):
     soup = BeautifulSoup(html, "html.parser")
     for tag in soup.find_all():
+        if tag.name == 'style':
+            tag.decompose()
+            continue
         for i in old_changed_strings:
             if str(tag) == i:
                 tag['class'] = 'deleted'
@@ -82,6 +89,9 @@ def delete_tag(html, old_changed_strings, i1, i2):
 def replace_tag(html, old_changed_strings, i1, i2, new_changed_strings, j1, j2):
     soup = BeautifulSoup(html, "html.parser")
     for tag in soup.find_all():
+        if tag.name == 'style':
+            tag.decompose()
+            continue
         for i in old_changed_strings:
             if str(tag) == i:
                 frag = BeautifulSoup("".join(new_changed_strings), "html.parser")
@@ -97,6 +107,10 @@ def replace_tag(html, old_changed_strings, i1, i2, new_changed_strings, j1, j2):
 
 def insert_tag(html, new_changed_strings):
     soup = BeautifulSoup(html, "html.parser")
+    for tag in soup.find_all():
+        if tag.name == 'style':
+            tag.decompose()
+            continue
     tags = soup.find_all()
     frag = BeautifulSoup("".join(new_changed_strings), "html.parser")
     for i in frag.find_all():
