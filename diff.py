@@ -32,20 +32,22 @@ if not Path(docx_current_version).is_file():
     print("Docx file not found. Re-initialize SCCS for this file with 'sccs init <file_path>'")
     sys.exit(1)
 
-with open(docx_current_version, "rb") as f:
-    try:
+
+try:
+    with open(docx_current_version, "rb") as f:
         docx_current_version_html = mammoth.convert_to_html(f).value
 
-    except Exception as e:
-        print(f"Error converting .docx to HTML: {e}")
-        sys.exit(1)
+except Exception as e:
+    print(f"Error converting .docx to HTML: {e}")
+    sys.exit(1)
 
-with open(commit_to_diff, "r", encoding="utf-8", newline="\n") as f:
-    try:
+
+try:
+    with open(commit_to_diff, "r", encoding="utf-8", newline="\n") as f:
         commit_html = f.read()
-    except Exception as e:
-        print(f"Error reading commit file: {e}")
-        sys.exit(1)
+except Exception as e:
+    print(f"Error reading commit file: {e}")
+    sys.exit(1)
 
 def remove_inline_semantics(html):
     soup = BeautifulSoup(html, "html.parser")
