@@ -4,7 +4,6 @@ import sys
 from bs4 import BeautifulSoup
 import mammoth
 import difflib
-import re
 from sccs_layout_check import check_sccs
 from default_css_styles import styles
 
