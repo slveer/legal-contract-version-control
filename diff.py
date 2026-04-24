@@ -61,7 +61,11 @@ def tags_to_list(html):
     soup = BeautifulSoup(html, "html.parser")
     return [str(tag) for tag in soup.find_all()]
 
-opcodes = difflib.SequenceMatcher(None, tags_to_list(number_tags(remove_inline_semantics(docx_current_version_html))), tags_to_list(number_tags(remove_inline_semantics(commit_html)))).get_opcodes()
+docx_current_version_list = tags_to_list(number_tags(remove_inline_semantics(docx_current_version_html)))
+
+commit_list = tags_to_list(number_tags(remove_inline_semantics(commit_html)))
+
+opcodes = difflib.SequenceMatcher(None, docx_current_version_list, commit_list).get_opcodes()
 
 redline = number_tags(remove_inline_semantics(commit_html))
 
