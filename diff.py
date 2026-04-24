@@ -68,6 +68,13 @@ def number_tags(html):
         tag['data-number'] = str(i)
     return soup
 
+def strip_number_attribute(html):
+    soup = html
+    for tag in soup.find_all():
+        if 'data-number' in tag.attrs:
+            del tag['data-number']
+    return soup
+
 def tags_to_list(html):
     soup = html
     return [str(tag) for tag in soup.find_all()]
@@ -166,4 +173,4 @@ for opcode in reversed(opcodes):
     if tag =="delete":
         redline = delete_tag(redline, old_changed_strings)
 with open("redline.html", "w", encoding="utf-8", newline="\n") as f:
-    f.write(f"{styles}\n{str(redline)}")
+    f.write(f"{styles}\n{str(strip_number_attribute(redline))}")
