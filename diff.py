@@ -96,7 +96,7 @@ bs4_commit_html = BeautifulSoup(commit_html, "html.parser")
 commit_list = tags_to_list(number_tags(remove_inline_semantics(bs4_commit_html)))
 
 opcodes = difflib.SequenceMatcher(None, tags_to_list(remove_inline_semantics(bs4_commit_html)), tags_to_list(remove_inline_semantics(bs4_docx_current_version_html))).get_opcodes()
-redline = BeautifulSoup(number_tags(remove_inline_semantics(bs4_commit_html)), "html.parser")
+redline = number_tags(remove_inline_semantics(bs4_commit_html))
 
 def delete_tag(html, old_changed_strings):
     old_data_numbers = get_data_number(old_changed_strings)
