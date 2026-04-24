@@ -62,3 +62,20 @@ def tags_to_list(html):
     return [str(tag) for tag in soup.find_all()]
 
 opcodes = difflib.SequenceMatcher(None, tags_to_list(number_tags(remove_inline_semantics(docx_current_version_html))), tags_to_list(number_tags(remove_inline_semantics(commit_html)))).get_opcodes()
+
+redline = number_tags(remove_inline_semantics(commit_html))
+
+for opcode in opcodes:
+    tag, i1, i2, j1, j2 = opcode
+    
+    if tag == "replace":
+        # Implement replace function
+        pass
+
+    if tag =="insert":
+        # Implement insert function
+        pass
+
+    if tag =="delete":
+        # Implement delete function
+        pass
