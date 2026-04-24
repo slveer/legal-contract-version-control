@@ -4,8 +4,7 @@ import sys
 from bs4 import BeautifulSoup
 import mammoth
 import difflib
-from sccs_layout_check import check_sccs
-from default_css_styles import styles
+from sccs_layout_check import check_sccs, wrap_html
 import copy
 
 
@@ -87,9 +86,6 @@ def get_data_number(tag_list):
             if parsed_tag.get('data-number') is not None:
                 data_number.add(parsed_tag.get('data-number'))
     return data_number
-
-def wrap_html(html):
-    return f"<!DOCTYPE html><html><head><meta charset='UTF-8'>{styles}</head><body><div class='center'><div>{html}</div></div></body></html>"
 
 bs4_docx_current_version_soup = BeautifulSoup(docx_current_version_html, "html.parser")
 
