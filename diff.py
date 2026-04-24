@@ -101,12 +101,10 @@ for opcode in opcodes:
     new_changed_strings = docx_current_version_list[j1:j2]
 
     if tag == "replace":
-        # Implement replace function
-        pass
+        redline = replace_tag(redline, old_changed_strings, i1, i2, new_changed_strings, j1, j2)
 
     if tag =="insert":
-        # Implement insert function
-        pass
+        redline = insert_tag(redline, old_changed_strings, i1, i2, new_changed_strings, j1, j2)
 
     if tag =="delete":
         # Implement delete function
