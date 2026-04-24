@@ -5,8 +5,8 @@ from bs4 import BeautifulSoup
 import mammoth
 import difflib
 import re
-from html import escape
 from sccs_layout_check import check_sccs
+from default_css_styles import styles
 
 check_sccs()
 
@@ -112,4 +112,4 @@ for opcode in opcodes:
         redline = delete_tag(redline, old_changed_strings, i1, i2)
 
 with open("redline.html", "w", encoding="utf-8", newline="\n") as f:
-    f.write(redline)
+    f.write(f"{styles}\n{redline}")
