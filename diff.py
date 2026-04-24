@@ -117,7 +117,7 @@ def replace_tag(html, old_changed_strings, i1, i2, new_changed_strings, j1, j2):
             tag['class'] = 'deleted'
     return str(soup)
 
-def insert_tag(html, new_changed_strings):
+def insert_tag(html, new_changed_strings, i1):
     soup = BeautifulSoup(html, "html.parser")
     for tag in soup.find_all():
         if tag.name == 'style':
@@ -143,7 +143,7 @@ for opcode in opcodes:
     if tag == "replace":
         redline = replace_tag(redline, old_changed_strings, i1, i2, new_changed_strings, j1, j2)
     if tag =="insert":
-        redline = insert_tag(redline, new_changed_strings)
+        redline = insert_tag(redline, new_changed_strings, i1)
     if tag =="delete":
         redline = delete_tag(redline, old_changed_strings, i1, i2)
 
