@@ -67,7 +67,7 @@ docx_current_version_list = tags_to_list(number_tags(remove_inline_semantics(doc
 
 commit_list = tags_to_list(number_tags(remove_inline_semantics(commit_html)))
 
-opcodes = difflib.SequenceMatcher(None, docx_current_version_list, commit_list).get_opcodes()
+opcodes = difflib.SequenceMatcher(None, tags_to_list(remove_inline_semantics(commit_html)), tags_to_list(remove_inline_semantics(docx_current_version_html))).get_opcodes()
 
 redline = number_tags(remove_inline_semantics(commit_html))
 
