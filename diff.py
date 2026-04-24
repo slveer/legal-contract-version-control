@@ -67,6 +67,14 @@ def tags_to_list(html):
     soup = BeautifulSoup(html, "html.parser")
     return [str(tag) for tag in soup.find_all()]
 
+def get_data_number(tag_list):
+    data_number = set()
+    for tag in tag_list:
+        if 'data-number' in tag.attrs:
+            if tag['data-number'] is not None:
+                data_number.add(tag.get('data-number'))
+    return data_number
+
 docx_current_version_list = tags_to_list(number_tags(remove_inline_semantics(docx_current_version_html)))
 
 commit_list = tags_to_list(number_tags(remove_inline_semantics(commit_html)))
@@ -76,33 +84,34 @@ opcodes = difflib.SequenceMatcher(None, tags_to_list(remove_inline_semantics(com
 redline = number_tags(remove_inline_semantics(commit_html))
 
 def delete_tag(html, old_changed_strings, i1, i2):
+    old_data_numbers = get_data_number(old_changed_strings)
     soup = BeautifulSoup(html, "html.parser")
     for tag in soup.find_all():
         if tag.name == 'style':
             tag.decompose()
             continue
-        for i in old_changed_strings:
-            if str(tag) == i:
-                tag['class'] = 'deleted'
+
+        if tag.get('data-number') in old_data_numbers:
+            tag['class'] = 'deleted'
     return str(soup)
 
 def replace_tag(html, old_changed_strings, i1, i2, new_changed_strings, j1, j2):
+    old_data_numbers = get_data_number(old_changed_strings)
     soup = BeautifulSoup(html, "html.parser")
     for tag in soup.find_all():
         if tag.name == 'style':
             tag.decompose()
             continue
-        for i in old_changed_strings:
-            if str(tag) == i:
-                frag = BeautifulSoup("".join(new_changed_strings), "html.parser")
-                for i in frag.find_all():
-                    if i.name:
-                        if 'class' in i.attrs:
-                            i['class'].append('inserted')
-                        else:
-                            i['class'] = ['inserted']
-                tag.insert_after(frag)
-                tag['class'] = 'deleted'
+        if tag.get('data-number') in old_data_numbers:
+            frag = BeautifulSoup("".join(new_changed_strings), "html.parser")
+            for i in frag.find_all():
+                if i.name:
+                    if 'class' in i.attrs:
+                        i['class'].append('inserted')
+                    else:
+                        i['class'] = ['inserted']
+            tag.insert_after(frag)
+            tag['class'] = 'deleted'
     return str(soup)
 
 def insert_tag(html, new_changed_strings):
