@@ -90,10 +90,10 @@ def get_data_number(tag_list):
 
 bs4_docx_current_version_soup = BeautifulSoup(docx_current_version_html, "html.parser")
 
-docx_current_version_list = tags_to_list(number_tags(remove_inline_semantics(bs4_docx_current_version_soup)))
+docx_current_version_list = tags_to_list(number_tags(remove_inline_semantics(docx_current_version_html)))
 
 bs4_commit_soup = BeautifulSoup(commit_html, "html.parser")
-commit_list = tags_to_list(number_tags(remove_inline_semantics(bs4_commit_soup)))
+commit_list = tags_to_list(number_tags(remove_inline_semantics(commit_html)))
 
 opcodes = difflib.SequenceMatcher(None, tags_to_list(remove_inline_semantics(bs4_commit_soup)), tags_to_list(remove_inline_semantics(bs4_docx_current_version_soup))).get_opcodes()
 redline = number_tags(remove_inline_semantics(bs4_commit_soup))
