@@ -58,7 +58,7 @@ def remove_inline_semantics(html):
         if tag.name == "style":
             tag.decompose()
             continue
-    return str(soup)
+    return soup
 
 def number_tags(html):
     soup = html
@@ -66,7 +66,7 @@ def number_tags(html):
         if tag.name == "style":
             continue
         tag['data-number'] = str(i)
-    return str(soup)
+    return soup
 
 def tags_to_list(html):
     soup = html
@@ -102,7 +102,7 @@ def delete_tag(html, old_changed_strings):
                 tag['class'].append('deleted')
             else:
                 tag['class'] = ['deleted']
-    return str(soup)
+    return soup
 
 def replace_tag(html, old_changed_strings, new_changed_strings):
     old_data_numbers = get_data_number(old_changed_strings)
@@ -131,7 +131,7 @@ def replace_tag(html, old_changed_strings, new_changed_strings):
                 tag['class'].append('deleted')
             else:
                 tag['class'] = ['deleted']
-    return str(soup)
+    return soup
 
 def insert_tag(html, new_changed_strings, i1):
     soup = html
@@ -152,7 +152,7 @@ def insert_tag(html, new_changed_strings, i1):
     else:
         soup.append(frag)    
     
-    return str(soup)
+    return soup
 
 for opcode in reversed(opcodes):
     tag, i1, i2, j1, j2 = opcode
@@ -166,4 +166,4 @@ for opcode in reversed(opcodes):
     if tag =="delete":
         redline = delete_tag(redline, old_changed_strings)
 with open("redline.html", "w", encoding="utf-8", newline="\n") as f:
-    f.write(f"{styles}\n{redline}")
+    f.write(f"{styles}\n{str(redline)}")
