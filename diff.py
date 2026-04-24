@@ -7,7 +7,7 @@ import difflib
 from sccs_layout_check import check_sccs
 from default_css_styles import styles
 
-check_sccs()
+
 
 # base_file = sys.argv[2] if len(sys.argv) > 2 else None
 commit_to_diff = sys.argv[2] if len(sys.argv) > 2 else None 
@@ -32,6 +32,7 @@ if not Path(docx_current_version).is_file():
     print("Docx file not found. Re-initialize SCCS for this file with 'sccs init <file_path>'")
     sys.exit(1)
 
+check_sccs()
 
 try:
     with open(docx_current_version, "rb") as f:
