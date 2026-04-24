@@ -98,7 +98,7 @@ def delete_tag(html, old_changed_strings):
             continue
 
         if tag.get('data-number') in old_data_numbers:
-            tag['class'] = 'deleted'
+            tag['class'].append('deleted') if 'class' in tag.attrs else tag['class'] = ['deleted']
     return str(soup)
 
 def replace_tag(html, old_changed_strings, new_changed_strings):
@@ -116,14 +116,11 @@ def replace_tag(html, old_changed_strings, new_changed_strings):
 
     for i in frag.find_all():
         if i.name:
-            if 'class' in i.attrs:
-                i['class'].append('inserted')
-            else:
-                i['class'] = ['inserted']
+            i['class'].append('inserted') if 'class' in i.attrs else i['class'] = ['inserted']
     
     if match:
         match[-1].insert_after(frag)
-        match[-1]['class'] = 'deleted'
+        match[-1]['class'].append('deleted') if 'class' in match[-1].attrs else match[-1]['class'] = ['deleted']
     return str(soup)
 
 def insert_tag(html, new_changed_strings, i1):
@@ -136,10 +133,7 @@ def insert_tag(html, new_changed_strings, i1):
     frag = BeautifulSoup("".join(new_changed_strings), "html.parser")
     for i in frag.find_all():
         if i.name:
-            if 'class' in i.attrs:
-                i['class'].append('inserted')
-            else:
-                i['class'] = ['inserted']
+            i['class'].append('inserted') if 'class' in i.attrs else i['class'] = ['inserted']
     if i1 < len(tags):
         tags[i1].insert_before(frag)
     else:
