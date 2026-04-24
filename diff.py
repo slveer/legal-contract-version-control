@@ -69,9 +69,21 @@ opcodes = difflib.SequenceMatcher(None, docx_current_version_list, commit_list).
 
 redline = number_tags(remove_inline_semantics(commit_html))
 
+def delete_tag(html, old_changed_strings, i1, i2):
+    soup = BeautifulSoup(html, "html.parser")
+    for tag in soup.find_all():
+        for i in old_changed_strings[i1:i2]:
+            if tag == i:
+                tag.decompose()
+    return str(soup)
+
 for opcode in opcodes:
     tag, i1, i2, j1, j2 = opcode
     
+    old_changed_strings = commit_list[i1:i2]
+
+    new_changed_strings = docx_current_version_list[j1:j2]
+
     if tag == "replace":
         # Implement replace function
         pass
@@ -82,4 +94,4 @@ for opcode in opcodes:
 
     if tag =="delete":
         # Implement delete function
-        pass
+        redline = delete_tag(redline, old_changed_strings, i1, i2)
