@@ -41,7 +41,11 @@ with open(docx_current_version, "rb") as f:
         sys.exit(1)
 
 with open(commit_to_diff, "r", encoding="utf-8", newline="\n") as f:
-    commit_html = f.read()
+    try:
+        commit_html = f.read()
+    except Exception as e:
+        print(f"Error reading commit file: {e}")
+        sys.exit(1)
 
 def remove_inline_semantics(html):
     soup = BeautifulSoup(html, "html.parser")
