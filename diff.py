@@ -75,9 +75,10 @@ def tags_to_list(html):
 def get_data_number(tag_list):
     data_number = set()
     for tag in tag_list:
-        if 'data-number' in tag.attrs:
-            if tag['data-number'] is not None:
-                data_number.add(tag.get('data-number'))
+        parsed_tag = tag if hasattr(tag, 'attrs') else BeautifulSoup(tag, "html.parser").find()
+        if parsed_tag is not None:
+            if parsed_tag.get('data-number') is not None:
+                data_number.add(parsed_tag.get('data-number'))
     return data_number
 
 docx_current_version_list = tags_to_list(number_tags(remove_inline_semantics(docx_current_version_html)))
