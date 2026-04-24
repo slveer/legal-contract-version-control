@@ -74,7 +74,7 @@ redline = number_tags(remove_inline_semantics(commit_html))
 def delete_tag(html, old_changed_strings, i1, i2):
     soup = BeautifulSoup(html, "html.parser")
     for tag in soup.find_all():
-        for i in old_changed_strings[i1:i2]:
+        for i in old_changed_strings:
             if str(tag) == i:
                 tag.decompose()
     return str(soup)
@@ -82,24 +82,23 @@ def delete_tag(html, old_changed_strings, i1, i2):
 def replace_tag(html, old_changed_strings, i1, i2, new_changed_strings, j1, j2):
     soup = BeautifulSoup(html, "html.parser")
     for tag in soup.find_all():
-        for i in old_changed_strings[i1:i2]:
+        for i in old_changed_strings:
             if str(tag) == i:
-                tag.insert_after("".join(new_changed_strings[j1:j2]))
+                tag.insert_after("".join(new_changed_strings))
     return str(soup)
 
 def insert_tag(html, old_changed_strings, i1, i2, new_changed_strings, j1, j2):
     soup = BeautifulSoup(html, "html.parser")
     for tag in soup.find_all():
-        for i in old_changed_strings[i1:i2]:
+        for i in old_changed_strings:
             if str(tag) == i:
-                tag.insert_before("".join(new_changed_strings[j1:j2]))
+                tag.insert_before("".join(new_changed_strings))
     return str(soup)
 
 for opcode in opcodes:
     tag, i1, i2, j1, j2 = opcode
     
     old_changed_strings = commit_list[i1:i2]
-
     new_changed_strings = docx_current_version_list[j1:j2]
 
     if tag == "replace":
