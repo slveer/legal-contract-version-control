@@ -3,6 +3,7 @@
 A lightweight distributed version control system designed to help legal professionals easily view and understand different versions of .docx files currently. ( .pdf files planned)
 
 ## ⚠️ Please Read
+- **Repositories or clones created with older SCCS versions cannot currently be migrated to newer SCCS versions; please re-clone the repository or re-initialize SCCS instead.**
 - Build Status: Pre-Alpha
 - License: GPLv3
 
