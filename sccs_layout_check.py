@@ -36,10 +36,6 @@ def check_sccs():
         print("Objects directory not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
         sys.exit(1)
 
-    if not Path(os.path.join(sccs_dir, "objects", "txt")).is_dir():
-        print("Text objects directory not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
-        sys.exit(1)
-
     if not Path(os.path.join(sccs_dir, "objects", "docx")).is_dir():
         print("Docx objects directory not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
         sys.exit(1)
