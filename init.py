@@ -25,7 +25,15 @@ if Path(os.path.join(directory_path, ".sccs")).is_dir():
 
 # Check if the path ends with .docx and exists
 elif path and Path(path).suffix.lower() == ".docx" and Path(path).is_file():
-    
+    try:
+        with open(path, "rb") as f:
+            hasher = hashlib.sha256()
+            for chunk in iter(lambda: f.read(65536), b""):
+                hasher.update(chunk)
+            hashed_file = hasher.hexdigest()
+    except Exception as e:
+        print(f"Error processing .docx file: {e}")
+        sys.exit(1)
     try: 
         with open(path, "rb") as f:
             result = mammoth.convert_to_html(f)
@@ -111,7 +119,7 @@ with open(os.path.join(directory_path, ".sccs", "config", "config.json"), "w", e
     json.dump(config_data, f, indent=4)
 
 commit_file_hash_data = {
-    f"{sha_hash}": f"{sha_hash}"
+    f"{sha_hash}": f"{hashed_file}"
 }
 
 with open (os.path.join(directory_path, ".sccs", "commit_file_hash", f"commit_file_hash.json"), "w", encoding="utf-8", newline="\n") as f:
