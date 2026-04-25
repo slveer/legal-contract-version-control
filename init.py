@@ -2,7 +2,6 @@ import os
 import shutil
 from pathlib import Path
 import sys
-import docx2txt 
 import hashlib
 from datetime import datetime
 import json
@@ -27,7 +26,6 @@ if Path(os.path.join(directory_path, ".sccs")).is_dir():
 # Check if the path ends with .docx and exists
 elif path and Path(path).suffix.lower() == ".docx" and Path(path).is_file():
     try:
-        docx_to_txt = docx2txt.process(path)
         with open(path, "rb") as f:
             hasher = hashlib.sha256()
             for chunk in iter(lambda: f.read(65536), b""):
@@ -36,7 +34,6 @@ elif path and Path(path).suffix.lower() == ".docx" and Path(path).is_file():
     except Exception as e:
         print(f"Error processing .docx file: {e}")
         sys.exit(1)
-    
     try: 
         with open(path, "rb") as f:
             result = mammoth.convert_to_html(f)
@@ -66,7 +63,6 @@ os.makedirs(directory_path, exist_ok=True)
 shutil.move(path, directory_path)
 os.makedirs(os.path.join(directory_path, ".sccs"), exist_ok=True)
 os.makedirs(os.path.join(directory_path, ".sccs", "objects"), exist_ok=True)
-os.makedirs(os.path.join(directory_path, ".sccs", "objects", "txt"), exist_ok=True)
 os.makedirs(os.path.join(directory_path, ".sccs", "objects", "docx"), exist_ok=True)
 os.makedirs(os.path.join(directory_path, ".sccs", "objects", "html"), exist_ok=True)
 os.makedirs(os.path.join(directory_path, ".sccs", "objects", "view_html"), exist_ok=True)
@@ -75,15 +71,13 @@ os.makedirs(os.path.join(directory_path, ".sccs", "commit_messages"), exist_ok=T
 os.makedirs(os.path.join(directory_path, ".sccs", "config"), exist_ok=True)
 os.makedirs(os.path.join(directory_path, ".sccs", "commit_file_hash"), exist_ok=True)
 # Add info to the directories, JSON
-with open(os.path.join(directory_path, ".sccs", "objects", "txt", f"{hashed_file}.txt"), "w", encoding="utf-8", newline="\n") as f:
-    f.write(docx_to_txt)
 
-shutil.copy2(os.path.join(directory_path, Path(path).name), os.path.join(directory_path, ".sccs", "objects", "docx", f"{hashed_file}.docx"))
+shutil.copy2(os.path.join(directory_path, Path(path).name), os.path.join(directory_path, ".sccs", "objects", "docx", f"{sha_hash}.docx"))
 
-with open(os.path.join(directory_path, ".sccs", "objects", "html", f"{hashed_file}.html"), "w", encoding="utf-8", newline="\n") as f:
+with open(os.path.join(directory_path, ".sccs", "objects", "html", f"{sha_hash}.html"), "w", encoding="utf-8", newline="\n") as f:
     f.write(styles + html)
 
-with open(os.path.join(directory_path, ".sccs", "objects", "view_html", f"{hashed_file}.html"), "w", encoding="utf-8", newline="\n") as f:
+with open(os.path.join(directory_path, ".sccs", "objects", "view_html", f"{sha_hash}.html"), "w", encoding="utf-8", newline="\n") as f:
     f.write(wrap_html(html))
 
 history_data = {
@@ -125,7 +119,7 @@ with open(os.path.join(directory_path, ".sccs", "config", "config.json"), "w", e
     json.dump(config_data, f, indent=4)
 
 commit_file_hash_data = {
-    f"{sha_hash}": f"{hashed_file}"
+    f"{sha_hash}": hashed_file
 }
 
 with open (os.path.join(directory_path, ".sccs", "commit_file_hash", f"commit_file_hash.json"), "w", encoding="utf-8", newline="\n") as f:

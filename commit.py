@@ -2,7 +2,6 @@ import os
 from pathlib import Path
 import shutil
 import sys
-import docx2txt 
 import hashlib
 from datetime import datetime
 import json
@@ -13,8 +12,7 @@ from sccs_layout_check import check_sccs, path, directory_path, wrap_html
 
 check_sccs()
 
-try: 
-    commit = docx2txt.process(path)
+try:
     with open(path, "rb") as f:
         hasher = hashlib.sha256()
         for chunk in iter(lambda: f.read(65536), b""):
@@ -61,16 +59,12 @@ with open(history_path, "r", encoding="utf-8", newline="\n") as history_file:
 # Generate commit hash from time, message, name, email, and previous commit hash
 sha_hash = hashlib.sha256(f'{timestamp}/{commit_message}/{name}/{email}/{parent_hash}'.encode()).hexdigest()
 
-# Write .txt file
-with open(os.path.join(directory_path, ".sccs", "objects", "txt", f"{hashed_file}.txt"), "w", encoding="utf-8", newline="\n") as f:
-    f.write(commit)
+shutil.copy2(os.path.join(directory_path, Path(path).name) , os.path.join(directory_path, ".sccs", "objects", "docx", f"{sha_hash}.docx"))
 
-shutil.copy2(os.path.join(directory_path, Path(path).name) , os.path.join(directory_path, ".sccs", "objects", "docx", f"{hashed_file}.docx"))
-
-with open(os.path.join(directory_path, ".sccs", "objects", "html", f"{hashed_file}.html"), "w", encoding="utf-8", newline="\n") as f:
+with open(os.path.join(directory_path, ".sccs", "objects", "html", f"{sha_hash}.html"), "w", encoding="utf-8", newline="\n") as f:
     f.write(styles + html)
 
-with open(os.path.join(directory_path, ".sccs", "objects", "view_html", f"{hashed_file}.html"), "w", encoding="utf-8", newline="\n") as f:
+with open(os.path.join(directory_path, ".sccs", "objects", "view_html", f"{sha_hash}.html"), "w", encoding="utf-8", newline="\n") as f:
     f.write(wrap_html(html))    
 
 # Update history
