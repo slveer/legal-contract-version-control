@@ -119,7 +119,7 @@ with open(os.path.join(directory_path, ".sccs", "config", "config.json"), "w", e
     json.dump(config_data, f, indent=4)
 
 commit_file_hash_data = {
-    f"{sha_hash}": f"{hashed_file}"
+    f"{sha_hash}": hashed_file
 }
 
 with open (os.path.join(directory_path, ".sccs", "commit_file_hash", f"commit_file_hash.json"), "w", encoding="utf-8", newline="\n") as f:
