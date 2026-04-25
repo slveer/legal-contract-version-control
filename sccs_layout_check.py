@@ -32,28 +32,24 @@ def check_sccs():
         print("Commit messages JSON not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
         sys.exit(1)
 
-    if not Path(os.path.join(sccs_dir, "data-commits")).is_dir():
-        print("Commits data directory not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
+    if not Path(os.path.join(sccs_dir, "objects")).is_dir():
+        print("Objects directory not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
         sys.exit(1)
 
-    if not Path(os.path.join(sccs_dir, "data-commits", "txt-commits")).is_dir():
-        print("Text commits directory not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
+    if not Path(os.path.join(sccs_dir, "objects", "txt")).is_dir():
+        print("Text objects directory not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
         sys.exit(1)
 
-    if not Path(os.path.join(sccs_dir, "data-commits", "docx-commits")).is_dir():
-        print("Docx commits directory not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
+    if not Path(os.path.join(sccs_dir, "objects", "docx")).is_dir():
+        print("Docx objects directory not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
         sys.exit(1)
 
-    if not Path(os.path.join(sccs_dir, "data-commits", "html-commits")).is_dir():
-        print("HTML commits directory not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
+    if not Path(os.path.join(sccs_dir, "objects", "html")).is_dir():
+        print("HTML objects directory not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
         sys.exit(1)
 
-    if not Path(os.path.join(sccs_dir, "view-commits")).is_dir():
-        print("View commits directory not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
-        sys.exit(1)
-
-    if not Path(os.path.join(sccs_dir, "view-commits", "html-commits")).is_dir():
-        print("View HTML commits directory not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
+    if not Path(os.path.join(sccs_dir, "objects", "view_html")).is_dir():
+        print("View HTML objects directory not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
         sys.exit(1)
 
     if not Path(os.path.join(sccs_dir, "config")).is_dir():
