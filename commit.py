@@ -12,6 +12,16 @@ from sccs_layout_check import check_sccs, path, directory_path, wrap_html
 
 check_sccs()
 
+try:
+    with open(path, "rb") as f:
+        hasher = hashlib.sha256()
+        for chunk in iter(lambda: f.read(65536), b""):
+            hasher.update(chunk)
+        hashed_file = hasher.hexdigest()
+except Exception as e:
+    print(f"Error processing .docx file: {e}")
+    sys.exit(1)
+
 try: 
     with open(path, "rb") as f:
         result = mammoth.convert_to_html(f)
@@ -110,7 +120,7 @@ except (json.JSONDecodeError, KeyError, TypeError, OSError) as e:
     print("Commit file hash is missing or corrupted. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
     sys.exit(1)
 
-commit_file_hash[f"{sha_hash}"] = f"{sha_hash}"
+commit_file_hash[f"{sha_hash}"] = f"{hashed_file}"
 
 with open(commit_file_hash_path, "w", encoding="utf-8", newline="\n") as f:
     json.dump(commit_file_hash, f, indent=4)
