@@ -1,3 +1,4 @@
+import json
 import os
 from pathlib import Path
 import sys
@@ -16,11 +17,34 @@ def check_sccs():
         print("Please run 'sccs init <file_path>' to initialize SCCS for this file.")
         sys.exit(1)
 
-    if not Path(os.path.join(sccs_dir, "commit_file_hash")).is_dir():
-        print("Commit file hash directory not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
+    if not Path(os.path.join(sccs_dir, "current_branch")).is_dir():
+        print("Current branch directory not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
         sys.exit(1)
 
-    if not Path(os.path.join(sccs_dir, "commit_file_hash", "commit_file_hash.json")).is_file():
+    if not Path(os.path.join(sccs_dir, "current_branch", "current_branch.json")).is_file():
+        print("Current branch file not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
+        sys.exit(1)
+
+    try: 
+        with open(os.path.join(sccs_dir, "current_branch", "current_branch.json"), "r", encoding="utf-8", newline="\n") as current_branch_file:
+            current_branch = json.load(current_branch_file).get("current_branch")
+            if not current_branch:
+                print("Current branch not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
+                sys.exit(1)
+
+    except (json.JSONDecodeError, KeyError, TypeError, OSError) as e:
+        print("Current branch file is missing or corrupted. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
+        print("Error: ", e)
+        sys.exit(1)
+
+    if not Path(os.path.join(sccs_dir, "branches", current_branch)).is_dir():
+        print("Branch directory not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
+        sys.exit(1)
+
+    if not Path(os.path.join(sccs_dir, "branches", current_branch, "commit_file_hash")).is_dir():
+        print("Commit file hash directory not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
+        sys.exit(1)
+    if not Path(os.path.join(sccs_dir, "branches", current_branch, "commit_file_hash", "commit_file_hash.json")).is_file():
         print("Commit file hash JSON not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
         sys.exit(1)
 
@@ -56,11 +80,11 @@ def check_sccs():
         print("Config file not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
         sys.exit(1)
 
-    if not Path(os.path.join(sccs_dir, "history")).is_dir():
+    if not Path(os.path.join(sccs_dir, "branches", current_branch, "history")).is_dir():
         print("History directory not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
         sys.exit(1)
 
-    if not Path(os.path.join(sccs_dir, "history", "commit_history.json")).is_file():
+    if not Path(os.path.join(sccs_dir, "branches", current_branch, "history", "commit_history.json")).is_file():
         print("History file not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
         sys.exit(1)
 

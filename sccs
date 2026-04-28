@@ -27,11 +27,13 @@ elif command == "status":
 elif command == "help":
     sys.exit(subprocess.run([sys.executable, os.path.join(script_directory, "help.py")] + sys.argv[1:]).returncode)
 
+elif command == "branch":
+    sys.exit(subprocess.run([sys.executable, os.path.join(script_directory, "branch.py")] + sys.argv[1:]).returncode)
+
 else: 
     print(f"Unknown command: {command}")
-    print("Invalid command. Please use 'init', 'commit', 'open', 'log', 'diff', 'status', or 'help', along with required arguments.")
+    print("Invalid command. Please use 'init', 'commit', 'open', 'log', 'diff', 'status', 'help', or 'branch', along with required arguments.")
     print("For help, use the 'sccs help' command.")
     sys.exit(1)
 
-# If on MacOS / Linux, move this file, commit.py, init.py, open.py, log.py, diff.py, status.py, and help.py to /usr/local/bin and make it executable with `chmod +x /usr/local/bin/sccs`
-
+# If on MacOS / Linux, move this file, commit.py, init.py, open.py, log.py, diff.py, status.py, help.py, and branch.py to /usr/local/bin and make it executable with `chmod +x /usr/local/bin/sccs`

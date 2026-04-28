@@ -12,6 +12,10 @@ from sccs_layout_check import check_sccs
 
 check_sccs()
 
+current_branch_path = os.path.join(directory_path, ".sccs", "current_branch", "current_branch.json")
+with open(current_branch_path, "r", encoding="utf-8", newline="\n") as current_branch_file:
+    current_branch = json.load(current_branch_file).get("current_branch")
+
 try:
     with open(path, "rb") as f:
         hasher = hashlib.sha256()
@@ -23,7 +27,7 @@ except Exception as e:
     sys.exit(1)
 
 # get the latest commit filename hash from commit history
-history_path = os.path.join(directory_path, ".sccs", "history", "commit_history.json")
+history_path = os.path.join(directory_path, ".sccs", "branches", current_branch, "history", "commit_history.json")
 if not Path(history_path).is_file():
     print("History file not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
     sys.exit(1)
@@ -31,7 +35,7 @@ if not Path(history_path).is_file():
 try:
     with open(history_path, "r", encoding="utf-8", newline="\n") as history_file:
         history = json.load(history_file)
-        latest_commit_hash = history["latest_commit"]
+        latest_commit_hash = history["history"]["latest_commit"]
 except (json.JSONDecodeError, KeyError, TypeError):
     print("History file is missing or corrupted. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
     sys.exit(1)
@@ -41,7 +45,7 @@ if not latest_commit_hash:
     sys.exit(1)
 
 # get the hash of the latest committed file
-latest_commit_file_hash_path = os.path.join(directory_path, ".sccs", "commit_file_hash", "commit_file_hash.json")
+latest_commit_file_hash_path = os.path.join(directory_path, ".sccs", "branches", current_branch, "commit_file_hash", "commit_file_hash.json")
 if not Path(latest_commit_file_hash_path).is_file():
     print("Latest commit file hash not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
     sys.exit(1)

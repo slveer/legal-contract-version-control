@@ -66,10 +66,13 @@ os.makedirs(os.path.join(directory_path, ".sccs", "objects"), exist_ok=True)
 os.makedirs(os.path.join(directory_path, ".sccs", "objects", "docx"), exist_ok=True)
 os.makedirs(os.path.join(directory_path, ".sccs", "objects", "html"), exist_ok=True)
 os.makedirs(os.path.join(directory_path, ".sccs", "objects", "view_html"), exist_ok=True)
-os.makedirs(os.path.join(directory_path, ".sccs", "history"), exist_ok=True)
+os.makedirs(os.path.join(directory_path, ".sccs", "branches"), exist_ok=True)
+os.makedirs(os.path.join(directory_path, ".sccs", "branches", "main"), exist_ok=True)
+os.makedirs(os.path.join(directory_path, ".sccs", "branches", "main", "history"), exist_ok=True)
+os.makedirs(os.path.join(directory_path, ".sccs", "branches", "main", "commit_file_hash"), exist_ok=True)
 os.makedirs(os.path.join(directory_path, ".sccs", "commit_messages"), exist_ok=True)
 os.makedirs(os.path.join(directory_path, ".sccs", "config"), exist_ok=True)
-os.makedirs(os.path.join(directory_path, ".sccs", "commit_file_hash"), exist_ok=True)
+os.makedirs(os.path.join(directory_path, ".sccs", "current_branch"), exist_ok=True)
 # Add info to the directories, JSON
 
 shutil.copy2(os.path.join(directory_path, Path(path).name), os.path.join(directory_path, ".sccs", "objects", "docx", f"{sha_hash}.docx"))
@@ -81,27 +84,25 @@ with open(os.path.join(directory_path, ".sccs", "objects", "view_html", f"{sha_h
     f.write(wrap_html(html))
 
 history_data = {
+    "history": {
     "initial_commit": f"{sha_hash}",
     "latest_commit": f"{sha_hash}",
     "latest_commit_number": 1,
     "commit_order": {
         "1": f"{sha_hash}"
     }
-}
-
-with open(os.path.join(directory_path, ".sccs", "history", "commit_history.json"), "w", encoding="utf-8", newline="\n") as f:
-    json.dump(history_data, f, indent=4)
-
-log_data = {
+    },
+    "log": {
     f"{sha_hash}": {
-        "timestamp": timestamp,
-        "author": f"{name} <{email}>",
-        "message": initial_commit_message
+    "timestamp": timestamp,
+    "author": f"{name} <{email}>",
+    "message": initial_commit_message
+    }
     }
 }
-     
-with open(os.path.join(directory_path, ".sccs", "history", "commit_log.json"), "w", encoding="utf-8", newline="\n") as f:
-    json.dump(log_data, f, indent=4)
+
+with open(os.path.join(directory_path, ".sccs", "branches", "main", "history", "commit_history.json"), "w", encoding="utf-8", newline="\n") as f:
+    json.dump(history_data, f, indent=4)
 
 commit_message_data = {
     f"{sha_hash}": initial_commit_message
@@ -122,6 +123,13 @@ commit_file_hash_data = {
     f"{sha_hash}": hashed_file
 }
 
-with open (os.path.join(directory_path, ".sccs", "commit_file_hash", f"commit_file_hash.json"), "w", encoding="utf-8", newline="\n") as f:
+with open (os.path.join(directory_path, ".sccs", "branches", "main", "commit_file_hash", "commit_file_hash.json"), "w", encoding="utf-8", newline="\n") as f:
     json.dump(commit_file_hash_data, f, indent=4)
+
+with open(os.path.join(directory_path, ".sccs", "current_branch", "current_branch.json"), "w", encoding="utf-8", newline="\n") as f:
+    json.dump({
+        "current_branch": "main",
+        "branches": ["main"]
+    }, f, indent=4)
+
 print("SCCS initialization complete.")
