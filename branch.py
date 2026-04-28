@@ -68,7 +68,7 @@ if subcommand == 'create':
         print(f"Error creating branch '{sanitized_branch_name}': {e}")
         sys.exit(1)
 
-        print(f"Branch '{sanitized_branch_name}' was created from branch '{current_branch}'.")
+    print(f"Branch '{sanitized_branch_name}' was created from branch '{current_branch}'.")
          
 
 if subcommand == 'delete':
