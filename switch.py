@@ -1,4 +1,4 @@
-from sccs_layout_check import check_sccs, directory_path, path
+from sccs_layout_check import check_sccs, directory_path
 import sys
 import os
 import json
