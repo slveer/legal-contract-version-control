@@ -42,7 +42,11 @@ with open(config_path, "r", encoding="utf-8", newline="\n") as config_file:
     email = config.get("email")
 
 # Get commit message
-commit_message = input("Enter commit message: ")
+commit_message = input("Enter commit message: ").strip()
+
+if commit_message == "":
+    print("Commit message cannot be empty.")
+    sys.exit(1)
 
 timestamp = datetime.now().isoformat()
 
