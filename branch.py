@@ -1,14 +1,10 @@
-import re
 import sys
 import os
 import json
 import shutil
-from sccs_layout_check import check_sccs, directory_path
+from sccs_layout_check import check_sccs, directory_path, sanitize_dirname
 
 check_sccs()
-
-def sanitize_dirname(name):
-    return re.sub(r'[\\/:*?"<>|]', '-', name).strip('. ')
 
 current_branch_path = os.path.join(directory_path, ".sccs", "current_branch", "current_branch.json")
 try:
@@ -64,6 +60,7 @@ if subcommand == 'create':
         with open(current_branch_path, "w", encoding="utf-8", newline="\n") as current_branch_file:
             try:    
                 branch_data["branches"].append(sanitized_branch_name)
+                branch_data["current_branch"] = sanitized_branch_name
                 json.dump(branch_data, current_branch_file, indent=4)
             except Exception as e:
                 print(f"Error updating branch data: {e}")
@@ -73,7 +70,7 @@ if subcommand == 'create':
         print(f"Error creating branch '{sanitized_branch_name}': {e}")
         sys.exit(1)
 
-    print(f"Branch '{sanitized_branch_name}' was created from branch '{current_branch}'.")
+    print(f"Branch '{sanitized_branch_name}' was created from branch '{current_branch}', and is now the current branch.")
          
 
 if subcommand == 'delete':
