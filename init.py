@@ -15,12 +15,12 @@ path = sys.argv[2] if len(sys.argv) > 2 else None
 if path: 
     directory_path = Path(path).with_suffix('')
 else:
-    print("No file path provided")
+    print("No file path provided.")
     sys.exit(1)
 
 # Check if the directory already contains an SCCS initialization
 if Path(os.path.join(directory_path, ".sccs")).is_dir():
-    print("This file has already been initialized with SCCS")
+    print("This file has already been initialized with SCCS.")
     sys.exit(1)
 
 # Check if the path ends with .docx and exists
@@ -45,7 +45,7 @@ elif path and Path(path).suffix.lower() == ".docx" and Path(path).is_file():
 # if not, exit  
 
 else: 
-    print("Invalid file path, make sure the file exists and is a .docx file")
+    print("Invalid file path, make sure the file exists and is a .docx file.")
     sys.exit(1)
 
 # Get user inputted name and email
