@@ -1,10 +1,24 @@
-print("SCCS Help")
-print("Available commands:")
-print("  init    - Initialize a new SCCS repository")
-print("  commit  - Commit changes to a repository")
-print("  open    - Restore a previous commit and overwrite the current changes")
-print("  log     - Show commit history")
-print("  diff    - Compare the current .docx converted to HTML with a specified commit .html file")
-print("  status  - Show the status of a repository")
-print("  help    - Show this help message")
+MESSAGES_TO_PRINT = [
+    "SCCS Help", "Available commands:",
+    "  init    - Initialize a new SCCS repository",
+    "  commit  - Commit changes to a repository",
+    "  open    - Restore a previous commit and overwrite the current changes",
+    "  log     - Show commit history",
+    "  diff    - Compare the current .docx converted to HTML with a specified commit .html file",
+    "  status  - Show the status of a repository",
+    "  branch  - List, create, and delete branches",
+    "  switch  - Switch to a different branch",
+    "  help    - Show this help message"
+]
+
+def print_help():
+    for item in MESSAGES_TO_PRINT:
+        print(item)
+
+if __name__ == "__main__":
+    print_help()
+
+
+
+
 
