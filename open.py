@@ -3,7 +3,7 @@ import shutil
 import sys
 from pathlib import Path
 
-from sccs_layout_check import path, check_sccs
+from sccs_layout_check import path, check_sccs, directory_path
 
 def get_commit_path_input():
     commit_path = input("Enter the path to the commit file (.docx): ").strip()
@@ -19,7 +19,7 @@ def check_commit_path_input(commit_path):
         sys.exit(1)
 
 def confirm_before_proceeding(commit_path, path):
-    confirm = input(f"Are you sure you want to overwrite '{os.path.basename(path)}' with the contents of '{os.path.basename(commit_path)}'?\nThis action will replace the current content of the .docx file. (Y/N): ").strip().lower()
+    confirm = input(f"Are you sure you want to overwrite '{directory_path}/{os.path.basename(path)}' with the contents of '{directory_path}/{os.path.basename(commit_path)}'?\nThis action will replace the current content of the .docx file. (Y/N): ").strip().lower()
     if confirm != 'y':
         print("Update canceled.")
         sys.exit(0)
