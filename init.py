@@ -22,7 +22,7 @@ def check_if_arg_entered(arg):
 def ask_config_input(data):
     data_value = input(f"Enter your {data}: ").strip()
     if data_value == "":
-        print(f"{data} cannot be empty.")
+        print(f"{data.capitalize()} Cannot be empty.")
         sys.exit(1)
     else:
         return data_value
