@@ -9,11 +9,17 @@ check_sccs()
 branch_to_switch = sys.argv[2] if len(sys.argv) > 2 else None
 
 def update_current_branch(branch):
+    filepath = os.path.join(directory_path, ".sccs", "current_branch", "current_branch.json")
     try:
-        with open(os.path.join(directory_path, ".sccs", "current_branch", "current_branch.json"), "r", encoding="utf-8", newline="\n") as f:
+        with open(filepath, "r", encoding="utf-8", newline="\n") as f:
             try:
                 current_branch = json.load(f)
-                current_branch["current_branch"] = branch
+            except Exception as e:
+                print(f"Error reading or updating current branch information: {e}")
+                sys.exit(1)
+        current_branch["current_branch"] = branch
+        with open(filepath, "w", encoding="utf-8", newline="\n") as f:
+            try:
                 json.dump(current_branch, f, indent=4)
             except Exception as e:
                 print(f"Error reading or updating current branch information: {e}")
@@ -72,9 +78,7 @@ except Exception as e:
     sys.exit(1)
 
 if not hashed_file == latest_commit_file_hash:
-    print(hashed_file)
-    print(latest_commit_file_hash)
-    print(f"Error: The current file has uncommitted changes on the current branch '{branch}'. Please commit your changes before switching branches.." )
+    print(f"Error: The current file has uncommitted changes on the current branch '{branch}'. Please commit your changes before switching branches.")
     sys.exit(1)
 
 
