@@ -4,60 +4,47 @@ import sys
 from bs4 import BeautifulSoup
 import mammoth
 import difflib
-from sccs_layout_check import check_sccs, wrap_html
+from sccs_layout_check import check_sccs, wrap_html, directory_path
 import copy
+COMMIT_TO_DIFF = sys.argv[2] if len(sys.argv) > 2 else None 
+DOCX_CURRENT_VERSION = os.path.join(directory_path, f"{os.path.basename(directory_path)}.docx")
 
+def validate_commit(commit_to_diff, docx_current_version):
+    if not commit_to_diff:
+        print("No commit file specified.")
+        sys.exit(1)
 
-commit_to_diff = sys.argv[2] if len(sys.argv) > 2 else None 
+    if not Path(commit_to_diff).is_file():
+        print("Commit file not found. Please provide a valid commit file path.")
+        sys.exit(1)
 
-directory_path = os.getcwd()
+    if Path(commit_to_diff).suffix.lower() != ".html":
+        print("Commit file is not a .html file. Please provide a valid .html commit file.")
+        sys.exit(1)
 
-docx_current_version = os.path.join(directory_path, f"{os.path.basename(directory_path)}.docx")
+    if not Path(docx_current_version).is_file():
+        print("Docx file not found. Re-initialize SCCS for this file with 'sccs init <file_path>'")
+        sys.exit(1)
 
-if not commit_to_diff:
-    print("No commit file specified.")
-    sys.exit(1)
+def convert_current_docx_to_html(docx_path):
+    try:
+        with open(docx_path, "rb") as f:
+            docx_current_version_html = mammoth.convert_to_html(f).value
 
-if not Path(commit_to_diff).is_file():
-    print("Commit file not found. Please provide a valid commit file path.")
-    sys.exit(1)
+    except Exception as e:
+        print(f"Error converting .docx to HTML: {e}")
+        sys.exit(1)
 
-if Path(commit_to_diff).suffix.lower() != ".html":
-    print("Commit file is not a .html file. Please provide a valid .html commit file.")
-    sys.exit(1)
+    return docx_current_version_html
 
-if not Path(docx_current_version).is_file():
-    print("Docx file not found. Re-initialize SCCS for this file with 'sccs init <file_path>'")
-    sys.exit(1)
-
-check_sccs()
-
-try:
-    with open(docx_current_version, "rb") as f:
-        docx_current_version_html = mammoth.convert_to_html(f).value
-
-except Exception as e:
-    print(f"Error converting .docx to HTML: {e}")
-    sys.exit(1)
-
-
-try:
-    with open(commit_to_diff, "r", encoding="utf-8", newline="\n") as f:
-        commit_html = f.read()
-except Exception as e:
-    print(f"Error reading commit file: {e}")
-    sys.exit(1)
-
-def remove_inline_semantics(html):
-    soup = html
-    for tag in soup.find_all():
-        if tag.name in ["b", "i", "u", "strong", "em"]:
-            tag.unwrap()
-        
-        if tag.name == "style":
-            tag.decompose()
-            continue
-    return soup
+def get_commit_html(commit_path):
+    try:
+        with open(commit_path, "r", encoding="utf-8", newline="\n") as f:
+            commit_html = f.read()
+    except Exception as e:
+        print(f"Error reading commit file: {e}")
+        sys.exit(1)
+    return commit_html
 
 def number_tags(html):
     soup = html
@@ -86,16 +73,6 @@ def get_data_number(tag_list):
             if parsed_tag.get('data-number') is not None:
                 data_number.add(parsed_tag.get('data-number'))
     return data_number
-
-bs4_docx_current_version_soup = BeautifulSoup(docx_current_version_html, "html.parser")
-
-docx_current_version_list = tags_to_list(number_tags(remove_inline_semantics(copy.copy(bs4_docx_current_version_soup))))
-
-bs4_commit_soup = BeautifulSoup(commit_html, "html.parser")
-commit_list = tags_to_list(number_tags(remove_inline_semantics(copy.copy(bs4_commit_soup))))
-
-opcodes = difflib.SequenceMatcher(None, tags_to_list(remove_inline_semantics(copy.copy(bs4_commit_soup))), tags_to_list(remove_inline_semantics(copy.copy(bs4_docx_current_version_soup)))).get_opcodes()
-redline = number_tags(remove_inline_semantics(copy.copy(bs4_commit_soup)))
 
 def delete_tag(html, old_changed_strings):
     old_data_numbers = get_data_number(old_changed_strings)
@@ -162,16 +139,62 @@ def insert_tag(html, new_changed_strings, i1):
     
     return soup
 
-for opcode in reversed(opcodes):
-    tag, i1, i2, j1, j2 = opcode
-    
-    old_changed_strings = commit_list[i1:i2]
-    new_changed_strings = docx_current_version_list[j1:j2]
-    if tag == "replace":
-        redline = replace_tag(redline, old_changed_strings, new_changed_strings)
-    if tag =="insert":
-        redline = insert_tag(redline, new_changed_strings, i1)
-    if tag =="delete":
-        redline = delete_tag(redline, old_changed_strings)
-with open("redline.html", "w", encoding="utf-8", newline="\n") as f:
-    f.write(wrap_html(str(strip_number_attribute(redline))))
+def remove_inline_semantics(html):
+    soup = html
+    for tag in soup.find_all(["b", "i", "u", "strong", "em", "style"]):
+        if tag.name == "style":
+            tag.decompose()
+        else:
+            tag.unwrap()
+    return soup
+
+def convert_html_to_soup(html):
+    return BeautifulSoup(html, "html.parser")
+def format_bs4_html_list(bs4_obj):
+    return tags_to_list(number_tags(remove_inline_semantics(copy.copy(bs4_obj))))
+def get_opcodes(commit_soup, current_soup):
+    return difflib.SequenceMatcher(None, tags_to_list(remove_inline_semantics(copy.copy(commit_soup))), tags_to_list(remove_inline_semantics(copy.copy(current_soup)))).get_opcodes()
+
+def get_redline_html(commit_soup):
+    return number_tags(remove_inline_semantics(copy.copy(commit_soup)))
+
+def format_redline_html(redline, opcodes, commit_list, docx_current_version_list):
+    for opcode in reversed(opcodes):
+        tag, i1, i2, j1, j2 = opcode
+        
+        old_changed_strings = commit_list[i1:i2]
+        new_changed_strings = docx_current_version_list[j1:j2]
+        if tag == "replace":
+            redline = replace_tag(redline, old_changed_strings, new_changed_strings)
+        if tag =="insert":
+            redline = insert_tag(redline, new_changed_strings, i1)
+        if tag =="delete":
+            redline = delete_tag(redline, old_changed_strings)
+    return redline
+
+def write_redline_html_file(redline, filename="redline.html"):
+    with open(filename, "w", encoding="utf-8", newline="\n") as f:
+        f.write(wrap_html(str(strip_number_attribute(redline))))
+
+if __name__ == "__main__":
+
+    check_sccs()
+
+    validate_commit(COMMIT_TO_DIFF, DOCX_CURRENT_VERSION)
+
+    docx_current_version_html = convert_current_docx_to_html(DOCX_CURRENT_VERSION)
+
+    commit_html = get_commit_html(COMMIT_TO_DIFF)
+
+    bs4_docx_current_version_soup = convert_html_to_soup(docx_current_version_html)
+
+    docx_current_version_list = format_bs4_html_list(bs4_docx_current_version_soup)
+
+    bs4_commit_soup = convert_html_to_soup(commit_html)
+    commit_list = format_bs4_html_list(bs4_commit_soup)
+
+    opcodes = get_opcodes(bs4_commit_soup, bs4_docx_current_version_soup)
+
+    redline = format_redline_html(get_redline_html(bs4_commit_soup), opcodes, commit_list, docx_current_version_list)
+
+    write_redline_html_file(redline)
