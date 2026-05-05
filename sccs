@@ -3,40 +3,37 @@ import sys
 import subprocess
 import os
 
-command = sys.argv[1] if len(sys.argv) > 1 else None
+COMMANDS = ["init", "commit", "open", "log", "diff", "status", "help", "branch", "switch"]
 
-script_directory = os.path.dirname(os.path.realpath(__file__))
-if command == "init":
-    sys.exit(subprocess.run([sys.executable, os.path.join(script_directory, "init.py")] + sys.argv[1:]).returncode)
+def get_entered_command():
+    return sys.argv[1] if len(sys.argv) > 1 else None
 
-elif command == "commit":
-    sys.exit(subprocess.run([sys.executable, os.path.join(script_directory, "commit.py")] + sys.argv[1:]).returncode)
+def get_script_directory():
+    return os.path.dirname(os.path.realpath(__file__))
 
-elif command == "open":
-    sys.exit(subprocess.run([sys.executable, os.path.join(script_directory, "open.py")] + sys.argv[1:]).returncode)
+def check_if_command_is_valid(command, COMMANDS):
+    return command in COMMANDS
 
-elif command == "log":
-    sys.exit(subprocess.run([sys.executable, os.path.join(script_directory, "log.py")] + sys.argv[1:]).returncode)
-
-elif command == "diff":
-    sys.exit(subprocess.run([sys.executable, os.path.join(script_directory, "diff.py")] + sys.argv[1:]).returncode)
-    
-elif command == "status":
-    sys.exit(subprocess.run([sys.executable, os.path.join(script_directory, "status.py")] + sys.argv[1:]).returncode)
-
-elif command == "help":
-    sys.exit(subprocess.run([sys.executable, os.path.join(script_directory, "help.py")] + sys.argv[1:]).returncode)
-
-elif command == "branch":
-    sys.exit(subprocess.run([sys.executable, os.path.join(script_directory, "branch.py")] + sys.argv[1:]).returncode)
-
-elif command == "switch":
-    sys.exit(subprocess.run([sys.executable, os.path.join(script_directory, "switch.py")] + sys.argv[1:]).returncode)
-
-else: 
+def print_unknown_command_error(command):
     print(f"Unknown command: {command}")
     print("Invalid command. Please use 'init', 'commit', 'open', 'log', 'diff', 'status', 'help', 'branch', or 'switch', along with required arguments.")
     print("For help, use the 'sccs help' command.")
     sys.exit(1)
+
+def run_command(command, script_directory):
+    sys.exit(subprocess.run([sys.executable, os.path.join(script_directory, f"{command}.py")] + sys.argv[1:]).returncode)
+
+def execute_command(command, script_directory, COMMANDS):
+    if not check_if_command_is_valid(command, COMMANDS):
+        print_unknown_command_error(command)
+    run_command(command, script_directory)
+
+if __name__ == "__main__":
+
+    command = get_entered_command()
+
+    script_directory = get_script_directory()
+    
+    execute_command(command, script_directory, COMMANDS)
 
 # If on MacOS / Linux, move this file, commit.py, init.py, open.py, log.py, diff.py, status.py, help.py, branch.py , and switch.py to /usr/local/bin and make it executable with `chmod +x /usr/local/bin/sccs`
