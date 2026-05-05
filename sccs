@@ -12,7 +12,7 @@ def get_script_directory():
     return os.path.dirname(os.path.realpath(__file__))
 
 def check_if_command_is_valid(command, COMMANDS):
-    return True if command in COMMANDS else False
+    return command in COMMANDS
 
 def print_unknown_command_error(command):
     print(f"Unknown command: {command}")
