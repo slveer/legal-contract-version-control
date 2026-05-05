@@ -141,13 +141,11 @@ def insert_tag(html, new_changed_strings, i1):
 
 def remove_inline_semantics(html):
     soup = html
-    for tag in soup.find_all():
-        if tag.name in ["b", "i", "u", "strong", "em"]:
-            tag.unwrap()
-        
+    for tag in soup.find_all(["b", "i", "u", "strong", "em", "style"]):
         if tag.name == "style":
             tag.decompose()
-            continue
+        else:
+            tag.unwrap()
     return soup
 
 def convert_html_to_soup(html):
