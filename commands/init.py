@@ -164,7 +164,7 @@ if __name__ == "__main__":
 
     create_sccs_directory_layout()
     
-    document_as_html = utils.convert_docx_to_html()
+    document_as_html = utils.convert_docx_to_html(get_entered_document_path())
 
     move_document_to_repo_directory()
 
