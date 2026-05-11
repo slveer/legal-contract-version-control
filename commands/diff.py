@@ -2,12 +2,11 @@ import os
 from pathlib import Path
 import sys
 from bs4 import BeautifulSoup
-import mammoth
 import difflib
-from sccs_layout_check import check_sccs, wrap_html, directory_path
+import utils
 import copy
-COMMIT_TO_DIFF = sys.argv[2] if len(sys.argv) > 2 else None 
-DOCX_CURRENT_VERSION = os.path.join(directory_path, f"{os.path.basename(directory_path)}.docx")
+def get_entered_commit_to_diff():
+    return sys.argv[2] if len(sys.argv) > 2 else None
 
 def validate_commit(commit_to_diff, docx_current_version):
     if not commit_to_diff:
@@ -25,17 +24,6 @@ def validate_commit(commit_to_diff, docx_current_version):
     if not Path(docx_current_version).is_file():
         print("Docx file not found. Re-initialize SCCS for this file with 'sccs init <file_path>'")
         sys.exit(1)
-
-def convert_current_docx_to_html(docx_path):
-    try:
-        with open(docx_path, "rb") as f:
-            docx_current_version_html = mammoth.convert_to_html(f).value
-
-    except Exception as e:
-        print(f"Error converting .docx to HTML: {e}")
-        sys.exit(1)
-
-    return docx_current_version_html
 
 def get_commit_html(commit_path):
     try:
@@ -174,17 +162,17 @@ def format_redline_html(redline, opcodes, commit_list, docx_current_version_list
 
 def write_redline_html_file(redline, filename="redline.html"):
     with open(filename, "w", encoding="utf-8", newline="\n") as f:
-        f.write(wrap_html(str(strip_number_attribute(redline))))
+        f.write(utils.wrap_html(str(strip_number_attribute(redline))))
 
 if __name__ == "__main__":
 
-    check_sccs()
+    utils.check_sccs_layout()
 
-    validate_commit(COMMIT_TO_DIFF, DOCX_CURRENT_VERSION)
+    validate_commit(get_entered_commit_to_diff(), utils.current_file_docx_path)
 
-    docx_current_version_html = convert_current_docx_to_html(DOCX_CURRENT_VERSION)
+    docx_current_version_html = utils.convert_docx_to_html()
 
-    commit_html = get_commit_html(COMMIT_TO_DIFF)
+    commit_html = get_commit_html(get_entered_commit_to_diff())
 
     bs4_docx_current_version_soup = convert_html_to_soup(docx_current_version_html)
 
@@ -195,6 +183,8 @@ if __name__ == "__main__":
 
     opcodes = get_opcodes(bs4_commit_soup, bs4_docx_current_version_soup)
 
-    redline = format_redline_html(get_redline_html(bs4_commit_soup), opcodes, commit_list, docx_current_version_list)
+    base_redline_html = get_redline_html(bs4_commit_soup)
+
+    redline = format_redline_html(base_redline_html, opcodes, commit_list, docx_current_version_list)
 
     write_redline_html_file(redline)

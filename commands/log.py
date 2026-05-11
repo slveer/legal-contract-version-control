@@ -2,23 +2,16 @@ import json
 from pathlib import Path
 import os
 import sys
+import utils
 
-from sccs_layout_check import directory_path
 
-from sccs_layout_check import check_sccs
-
-CURRENT_BRANCH_PATH = os.path.join(directory_path, ".sccs", "current_branch", "current_branch.json")
-
-check_sccs()
-
-def get_current_branch():
-    with open(CURRENT_BRANCH_PATH, "r", encoding="utf-8", newline="\n") as current_branch_file:
-        current_branch = json.load(current_branch_file).get("current_branch")
-    return current_branch
-
-def get_log_data():
+def get_log_data(cwd=None, current_branch=None):
+    if cwd is None:
+        cwd = utils.working_directory_path
+    if current_branch is None:
+        current_branch = utils.get_current_branch()
     # Get JSON log data
-    log_path = os.path.join(directory_path, ".sccs", "branches", get_current_branch(), "history", "commit_history.json")
+    log_path = os.path.join(cwd, ".sccs", "branches", current_branch, "history", "commit_history.json")
     if not Path(log_path).is_file():
         print("Log file not found. Please make sure the file has been initialized with SCCS.")
         sys.exit(1)
@@ -40,4 +33,7 @@ def print_log():
         )
 
 if __name__ == "__main__":
+
+    utils.check_sccs_layout()
+
     print_log()
