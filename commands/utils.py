@@ -15,7 +15,7 @@ current_file_docx_path = os.path.join(
 
 sccs_versions_directory_path = os.path.join(working_directory_path, ".sccs")
 
-default_html_styles = ("""
+default_html_styles = """
     <style>
     * {
         font-family: Arial, Helvetica, sans-serif;
@@ -38,7 +38,7 @@ default_html_styles = ("""
         justify-content: center;
     }
     </style>
-""")
+"""
 
 current_branch_path = os.path.join(
     working_directory_path, ".sccs", "current_branch", "current_branch.json"
@@ -56,7 +56,7 @@ def check_sccs_layout(
     if not Path(sccs_dir).is_dir():
         print(
             "This file has not been initialized with SCCS.\nPlease run 'sccs init "
-        "<file_path>' to initialize SCCS for this file."
+            "<file_path>' to initialize SCCS for this file."
         )
         sys.exit(1)
 
@@ -110,7 +110,7 @@ def check_sccs_layout(
         os.path.join(sccs_dir, "branches", current_branch, "commit_file_hash")
     ).is_dir():
         print(
-            "Commit file hash directory not found. Please run 'sccs init <file_path>' " 
+            "Commit file hash directory not found. Please run 'sccs init <file_path>' "
             "to initialize SCCS for this file."
         )
         sys.exit(1)
@@ -131,7 +131,7 @@ def check_sccs_layout(
 
     if not Path(os.path.join(sccs_dir, "commit_messages")).is_dir():
         print(
-            "Commit messages directory not found. Please run 'sccs init <file_path>' " 
+            "Commit messages directory not found. Please run 'sccs init <file_path>' "
             "to initialize SCCS for this file."
         )
         sys.exit(1)
@@ -168,7 +168,7 @@ def check_sccs_layout(
 
     if not Path(os.path.join(sccs_dir, "objects", "view_html")).is_dir():
         print(
-            "View HTML objects directory not found. Please run 'sccs init <file_path>' " 
+            "View HTML objects directory not found. Please run 'sccs init <file_path>' "
             "to initialize SCCS for this file."
         )
         sys.exit(1)
