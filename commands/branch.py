@@ -208,7 +208,7 @@ def main():
         run_specified_subcommand(
             get_entered_subcommand(),
             utils.get_current_branch(),
-            utils.get_branch_data()
+            utils.get_branch_data(),
         )
     else:
         raise exceptions.FileImportedAsModuleError(
