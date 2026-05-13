@@ -73,10 +73,10 @@ def check_sccs_layout(
                 )
 
     except (json.JSONDecodeError, KeyError, TypeError, OSError) as e:
-        raise exceptions.BranchNotFoundError(
+        raise exceptions.InvalidMetadataError(
             "Current branch file is missing or corrupted. Please run 'sccs init "
             "<file_path>' to initialize SCCS for this file."
-        )
+        ) from e
 
     if not Path(os.path.join(sccs_dir, "branches", current_branch)).is_dir():
         raise exceptions.BranchNotFoundError(
