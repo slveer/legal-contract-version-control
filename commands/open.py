@@ -17,7 +17,7 @@ def check_commit_path_input(commit_path):
         raise exceptions.InvalidArgumentError("Commit file path cannot be empty.")
 
     if not Path(commit_path).is_file():
-        raise exceptions.InvalidArgumentError("Commit file does not exist.")
+        raise FileNotFoundError("Commit file does not exist.")
 
     if Path(commit_path).suffix.lower() != ".docx":
         raise exceptions.InvalidFileTypeError("Commit file is not a .docx file.")
