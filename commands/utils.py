@@ -67,7 +67,7 @@ def check_sccs_layout(
         ) as current_branch_file:
             current_branch = json.load(current_branch_file).get("current_branch")
             if not current_branch:
-                raise exceptions.BranchNotFoundError(
+                raise exceptions.InvalidMetadataError(
                     "Current branch not found. Please run 'sccs init <file_path>' to "
                     "initialize SCCS for this file."
                 )
