@@ -1,4 +1,3 @@
-
 MESSAGES_TO_PRINT = [
     "SCCS Help",
     "Available commands:",
