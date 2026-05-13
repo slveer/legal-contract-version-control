@@ -1,5 +1,6 @@
-import exceptions
 import sys
+
+import exceptions
 
 MESSAGES_TO_PRINT = [
     "SCCS Help",

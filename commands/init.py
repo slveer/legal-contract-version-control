@@ -325,8 +325,6 @@ def main():
     confirmation_message()
 
 
-
-
 if __name__ == "__main__":
     try:
         main()
