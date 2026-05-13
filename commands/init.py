@@ -63,7 +63,7 @@ def check_file_requirements():
             "File is not a .docx file. Please provide a valid .docx file."
         )
     if not Path(entered_path).is_file():
-        raise exceptions.InvalidFilePathError("File does not exist.")
+        raise FileNotFoundError("File does not exist.")
 
 
 def create_commit_sha_hash(timestamp, user_name, user_email):
