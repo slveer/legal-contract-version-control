@@ -147,7 +147,7 @@ def update_commit_log_history(
     timestamp: str,
     name: str,
     email: str,
-    commit_message: str
+    commit_message: str,
 ) -> dict[str, dict]:
     """Update the commit log history."""
 
