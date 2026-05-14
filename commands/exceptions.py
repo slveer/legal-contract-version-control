@@ -1,3 +1,6 @@
+"""Module for SCCS exception classes."""
+
+
 class SCCSException(Exception):
     """Base class for SCCS exceptions."""
 

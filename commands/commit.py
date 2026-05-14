@@ -1,3 +1,5 @@
+"""Commit latest changes to the current branch."""
+
 import hashlib
 import json
 import os
@@ -280,6 +282,7 @@ def print_commit_confirmation_message(sha_hash: str) -> None:
 
 
 def main() -> None:
+    """Run functions for the <sccs commit> command."""
     utils.check_sccs_layout()
 
     name = get_key_from_config("name")

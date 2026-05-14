@@ -1,8 +1,9 @@
+"""Module for utility functions used in SCCS."""
+
 import hashlib
 import json
 import os
 import re
-import sys
 from pathlib import Path
 
 import exceptions
@@ -31,6 +32,7 @@ current_branch_path = os.path.join(
 
 
 def clean_directory_name(name: str) -> str:
+    """Return a filesystem-safe directory name by replacing invalid characters."""
     return re.sub(r'[\\/:*?"<>|]', "-", name).strip(". ")
 
 
@@ -38,6 +40,7 @@ def check_sccs_layout(
     sccs_dir: str = sccs_versions_directory_path,
     docx_path: str = current_file_docx_path,
 ) -> None:
+    """Validate that required SCCS folders, files, and metadata exist."""
 
     if not Path(sccs_dir).is_dir():
         raise exceptions.SCCSNotInitializedError(
@@ -181,6 +184,7 @@ def check_sccs_layout(
 
 
 def wrap_html(html: str, styles: str = default_html_styles) -> str:
+    """Wrap HTML content in a complete document template with default styles."""
     return (
         f"<!DOCTYPE html><html><head><meta charset='UTF-8'>{styles}</head>"
         f"<body><div class='center'><div id='target'>{html}</div></div></body></html>"
@@ -188,6 +192,7 @@ def wrap_html(html: str, styles: str = default_html_styles) -> str:
 
 
 def hash_current_docx_binary(docx_path: str = current_file_docx_path) -> str:
+    """Compute and return the SHA-256 hash of the current DOCX file bytes."""
     try:
         with open(docx_path, "rb") as f:
             hasher = hashlib.sha256()
@@ -200,6 +205,7 @@ def hash_current_docx_binary(docx_path: str = current_file_docx_path) -> str:
 
 
 def get_current_branch(file_path: str = current_branch_path) -> str:
+    """Return the active branch name from the current branch metadata file."""
     try:
         with open(
             file_path, "r", encoding="utf-8", newline="\n"
@@ -219,6 +225,7 @@ def get_current_branch(file_path: str = current_branch_path) -> str:
 def get_branch_data(
     file_path: str = current_branch_path, key: str = None
 ) -> dict | str | None:
+    """Return full branch metadata or a specific value by key."""
     try:
         with open(file_path, "r", encoding="utf-8", newline="\n") as f:
             data = json.load(f)
@@ -231,6 +238,7 @@ def get_branch_data(
 
 
 def convert_docx_to_html(docx_path: str = None) -> str:
+    """Convert a DOCX document to HTML and return the generated markup."""
     if docx_path is None:
         docx_path = current_file_docx_path
     try:

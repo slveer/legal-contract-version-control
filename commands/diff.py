@@ -1,3 +1,5 @@
+"""Create and display HTML diffs between commits."""
+
 import copy
 import difflib
 import sys
@@ -238,6 +240,7 @@ def write_redline_html_file(
 
 
 def main() -> None:
+    """Run functions for the <sccs diff> command."""
     utils.check_sccs_layout()
 
     validate_commit(get_entered_commit_to_diff(), utils.current_file_docx_path)

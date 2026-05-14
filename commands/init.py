@@ -1,3 +1,5 @@
+"""Initialize a document with SCCS."""
+
 import hashlib
 import json
 import os
@@ -198,6 +200,8 @@ def write_history_data(
 
 
 def write_commit_message_data(sha_hash: str) -> None:
+    """Write the initial commit message JSON file."""
+
     commit_message_data = {
         f"{sha_hash}": "initial commit (This is a default commit message for initial "
         "version)"
@@ -286,6 +290,8 @@ def confirmation_message() -> None:
 
 
 def main() -> None:
+    """Run functions for the <sccs init> command."""
+
     check_if_arg_entered(get_entered_document_path())
 
     check_for_prev_init()
