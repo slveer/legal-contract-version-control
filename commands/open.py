@@ -64,8 +64,6 @@ def check_changes(commit_path: str, docx_path: str = None) -> None:
         sys.exit(0)
 
 
-
-
 def copy_file_commit(commit_path: str, docx_path: str = None) -> None:
     """Copy the commit file to the current document."""
     if docx_path is None:
