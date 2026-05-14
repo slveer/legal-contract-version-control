@@ -19,7 +19,7 @@ def get_entered_branch_name() -> str | None:
     return sys.argv[3] if len(sys.argv) > 3 else None
 
 
-def validate_subcommand(subcommand: str, branch_name: str) -> None:
+def validate_subcommand(subcommand: str | None, branch_name: str | None) -> None:
     """Validate the subcommand entered by the user."""
 
     if not subcommand:
@@ -44,8 +44,8 @@ def validate_subcommand(subcommand: str, branch_name: str) -> None:
 def branch_create_subcommand(
     current_branch: str,
     branch_data: dict,
-    cwd: str = None,
-    current_branch_path: str = None,
+    cwd: str | None = None,
+    current_branch_path: str | None = None
 ) -> None:
     """Create a new branch from the current branch."""
 
@@ -162,7 +162,7 @@ def branch_delete_subcommand(
 
 
 def rollback_changes_after_failure(
-    current_branch_path: str, branch_data: dict = None
+    current_branch_path: str, branch_data: dict | None = None
 ) -> None:
     """Rollback changes after a failed branch deletion."""
 

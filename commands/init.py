@@ -10,7 +10,7 @@ import exceptions
 import utils
 
 
-def get_entered_document_path() -> str:
+def get_entered_document_path() -> str | None:
     """Retrieve the document path entered by the user."""
 
     return sys.argv[2] if len(sys.argv) > 2 else None
@@ -108,8 +108,8 @@ def move_document_to_repo_directory() -> None:
 
 
 def copy_document_to_objects_as_docx_and_html(
-    sha_hash: str, html: str, styles: str = None
-):
+    sha_hash: str, html: str, styles: str | None = None
+) -> None:
     """Copy the document into objects as both .docx and .html."""
 
     if styles is None:

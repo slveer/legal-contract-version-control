@@ -8,7 +8,7 @@ import utils
 from bs4 import BeautifulSoup
 
 
-def get_entered_commit_to_diff() -> str:
+def get_entered_commit_to_diff() -> str | None:
     """Retrieve the commit file path entered by the user."""
 
     return sys.argv[2] if len(sys.argv) > 2 else None
