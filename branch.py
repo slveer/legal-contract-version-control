@@ -5,6 +5,8 @@ import json
 import shutil
 from sccs_layout_check import check_sccs, directory_path
 
+check_sccs()
+
 def sanitize_dirname(name):
     return re.sub(r'[\\/:*?"<>|]', '-', name).strip('. ')
 
@@ -20,8 +22,6 @@ try:
 
 except Exception as e:
     print(f"Error reading current branch data: {e}")
-
-check_sccs()
 
 subcommand = sys.argv[2] if len(sys.argv) > 2 else None
 
