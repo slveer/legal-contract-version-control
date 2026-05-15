@@ -65,7 +65,7 @@ if not Path(history_path).is_file():
 
 with open(history_path, "r", encoding="utf-8", newline="\n") as history_file:
     history = json.load(history_file)
-    parent_hash = history.get("latest_commit")
+    parent_hash = history["history"].get("latest_commit")
 
 # Generate commit hash from time, message, name, email, and previous commit hash
 sha_hash = hashlib.sha256(f'{timestamp}/{commit_message}/{name}/{email}/{parent_hash}'.encode()).hexdigest()
