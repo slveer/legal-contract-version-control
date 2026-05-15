@@ -11,8 +11,12 @@ def sanitize_dirname(name):
 current_branch_path = os.path.join(directory_path, ".sccs", "current_branch", "current_branch.json")
 try:
     with open(current_branch_path, "r", encoding="utf-8", newline="\n") as current_branch_file:
-        branch_data = json.load(current_branch_file)
-        current_branch = branch_data.get("current_branch")
+        try:
+            branch_data = json.load(current_branch_file)
+            current_branch = branch_data.get("current_branch")
+        except json.JSONDecodeError as e:
+            print(f"Error decoding JSON from current branch file: {e}")
+            sys.exit(1)
 
 except Exception as e:
     print(f"Error reading current branch data: {e}")
