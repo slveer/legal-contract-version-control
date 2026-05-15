@@ -31,3 +31,12 @@ if subcommand in ["create", "delete"]:
 if subcommand == 'create':
     shutil.copy2(os.path.join(directory_path, ".sccs", "branches", current_branch), os.path.join(directory_path, ".sccs", "branches", branch_name))
     print(f"Branch '{branch_name}' was created.")
+
+if subcommand == 'delete':
+    branch_path = os.path.join(directory_path, ".sccs", "branches", branch_name)
+    if branch_name == current_branch:
+        print("Cannot delete the current branch.")
+        sys.exit(1)
+    if os.path.exists(branch_path):
+        shutil.rmtree(branch_path, ignore_errors=True)
+        print(f"Branch '{branch_name}' was deleted.")
