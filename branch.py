@@ -6,7 +6,8 @@ from sccs_layout_check import check_sccs, directory_path
 
 current_branch_path = os.path.join(directory_path, ".sccs", "current_branch.json")
 with open(current_branch_path, "r", encoding="utf-8", newline="\n") as current_branch_file:
-    current_branch = json.load(current_branch_file).get("current_branch")
+    branch_data = json.load(current_branch_file)
+    current_branch = branch_data.get("current_branch")
 
 check_sccs()
 
@@ -30,7 +31,9 @@ if subcommand in ["create", "delete"]:
 
 if subcommand == 'create':
     shutil.copy2(os.path.join(directory_path, ".sccs", "branches", current_branch), os.path.join(directory_path, ".sccs", "branches", branch_name))
-
+    branch_data["branches"].append(branch_name)
+    with open(current_branch_path, "w", encoding="utf-8", newline="\n") as current_branch_file:
+        json.dump(branch_data, current_branch_file, indent=4)
     print(f"Branch '{branch_name}' was created from branch '{current_branch}'.")
 
 if subcommand == 'delete':
@@ -40,4 +43,7 @@ if subcommand == 'delete':
         sys.exit(1)
     if os.path.exists(branch_path):
         shutil.rmtree(branch_path, ignore_errors=True)
+        branch_data["branches"].remove(branch_name)
+        with open(current_branch_path, "w", encoding="utf-8", newline="\n") as current_branch_file:
+            json.dump(branch_data, current_branch_file, indent=4)
         print(f"Branch '{branch_name}' was deleted.")
