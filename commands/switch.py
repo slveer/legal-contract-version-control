@@ -2,8 +2,8 @@
 
 import json
 import shutil
-from pathlib import Path
 import sys
+from pathlib import Path
 
 import exceptions
 import utils
@@ -40,7 +40,7 @@ def update_current_branch(
         raise exceptions.UpdatingMetadataError from e
 
 
-def check_branch_to_switch(branch_to_switch: str , branches: list) -> None:
+def check_branch_to_switch(branch_to_switch: str, branches: list) -> None:
     """Check if the branch to switch to is valid."""
     if not branch_to_switch:
         raise exceptions.InvalidArgumentError(
@@ -100,9 +100,7 @@ def get_latest_commit(branch: str, cwd: Path = None) -> str:
         cwd = utils.working_directory_path
     try:
         with open(
-            Path(
-                cwd, ".sccs", "branches", branch, "history", "commit_history.json"
-            ),
+            Path(cwd, ".sccs", "branches", branch, "history", "commit_history.json"),
             "r",
             encoding="utf-8",
             newline="\n",
@@ -128,7 +126,8 @@ def copy_commit_to_main(commit: str, cwd: Path = None) -> None:
     try:
         shutil.copy2(
             Path(cwd, ".sccs", "objects", "docx", f"{commit}.docx"),
-            cwd, f"{cwd.name}.docx"
+            cwd,
+            f"{cwd.name}.docx",
         )
     except Exception as e:
         raise exceptions.FileCopyError from e

@@ -188,9 +188,7 @@ def update_commit_messages(
     # Check if commit messages file exists
     if cwd is None:
         cwd = utils.working_directory_path
-    commit_messages_path = Path(
-        cwd, ".sccs", "commit_messages", "commit_messages.json"
-    )
+    commit_messages_path = Path(cwd, ".sccs", "commit_messages", "commit_messages.json")
 
     if not Path(commit_messages_path).is_file():
         raise FileNotFoundError(

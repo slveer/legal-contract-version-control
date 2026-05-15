@@ -53,11 +53,7 @@ def check_changes(commit_path: Path, docx_path: Path = None) -> None:
     """Check if the commit_path and docx_path refer to the same file."""
     if docx_path is None:
         docx_path = utils.current_file_docx_path
-    if (
-        docx_path.exists()
-        and commit_path.exists()
-        and docx_path.samefile(commit_path)
-    ):
+    if docx_path.exists() and commit_path.exists() and docx_path.samefile(commit_path):
         print(
             "The commit file is the same as the current file. No changes will be made."
         )

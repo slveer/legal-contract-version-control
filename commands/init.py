@@ -27,7 +27,7 @@ def get_document_repo_path() -> Path | None:
     return Path(path).with_suffix("")
 
 
-def check_if_arg_entered(arg: Path ) -> None:
+def check_if_arg_entered(arg: Path) -> None:
     """Check that a file path argument was provided."""
 
     if not arg:
@@ -91,23 +91,16 @@ def create_sccs_directory_layout() -> None:
     Path(repo_path, ".sccs", "objects", "view_html").mkdir(parents=True, exist_ok=True)
     Path(repo_path, ".sccs", "branches").mkdir(parents=True, exist_ok=True)
     Path(repo_path, ".sccs", "branches", "main").mkdir(parents=True, exist_ok=True)
-    Path(
-        repo_path,
-        ".sccs",
-        "branches",
-        "main",
-        "history"
-    ).mkdir(parents=True, exist_ok=True)
+    Path(repo_path, ".sccs", "branches", "main", "history").mkdir(
+        parents=True, exist_ok=True
+    )
     Path(repo_path, ".sccs", "commit_messages").mkdir(parents=True, exist_ok=True)
     Path(repo_path, ".sccs", "config").mkdir(parents=True, exist_ok=True)
     Path(repo_path, ".sccs", "current_branch").mkdir(parents=True, exist_ok=True)
-    Path(
-        repo_path,
-        ".sccs",
-        "branches",
-        "main",
-        "commit_file_hash"
-    ).mkdir(parents=True, exist_ok=True)
+    Path(repo_path, ".sccs", "branches", "main", "commit_file_hash").mkdir(
+        parents=True, exist_ok=True
+    )
+
 
 def move_document_to_repo_directory() -> None:
     """Move the source document into the repo directory."""
@@ -147,9 +140,7 @@ def copy_document_to_objects_as_docx_and_html(
 
     try:
         with open(
-            Path(
-                repo_path, ".sccs", "objects", "view_html", f"{sha_hash}.html"
-            ),
+            Path(repo_path, ".sccs", "objects", "view_html", f"{sha_hash}.html"),
             "w",
             encoding="utf-8",
             newline="\n",
@@ -329,9 +320,7 @@ def main() -> None:
     write_config_data(config_user_name, config_user_email)
 
     current_branch_binary_hash = utils.hash_current_docx_binary(
-        docx_path=Path(
-            get_document_repo_path(), Path(get_entered_document_path()).name
-        )
+        docx_path=Path(get_document_repo_path(), Path(get_entered_document_path()).name)
     )
 
     write_hashed_file_commit_data(sha_hash, current_branch_binary_hash)

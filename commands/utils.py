@@ -54,9 +54,7 @@ def check_sccs_layout(
             "initialize SCCS for this file."
         )
 
-    if not Path(
-        Path(sccs_dir, "current_branch", "current_branch.json")
-    ).is_file():
+    if not Path(Path(sccs_dir, "current_branch", "current_branch.json")).is_file():
         raise exceptions.BranchNotFoundError(
             "Current branch file not found. Please run 'sccs init <file_path>' to "
             "initialize SCCS for this file."
@@ -115,9 +113,7 @@ def check_sccs_layout(
             " initialize SCCS for this file."
         )
 
-    if not Path(
-        Path(sccs_dir, "commit_messages", "commit_messages.json")
-    ).is_file():
+    if not Path(Path(sccs_dir, "commit_messages", "commit_messages.json")).is_file():
         raise FileNotFoundError(
             "Commit messages JSON not found. Please run 'sccs init <file_path>' to "
             "initialize SCCS for this file."
@@ -167,9 +163,7 @@ def check_sccs_layout(
         )
 
     if not Path(
-        Path(
-            sccs_dir, "branches", current_branch, "history", "commit_history.json"
-        )
+        Path(sccs_dir, "branches", current_branch, "history", "commit_history.json")
     ).is_file():
         raise FileNotFoundError(
             "Commit history JSON not found. Please run 'sccs init <file_path>' to "
