@@ -26,7 +26,6 @@ def check_sccs():
         sys.exit(1)
 
     try: 
-        print(os.path.join(sccs_dir, "current_branch", "current_branch.json") + "  hi")
         with open(os.path.join(sccs_dir, "current_branch", "current_branch.json"), "r", encoding="utf-8", newline="\n") as current_branch_file:
             current_branch = json.load(current_branch_file).get("current_branch")
             if not current_branch:
