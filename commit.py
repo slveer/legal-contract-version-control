@@ -47,14 +47,25 @@ commit_message = input("Enter commit message: ")
 timestamp = datetime.now().isoformat()
 
 # Get parent hash
-history_path = os.path.join(directory_path, ".sccs", "history", "commit_history.json")
+
+#Get current branch
+current_branch_path = os.path.join(directory_path, ".sccs", "current_branch", "current_branch.json")
+if not Path(current_branch_path).is_file():
+    print("Current branch file not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
+    sys.exit(1)
+
+with open(current_branch_path, "r", encoding="utf-8", newline="\n") as current_branch_file:
+    current_branch = json.load(current_branch_file).get("current_branch")
+
+
+history_path = os.path.join(directory_path, ".sccs", "branches", current_branch, "history", "commit_history.json")
 if not Path(history_path).is_file():
     print("History file not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
     sys.exit(1)
 
 with open(history_path, "r", encoding="utf-8", newline="\n") as history_file:
     history = json.load(history_file)
-    parent_hash = history["latest_commit"]
+    parent_hash = history.get("latest_commit")
 
 # Generate commit hash from time, message, name, email, and previous commit hash
 sha_hash = hashlib.sha256(f'{timestamp}/{commit_message}/{name}/{email}/{parent_hash}'.encode()).hexdigest()
@@ -68,9 +79,16 @@ with open(os.path.join(directory_path, ".sccs", "objects", "view_html", f"{sha_h
     f.write(wrap_html(html))    
 
 # Update history
-history["latest_commit"] = f"{sha_hash}"
-history["latest_commit_number"] = history.get("latest_commit_number", 0) + 1
-history["commit_order"][str(history["latest_commit_number"])] = f"{sha_hash}"
+history["history"]["latest_commit"] = f"{sha_hash}"
+history["history"]["latest_commit_number"] = history["history"].get("latest_commit_number", 0) + 1
+history["history"]["commit_order"][str(history["history"]["latest_commit_number"])] = f"{sha_hash}"
+
+history["log"][f"{sha_hash}"] = {
+    "timestamp": timestamp,
+    "author": f"{name} <{email}>",
+    "message": commit_message
+}
+
 with open(history_path, "w", encoding="utf-8", newline="\n") as history_file:
     json.dump(history, history_file, indent=4)
 
@@ -88,26 +106,10 @@ messages[f"{sha_hash}"] = f"{commit_message}"
 with open(commit_messages_path, "w", encoding="utf-8", newline="\n") as commit_messages_file:
     json.dump(messages, commit_messages_file, indent=4)
 
-# Update commit log
-commit_log_path = os.path.join(directory_path, ".sccs", "history", "commit_log.json")
-if not Path(commit_log_path).is_file():
-    print("Commit log file not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
-    sys.exit(1)
 
-with open(commit_log_path, "r", encoding="utf-8", newline="\n") as commit_log_file:
-    log = json.load(commit_log_file)
-
-log[f"{sha_hash}"] = {
-    "timestamp": timestamp,
-    "author": f"{name} <{email}>",
-    "message": commit_message
-}
-
-with open(commit_log_path, "w", encoding="utf-8", newline="\n") as commit_log_file:
-    json.dump(log, commit_log_file, indent=4)
 
 # Update commit file hash
-commit_file_hash_path = os.path.join(directory_path, ".sccs", "commit_file_hash", "commit_file_hash.json")
+commit_file_hash_path = os.path.join(directory_path, ".sccs", "branches", current_branch, "commit_file_hash", "commit_file_hash.json")
 if not Path(commit_file_hash_path).is_file():
     print("Commit file hash not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
     sys.exit(1)
