@@ -37,6 +37,10 @@ def check_sccs():
         print("Error: ", e)
         sys.exit(1)
 
+    if not Path(os.path.join(sccs_dir, "branches", current_branch)).is_dir():
+        print("Branch directory not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
+        sys.exit(1)
+
     if not Path(os.path.join(sccs_dir, "branches", current_branch, "commit_file_hash")).is_dir():
         print("Commit file hash directory not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
         sys.exit(1)
