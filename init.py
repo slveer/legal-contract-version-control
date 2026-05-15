@@ -127,6 +127,9 @@ with open (os.path.join(directory_path, ".sccs", "branches", "main", "commit_fil
     json.dump(commit_file_hash_data, f, indent=4)
 
 with open(os.path.join(directory_path, ".sccs", "current_branch", "current_branch.json"), "w", encoding="utf-8", newline="\n") as f:
-    json.dump({"current_branch": "main"}, f, indent=4)
+    json.dump({
+        "current_branch": "main",
+        "branches": ["main"]
+    }, f, indent=4)
 
 print("SCCS initialization complete.")
