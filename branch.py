@@ -22,6 +22,7 @@ try:
 
 except Exception as e:
     print(f"Error reading current branch data: {e}")
+    sys.exit(1)
 
 subcommand = sys.argv[2] if len(sys.argv) > 2 else None
 
