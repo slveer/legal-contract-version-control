@@ -47,3 +47,11 @@ if subcommand == 'delete':
         with open(current_branch_path, "w", encoding="utf-8", newline="\n") as current_branch_file:
             json.dump(branch_data, current_branch_file, indent=4)
         print(f"Branch '{branch_name}' was deleted.")
+
+if subcommand == "list":
+    print("Branches:")
+    for branch in branch_data.get("branches", []):
+        if branch == current_branch:
+            print(f"* {branch} (current)")
+        else:
+            print(f"  {branch}")
