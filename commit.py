@@ -63,9 +63,16 @@ if not Path(history_path).is_file():
     print("History file not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
     sys.exit(1)
 
-with open(history_path, "r", encoding="utf-8", newline="\n") as history_file:
-    history = json.load(history_file)
-    parent_hash = history["history"].get("latest_commit")
+try:
+    with open(history_path, "r", encoding="utf-8", newline="\n") as history_file:
+    
+        history = json.load(history_file)
+        parent_hash = history["history"].get("latest_commit")
+
+except Exception as e:
+    print(f"Error retrieving JSON from history file: {e}")
+    sys.exit(1)
+
 
 # Generate commit hash from time, message, name, email, and previous commit hash
 sha_hash = hashlib.sha256(f'{timestamp}/{commit_message}/{name}/{email}/{parent_hash}'.encode()).hexdigest()
