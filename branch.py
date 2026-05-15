@@ -30,6 +30,4 @@ if subcommand in ["create", "delete"]:
 
 if subcommand == 'create':
     shutil.copy2(os.path.join(directory_path, ".sccs", "branches", current_branch), os.path.join(directory_path, ".sccs", "branches", branch_name))
-    with open(current_branch_path, "w", encoding="utf-8", newline="\n") as current_branch_file:
-        json.dump({"current_branch": branch_name}, current_branch_file)
-    print(f"Branch '{branch_name}' was created and set as the current branch.")
+    print(f"Branch '{branch_name}' was created.")
