@@ -59,9 +59,14 @@ if subcommand == 'create':
     if not os.path.isdir(os.path.join(directory_path, ".sccs", "branches", sanitized_branch_name)):
         shutil.copytree(os.path.join(directory_path, ".sccs", "branches", current_branch), os.path.join(directory_path, ".sccs", "branches", sanitized_branch_name))
 
+    try:
         with open(current_branch_path, "w", encoding="utf-8", newline="\n") as current_branch_file:
-            json.dump(branch_data, current_branch_file, indent=4)
             branch_data["branches"].append(sanitized_branch_name)
+            json.dump(branch_data, current_branch_file, indent=4)
+    
+    except Exception as e:
+        print(f"Error creating branch '{sanitized_branch_name}': {e}")
+        sys.exit(1)
 
         print(f"Branch '{sanitized_branch_name}' was created from branch '{current_branch}'.")
          
@@ -89,10 +94,11 @@ if subcommand == 'delete':
     except Exception as e:
         print(f"Error deleting branch '{sanitized_branch_name}': {e}")
         sys.exit(1)
-    branch_data["branches"].remove(sanitized_branch_name)
+    
 
     try:
         with open(current_branch_path, "w", encoding="utf-8", newline="\n") as current_branch_file:
+            branch_data["branches"].remove(sanitized_branch_name)
             json.dump(branch_data, current_branch_file, indent=4)
         
     except Exception as e:
