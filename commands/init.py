@@ -83,7 +83,7 @@ def create_sccs_directory_layout() -> None:
     if not repo_path:
         raise exceptions.InvalidArgumentError("No file path provided.")
 
-    Path(repo_path, exist_ok=True).mkdir(parents=True, exist_ok=True)
+    repo_path.mkdir(parents=True, exist_ok=True)
     Path(repo_path, ".sccs").mkdir(parents=True, exist_ok=True)
     Path(repo_path, ".sccs", "objects").mkdir(parents=True, exist_ok=True)
     Path(repo_path, ".sccs", "objects", "docx").mkdir(parents=True, exist_ok=True)
