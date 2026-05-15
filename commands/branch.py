@@ -47,7 +47,7 @@ def branch_create_subcommand(
     current_branch: str,
     branch_data: dict,
     cwd: Path = None,
-    current_branch_path: Path = None,
+    current_branch_path: Path | None = None,
 ) -> None:
     """Create a new branch from the current branch."""
 
