@@ -21,7 +21,7 @@ def get_entered_branch_name() -> str | None:
     return sys.argv[3] if len(sys.argv) > 3 else None
 
 
-def validate_subcommand(subcommand: str, branch_name: str) -> None:
+def validate_subcommand(subcommand: str | None, branch_name: str | None) -> None:
     """Validate the subcommand entered by the user."""
 
     if not subcommand:
