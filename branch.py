@@ -62,9 +62,13 @@ if subcommand == 'create':
 
     try:
         with open(current_branch_path, "w", encoding="utf-8", newline="\n") as current_branch_file:
-            branch_data["branches"].append(sanitized_branch_name)
-            json.dump(branch_data, current_branch_file, indent=4)
-    
+            try:    
+                branch_data["branches"].append(sanitized_branch_name)
+                json.dump(branch_data, current_branch_file, indent=4)
+            except Exception as e:
+                print(f"Error updating branch data: {e}")
+                sys.exit(1)
+        
     except Exception as e:
         print(f"Error creating branch '{sanitized_branch_name}': {e}")
         sys.exit(1)
