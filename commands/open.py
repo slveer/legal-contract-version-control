@@ -10,7 +10,7 @@ import utils
 
 def get_commit_path_input() -> Path | None:
     """Get the absolute path of the commit file from the command-line arguments."""
-    return (Path(sys.argv[2]).resolve() if len(sys.argv) > 2 else None)
+    return Path(sys.argv[2]).resolve() if len(sys.argv) > 2 else None
 
 
 def check_commit_path_input(commit_path: Path) -> None:
