@@ -1,4 +1,4 @@
-#!/usr/bin/env python3 
+#!/usr/bin/env python3
 """Create and display HTML diffs between commits."""
 
 import copy

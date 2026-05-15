@@ -1,4 +1,4 @@
-#!/usr/bin/env python3 
+#!/usr/bin/env python3
 """Module for utility functions used in SCCS."""
 
 import hashlib
