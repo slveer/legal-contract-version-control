@@ -32,9 +32,7 @@ def update_current_branch(
         with open(tmp_path, "w", encoding="utf-8", newline="\n") as f:
             json.dump(current_branch, f, indent=4)
 
-        (tmp_path).replace(
-            (cwd / ".sccs" / "current_branch" / "current_branch.json")
-        )
+        (tmp_path).replace((cwd / ".sccs" / "current_branch" / "current_branch.json"))
 
     except Exception as e:
         raise exceptions.UpdatingMetadataError from e
@@ -62,12 +60,12 @@ def get_latest_commit_binary_hash(
     try:
         with open(
             (
-                cwd /
-                ".sccs" /
-                "branches" /
-                branch /
-                "commit_file_hash" /
-                "commit_file_hash.json"
+                cwd
+                / ".sccs"
+                / "branches"
+                / branch
+                / "commit_file_hash"
+                / "commit_file_hash.json"
             ),
             "r",
             encoding="utf-8",
@@ -126,7 +124,7 @@ def copy_commit_to_main(commit: str, cwd: Path = None) -> None:
     try:
         shutil.copy2(
             (cwd / ".sccs" / "objects" / "docx" / f"{commit}.docx"),
-            (cwd / f"{cwd.name}.docx")
+            (cwd / f"{cwd.name}.docx"),
         )
     except Exception as e:
         raise exceptions.FileCopyError from e

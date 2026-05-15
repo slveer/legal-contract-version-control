@@ -180,12 +180,12 @@ def write_history_data(
     try:
         with open(
             (
-                get_document_repo_path() /
-                ".sccs" /
-                "branches" /
-                "main" /
-                "history" /
-                "commit_history.json"
+                get_document_repo_path()
+                / ".sccs"
+                / "branches"
+                / "main"
+                / "history"
+                / "commit_history.json"
             ),
             "w",
             encoding="utf-8",
@@ -206,10 +206,10 @@ def write_commit_message_data(sha_hash: str) -> None:
     try:
         with open(
             (
-                get_document_repo_path() /
-                ".sccs" /
-                "commit_messages" /
-                "commit_messages.json"
+                get_document_repo_path()
+                / ".sccs"
+                / "commit_messages"
+                / "commit_messages.json"
             ),
             "w",
             encoding="utf-8",
@@ -243,12 +243,12 @@ def write_hashed_file_commit_data(sha_hash: str, hashed_file: str) -> None:
     try:
         with open(
             (
-                get_document_repo_path() /
-                ".sccs" /
-                "branches" /
-                "main" /
-                "commit_file_hash" /
-                "commit_file_hash.json"
+                get_document_repo_path()
+                / ".sccs"
+                / "branches"
+                / "main"
+                / "commit_file_hash"
+                / "commit_file_hash.json"
             ),
             "w",
             encoding="utf-8",
@@ -266,10 +266,10 @@ def write_branch_data() -> None:
     try:
         with open(
             (
-                get_document_repo_path() /
-                ".sccs" /
-                "current_branch" /
-                "current_branch.json"
+                get_document_repo_path()
+                / ".sccs"
+                / "current_branch"
+                / "current_branch.json"
             ),
             "w",
             encoding="utf-8",
@@ -320,7 +320,7 @@ def main() -> None:
     write_config_data(config_user_name, config_user_email)
 
     current_branch_binary_hash = utils.hash_current_docx_binary(
-        docx_path = get_document_repo_path() / Path(get_entered_document_path()).name
+        docx_path=get_document_repo_path() / Path(get_entered_document_path()).name
     )
 
     write_hashed_file_commit_data(sha_hash, current_branch_binary_hash)

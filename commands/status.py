@@ -55,12 +55,12 @@ def get_latest_commit_file_binary_hash(
     # get the hash of the latest committed file
     latest_commit_hash = get_latest_commit_hash_file(current_branch, cwd=cwd)
     latest_commit_file_hash_path = (
-        cwd /
-        ".sccs" /
-        "branches" /
-        current_branch /
-        "commit_file_hash" /
-        "commit_file_hash.json"
+        cwd
+        / ".sccs"
+        / "branches"
+        / current_branch
+        / "commit_file_hash"
+        / "commit_file_hash.json"
     )
     if not Path(latest_commit_file_hash_path).is_file():
         raise FileNotFoundError(

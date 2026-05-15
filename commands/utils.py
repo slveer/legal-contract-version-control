@@ -11,11 +11,9 @@ import mammoth
 working_directory_path = Path.cwd()
 
 
-current_file_docx_path = (
-    working_directory_path / f"{working_directory_path.name}.docx"
-)
+current_file_docx_path = working_directory_path / f"{working_directory_path.name}.docx"
 
-sccs_versions_directory_path = (working_directory_path / ".sccs")
+sccs_versions_directory_path = working_directory_path / ".sccs"
 
 default_html_styles = (
     "<style>\n* {\nfont-family: Arial, Helvetica, sans-serif;\n}\n\n"
@@ -92,12 +90,12 @@ def check_sccs_layout(
             "to initialize SCCS for this file."
         )
     if not (
-            sccs_dir /
-            "branches" /
-            current_branch /
-            "commit_file_hash" /
-            "commit_file_hash.json"
-        ).is_file():
+        sccs_dir
+        / "branches"
+        / current_branch
+        / "commit_file_hash"
+        / "commit_file_hash.json"
+    ).is_file():
         raise FileNotFoundError(
             "Commit file hash JSON not found. Please run 'sccs init <file_path>' to "
             "initialize SCCS for this file."
@@ -158,7 +156,9 @@ def check_sccs_layout(
             "initialize SCCS for this file."
         )
 
-    if not (sccs_dir / "branches" / current_branch / "history" / "commit_history.json").is_file():
+    if not (
+        sccs_dir / "branches" / current_branch / "history" / "commit_history.json"
+    ).is_file():
         raise FileNotFoundError(
             "Commit history JSON not found. Please run 'sccs init <file_path>' to "
             "initialize SCCS for this file."

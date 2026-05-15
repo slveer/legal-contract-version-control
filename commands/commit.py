@@ -55,7 +55,9 @@ def get_history_path(cwd: Path = None, current_branch: str = None) -> Path:
         cwd = utils.working_directory_path
     if current_branch is None:
         current_branch = utils.get_current_branch()
-    return cwd / ".sccs" / "branches" / current_branch / "history" / "commit_history.json"
+    return (
+        cwd / ".sccs" / "branches" / current_branch / "history" / "commit_history.json"
+    )
 
 
 def get_commit_history() -> dict:
@@ -219,12 +221,12 @@ def update_commit_binary_hash_history(
         current_branch = utils.get_current_branch()
 
     commit_file_hash_path = (
-        cwd /
-        ".sccs" /
-        "branches" /
-        current_branch /
-        "commit_file_hash" /
-        "commit_file_hash.json"
+        cwd
+        / ".sccs"
+        / "branches"
+        / current_branch
+        / "commit_file_hash"
+        / "commit_file_hash.json"
     )
     if not commit_file_hash_path.is_file():
         raise FileNotFoundError(
