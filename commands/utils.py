@@ -212,7 +212,7 @@ def get_current_branch(file_path: Path = current_branch_path) -> str:
 
 def get_branch_data(
     file_path: Path = current_branch_path, key: str = None
-) -> dict | str:
+) -> dict | str | None:
     """Return full branch metadata or a specific value by key."""
     try:
         with open(file_path, "r", encoding="utf-8", newline="\n") as f:

@@ -38,7 +38,7 @@ def update_current_branch(
         raise exceptions.UpdatingMetadataError from e
 
 
-def check_branch_to_switch(branch_to_switch: str, branches: list) -> None:
+def check_branch_to_switch(branch_to_switch: str | None, branches: list) -> None:
     """Check if the branch to switch to is valid."""
     if not branch_to_switch:
         raise exceptions.InvalidArgumentError(
