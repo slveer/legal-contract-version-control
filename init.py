@@ -66,10 +66,12 @@ os.makedirs(os.path.join(directory_path, ".sccs", "objects"), exist_ok=True)
 os.makedirs(os.path.join(directory_path, ".sccs", "objects", "docx"), exist_ok=True)
 os.makedirs(os.path.join(directory_path, ".sccs", "objects", "html"), exist_ok=True)
 os.makedirs(os.path.join(directory_path, ".sccs", "objects", "view_html"), exist_ok=True)
-os.makedirs(os.path.join(directory_path, ".sccs", "history"), exist_ok=True)
+os.makedirs(os.path.join(directory_path, ".sccs", "branches"), exist_ok=True)
+os.makedirs(os.path.join(directory_path, ".sccs", "branches", "main"), exist_ok=True)
+os.makedirs(os.path.join(directory_path, ".sccs", "branches", "main", "history"), exist_ok=True)
+os.makedirs(os.path.join(directory_path, ".sccs", "branches", "main", "commit_file_hash"), exist_ok=True)
 os.makedirs(os.path.join(directory_path, ".sccs", "commit_messages"), exist_ok=True)
 os.makedirs(os.path.join(directory_path, ".sccs", "config"), exist_ok=True)
-os.makedirs(os.path.join(directory_path, ".sccs", "commit_file_hash"), exist_ok=True)
 # Add info to the directories, JSON
 
 shutil.copy2(os.path.join(directory_path, Path(path).name), os.path.join(directory_path, ".sccs", "objects", "docx", f"{sha_hash}.docx"))
@@ -98,7 +100,7 @@ history_data = {
     }
 }
 
-with open(os.path.join(directory_path, ".sccs", "history", "commit_history.json"), "w", encoding="utf-8", newline="\n") as f:
+with open(os.path.join(directory_path, ".sccs", "branches", "main", "history", "commit_history.json"), "w", encoding="utf-8", newline="\n") as f:
     json.dump(history_data, f, indent=4)
 
 commit_message_data = {
@@ -120,6 +122,6 @@ commit_file_hash_data = {
     f"{sha_hash}": hashed_file
 }
 
-with open (os.path.join(directory_path, ".sccs", "commit_file_hash", f"commit_file_hash.json"), "w", encoding="utf-8", newline="\n") as f:
+with open (os.path.join(directory_path, ".sccs", "branches", "main", "commit_file_hash", "commit_file_hash.json"), "w", encoding="utf-8", newline="\n") as f:
     json.dump(commit_file_hash_data, f, indent=4)
 print("SCCS initialization complete.")
