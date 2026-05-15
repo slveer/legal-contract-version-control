@@ -89,7 +89,7 @@ if subcommand == 'delete':
         sys.exit(1)
 
     try:
-        shutil.rmtree(branch_path, ignore_errors=True)
+        shutil.rmtree(branch_path)
 
     except Exception as e:
         print(f"Error deleting branch '{sanitized_branch_name}': {e}")
