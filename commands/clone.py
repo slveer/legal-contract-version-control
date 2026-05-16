@@ -1,3 +1,7 @@
+import io
+from zipfile import Path
+import zipfile
+
 import requests
 import sys
 import exceptions
@@ -6,7 +10,7 @@ import exceptions
 def get_entered_url():
     return sys.argv[2] if len(sys.argv) > 2 else None
 
-def resolve_entered_url(url):
+def resolve_entered_url(url=get_entered_url()):
     if url is None:
         print("No URL entered.")
         raise exceptions.InvalidArgumentError("No URL entered.")
@@ -20,11 +24,10 @@ def resolve_entered_url(url):
     return url
 
 
+response = requests.get(resolve_entered_url())
 
-response = requests.get(resolve_entered_url(get_entered_url()))
+buffer = io.BytesIO(response.content)
 
-with open("test.zip", "wb") as f:
-    f.write(response.content)
+zipfile.ZipFile(buffer, "r").extractall(resolve_entered_url().split("/")[-2])
 
 print(response.status_code)
-print(response.json())
