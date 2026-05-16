@@ -16,7 +16,8 @@ COMMANDS = [
     "status",
     "help",
     "branch",
-    "switch"
+    "switch",
+    "publish"
 ]
 
 
@@ -42,7 +43,7 @@ def execute_command(command: str, script_directory: Path, COMMANDS: list) -> Non
     if command not in COMMANDS:
         raise exceptions.UnknownCommandError(
             f"Unknown command: {command}. Please use 'init', 'commit', 'open', 'log', "
-            f"'diff', 'status', 'help', 'branch', or 'switch', along with required "
+            f"'diff', 'status', 'help', 'branch', 'switch', or 'publish', along with required "
             f"arguments. For help, use the 'sccs help' command."
         )
     run_command(command, script_directory)
