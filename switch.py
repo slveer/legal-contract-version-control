@@ -64,3 +64,5 @@ try:
 except Exception as e:
     print(f"Error updating current branch information: {e}")
     sys.exit(1)
+
+print(f"Successfully switched to branch '{branch_to_switch}'.")
