@@ -10,7 +10,11 @@ from sccs_layout_check import check_sccs
 check_sccs()
 
 # Get user inputted commit path
-commit_path = input("Enter the path to the commit file (.docx): ")
+commit_path = input("Enter the path to the commit file (.docx): ").strip()
+
+if commit_path == "":
+    print("Commit file path cannot be empty.")
+    sys.exit(1)
 
 if not Path(commit_path).is_file() or Path(commit_path).suffix.lower() != ".docx":
     print("Invalid commit file path, make sure the file exists and is a .docx file")

@@ -49,8 +49,17 @@ else:
     sys.exit(1)
 
 # Get user inputted name and email
-name = input("Enter your name: ")
-email = input("Enter your email: ")
+name = input("Enter your name: ").strip()
+
+if name == "":
+    print("Name cannot be empty.")
+    sys.exit(1)
+
+email = input("Enter your email: ").strip()
+
+if email == "":
+    print("Email cannot be empty.")
+    sys.exit(1)
 
 timestamp = datetime.now().isoformat()
 initial_commit_message = "initial commit (This is a default commit message for initial version)"
