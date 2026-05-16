@@ -17,7 +17,8 @@ COMMANDS = [
     "help",
     "branch",
     "switch",
-    "publish"
+    "publish",
+    "clone"
 ]
 
 
