@@ -36,4 +36,7 @@ if confirmation.lower() == "y": confirmation = True
 else:  confirmation = False
    
 if confirmation:
-    shutil.copy2(os.path.join(directory_path, ".sccs", "objects", "docx", f"{latest_commit_on_branch}.docx"), os.path.join(directory_path, f"{os.path.basename(directory_path)}.docx"))
+    try:
+        shutil.copy2(os.path.join(directory_path, ".sccs", "objects", "docx", f"{latest_commit_on_branch}.docx"), os.path.join(directory_path, f"{os.path.basename(directory_path)}.docx"))
+    except Exception as e:
+        print(f"Error switching to branch '{branch_to_switch}': {e}")
