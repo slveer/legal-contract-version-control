@@ -1,5 +1,5 @@
+"""Clone a hosted SCCS repository with a URL"""
 import io
-from zipfile import Path
 import zipfile
 
 import requests
@@ -8,9 +8,15 @@ import exceptions
 
 
 def get_entered_url():
+    """Retrieve the URL entered by the user."""
     return sys.argv[2] if len(sys.argv) > 2 else None
 
+
 def resolve_entered_url(url=get_entered_url()):
+    """
+    Resolve the entered URL by adding 'https://' if missing and appending '/clone' 
+    if missing."""
+
     if url is None:
         print("No URL entered.")
         raise exceptions.InvalidArgumentError("No URL entered.")
@@ -24,10 +30,43 @@ def resolve_entered_url(url=get_entered_url()):
     return url
 
 
-response = requests.get(resolve_entered_url())
+def request_repo(url=resolve_entered_url()):
+    """Request the repository from the given URL."""
+    return requests.get(url)
 
-buffer = io.BytesIO(response.content)
 
-zipfile.ZipFile(buffer, "r").extractall(resolve_entered_url().split("/")[-2])
+def unzip_repo_file(buffer, destination):
+    """
+    Unzip the repo file. using the buffer where the repository is held and the folder
+    where it should be extracted."""
 
-print(response.status_code)
+    zipfile.ZipFile(buffer, "r").extractall(destination)
+
+
+def main():
+    """Run functions for the <sccs publish> command."""
+
+    response = request_repo()
+
+    buffer = io.BytesIO(response.content)
+
+    unzip_repo_file(buffer, resolve_entered_url().split("/")[-2])
+
+    print(response.status_code)
+
+
+if __name__ == "__main__":
+    try:
+        main()
+
+    except exceptions.SCCSException as e:
+        print(f"An error occurred:\n{e}\n")
+        sys.exit(1)
+
+    except Exception as e:
+        print(f"An unexpected error occurred:\n\n{type(e).__name__}: {e}\n")
+        sys.exit(2)
+else:
+    raise exceptions.FileImportedAsModuleError(
+        "This file cannot be run as a module. Please run it as a script."
+    )
