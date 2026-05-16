@@ -13,6 +13,6 @@ with zipfile.ZipFile(buffer, "w", zipfile.ZIP_DEFLATED) as zip_file:
 
 buffer.seek(0)
 
-response = requests.post("http://127.0.0.1:8000/publish", files={"file": ("file.zip", buffer, "application/zip")})
+response = requests.post("http://127.0.0.1:8000/publish", files={"file": (Path.cwd().name + ".zip", buffer, "application/zip")})
 
 print(f"Status code: {response.status_code}")
