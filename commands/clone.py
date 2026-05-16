@@ -5,8 +5,6 @@ import zipfile
 import requests
 import sys
 import exceptions
-import origin
-
 
 def get_entered_url() -> str | None:
     """Retrieve the URL entered by the user."""
@@ -61,12 +59,6 @@ def main() -> None:
     unzip_repo_file(buffer, resolve_entered_url().split("/")[-2])
 
     print(response.status_code)
-
-    origin.write_origin_to_config(
-        origin.resolve_entered_origin(
-            get_entered_url()
-        )
-    )
 
 
 if __name__ == "__main__":
