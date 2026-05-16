@@ -22,6 +22,6 @@ async def root():
 @app.post("/publish")
 async def publish(file: UploadFile = File(...)):
     with zipfile.ZipFile(file.file, "r") as f:
-        f.extractall(f"API/extracted/{file.filename}")
+        f.extractall(f"API/repos/{file.filename}")
     return {}
 
