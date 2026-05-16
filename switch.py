@@ -40,3 +40,27 @@ if confirmation:
         shutil.copy2(os.path.join(directory_path, ".sccs", "objects", "docx", f"{latest_commit_on_branch}.docx"), os.path.join(directory_path, f"{os.path.basename(directory_path)}.docx"))
     except Exception as e:
         print(f"Error switching to branch '{branch_to_switch}': {e}")
+        sys.exit(1)
+try: 
+    with open(os.path.join(directory_path, ".sccs", "current_branch", "current_branch.json"), "r") as f:
+        try:
+            current_branch = json.load(f)
+        except Exception as e:
+            print(f"Error reading current branch information: {e}")
+            sys.exit(1)
+except Exception as e:
+    print(f"Error accessing current branch information: {e}")
+    sys.exit(1)
+
+current_branch["current_branch"] = branch_to_switch
+
+try:
+    with open(os.path.join(directory_path, ".sccs", "current_branch", "current_branch.json"), "w") as f:
+        try:
+            json.dump(current_branch, f)
+        except Exception as e:
+            print(f"Error writing current branch information: {e}")
+            sys.exit(1)
+except Exception as e:
+    print(f"Error updating current branch information: {e}")
+    sys.exit(1)
