@@ -1,11 +1,7 @@
-import io
-import shutil
 import zipfile
 
 from fastapi import FastAPI, File, UploadFile
-from fastapi.responses import StreamingResponse
 from pathlib import Path
-import os
 
 from fastapi.staticfiles import StaticFiles
 
