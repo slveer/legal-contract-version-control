@@ -8,15 +8,35 @@ check_sccs()
 
 branch_to_switch = sys.argv[2] if len(sys.argv) > 2 else None
 
+def update_current_branch(branch):
+    try:
+        with open(os.path.join(directory_path, ".sccs", "current_branch", "current_branch.json"), "r", encoding="utf-8", newline="\n") as f:
+            try:
+                current_branch = json.load(f)
+                current_branch["current_branch"] = branch
+                json.dump(current_branch, f, indent=4)
+            except Exception as e:
+                print(f"Error reading or updating current branch information: {e}")
+                sys.exit(1)
+    except Exception as e:
+        print(f"Error accessing current branch information: {e}")
+        sys.exit(1)
+
 try:
     with open(os.path.join(directory_path, ".sccs", "current_branch", "current_branch.json"), "r", encoding="utf-8", newline="\n") as f:
         try:
-            branch = json.load(f).get("current_branch")
+            data = json.load(f)
+            branch = data.get("current_branch")
+            branches = data.get("branches")
         except Exception as e:
             print(f"Error reading current branch information: {e}")
             sys.exit(1)
 except Exception as e:
     print(f"Error accessing current branch information: {e}")
+    sys.exit(1)
+
+if branch_to_switch not in branches:
+    print(f"Error: Branch '{branch_to_switch}' does not exist.")
     sys.exit(1)
 
 try: 
@@ -57,6 +77,7 @@ if not hashed_file == latest_commit_file_hash:
     print(f"Error: The current file has uncommitted changes on the current branch '{branch}'. Please commit your changes before switching branches.." )
     sys.exit(1)
 
+
 if branch_to_switch:
     branch_to_switch = sanitize_dirname(branch_to_switch)
 
@@ -88,35 +109,13 @@ if not os.path.isfile(os.path.join(directory_path, ".sccs", "objects", "docx", f
     print(f"Error: Commit object '{latest_commit_on_branch_to_switch}' not found.")
     sys.exit(1)
 
-try:
-    with open(os.path.join(directory_path, ".sccs", "current_branch", "current_branch.json"), "r", encoding="utf-8", newline="\n") as f:
-        try:
-            current_branch = json.load(f)
-        except Exception as e:
-            print(f"Error reading current branch information: {e}")
-            sys.exit(1)
-except Exception as e:
-    print(f"Error accessing current branch information: {e}")
-    sys.exit(1)
-
-current_branch["current_branch"] = branch_to_switch
-
-try:
-    with open(os.path.join(directory_path, ".sccs", "current_branch", "current_branch.json"), "w", encoding="utf-8", newline="\n") as f:
-        try:
-            json.dump(current_branch, f, indent=4)
-        except Exception as e:
-            print(f"Error writing current branch information: {e}")
-            sys.exit(1)
-except Exception as e:
-    print(f"Error updating current branch information: {e}")
-    sys.exit(1)
+update_current_branch(branch_to_switch)
 
 try:
     shutil.copy2(os.path.join(directory_path, ".sccs", "objects", "docx", f"{latest_commit_on_branch_to_switch}.docx"), os.path.join(directory_path, f"{os.path.basename(directory_path)}.docx"))
 except Exception as e:
     print(f"Error switching to branch '{branch_to_switch}': {e}")
-
+    update_current_branch(branch)
     sys.exit(1)
 
 print(f"Successfully switched to branch '{branch_to_switch}'.")
