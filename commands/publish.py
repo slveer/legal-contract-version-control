@@ -33,18 +33,18 @@ def zip_cwd() -> io.BytesIO:
     return buffer
 
 
-def post_repo(buffer: io.BytesIO) -> requests.Response:
+def post_repo(buffer: io.BytesIO, api_url: str =utils.get_api_url_from_config()) -> requests.Response:
     """Post the repository to the hosted API."""
     try:
         response = requests.post(
-        "http://127.0.0.1:8000/publish",
+        f"{api_url}/publish",
         files={
             "file": (Path.cwd().name + ".zip",
             buffer, "application/zip")
             }
         )
     except Exception as e:
-        raise exceptions.HTTPPostRequestError(f"Failed to post repository to http://127.0.0.1:8000/publish") from e
+        raise exceptions.HTTPPostRequestError(f"Failed to post repository to {api_url}/publish") from e
     return response
 
 
