@@ -69,7 +69,13 @@ if "%command%"=="clone" (
     exit /b !errorlevel!
 )
 
+if "%command%"=="origin" (
+    set "script_directory=%~dp0"
+    python "%script_directory%origin.py" %*
+    exit /b !errorlevel!
+)
+
 echo Unknown command: %command%
-echo Invalid command. Please use "init", "commit", "open", "log", "status", "diff", "help", "branch", "switch", "publish", or "clone", along with required arguments
+echo Invalid command. Please use "init", "commit", "open", "log", "status", "diff", "help", "branch", "switch", "publish", "clone", or "origin", along with required arguments
 echo For help, use the 'sccs help' command
 exit /b 1
