@@ -6,10 +6,10 @@ import os
 import zipfile
 from pathlib import Path
 
+import requests
 from fastapi import FastAPI, File, UploadFile
 from fastapi.responses import StreamingResponse
 from fastapi.staticfiles import StaticFiles
-import requests
 
 app = FastAPI()
 
