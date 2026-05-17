@@ -42,22 +42,22 @@ def zip_cwd() -> io.BytesIO:
     return buffer
 
 
-def post_repo(buffer: io.BytesIO, api_url: str) -> requests.Response:
+def post_repo(buffer: io.BytesIO, remote: str) -> requests.Response:
     """Post the repository to the hosted API."""
 
-    if not api_url.split("/")[-2] == "repos":
+    if not remote.split("/")[-2] == "repos":
         raise exceptions.InvalidAPIURLError("API URL must end with '/repos/<repo_name>'")
 
     try:
         response = requests.post(
-        f"{api_url}/publish",
+        f"{remote}/publish",
         files={
             "file": (Path.cwd().name + ".zip",
             buffer, "application/zip")
             }
         )
     except Exception as e:
-        raise exceptions.HTTPPostRequestError(f"Failed to post repository to {api_url}/publish") from e
+        raise exceptions.HTTPPostRequestError(f"Failed to post repository to {remote}/publish") from e
     return response
 
 
@@ -65,9 +65,9 @@ def main() -> None:
     """Run functions for the <sccs publish> command."""
     reset_current_branch()
     
-    api_url = utils.get_key_from_config("api_url")
-    print(f"Publishing repository to {api_url}...")
-    response = post_repo(zip_cwd(), api_url)
+    remote = utils.get_key_from_config("remote")
+    print(f"Publishing repository to {remote}...")
+    response = post_repo(zip_cwd(), remote)
 
     print(response.status_code)
     print(response.json())
