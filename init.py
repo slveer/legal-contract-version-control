@@ -141,8 +141,6 @@ history_data = {
     }
 }
 
-uncapitalize = 1
-
 with open(os.path.join(document_directory_path, ".sccs", "branches", "main", "history", "commit_history.json"), "w", encoding="utf-8", newline="\n") as f:
     json.dump(history_data, f, indent=4)
 
