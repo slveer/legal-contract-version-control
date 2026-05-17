@@ -99,6 +99,35 @@ def copy_document_to_objects_as_docx_and_html():
 def get_current_iso_time():
     return datetime.now().isoformat()
 
+def write_history_data():
+    history_data = {
+        "history": {
+            "initial_commit": f"{sha_hash}",
+            "latest_commit": f"{sha_hash}",
+            "latest_commit_number": 1,
+            "commit_order": {
+                "1": f"{sha_hash}"
+            }
+        },
+        "log": {
+            f"{sha_hash}": {
+                "timestamp": get_current_iso_time(),
+                "author": f"{config_user_name} <{config_user_email}>",
+                "message": initial_commit_message
+            }
+        }
+    }
+    try:
+        with open(os.path.join(document_directory_path, ".sccs", "branches", "main", "history", "commit_history.json"), "w", encoding="utf-8", newline="\n") as f:
+            try: 
+                json.dump(history_data, f, indent=4)
+            except Exception as e:
+                print(f"Error writing commit history data: {e}")
+                sys.exit(1)
+    except Exception as e:
+        print(f"Error opening commit history file: {e}")
+        sys.exit(1)
+
 check_if_arg_entered(entered_document_path)
 
 check_for_prev_init()
@@ -123,26 +152,7 @@ move_document_to_repo_directory()
 
 copy_document_to_objects_as_docx_and_html()
 
-history_data = {
-    "history": {
-    "initial_commit": f"{sha_hash}",
-    "latest_commit": f"{sha_hash}",
-    "latest_commit_number": 1,
-    "commit_order": {
-        "1": f"{sha_hash}"
-    }
-    },
-    "log": {
-    f"{sha_hash}": {
-    "timestamp": get_current_iso_time(),
-    "author": f"{config_user_name} <{config_user_email}>",
-    "message": initial_commit_message
-    }
-    }
-}
-
-with open(os.path.join(document_directory_path, ".sccs", "branches", "main", "history", "commit_history.json"), "w", encoding="utf-8", newline="\n") as f:
-    json.dump(history_data, f, indent=4)
+write_history_data()
 
 commit_message_data = {
     f"{sha_hash}": initial_commit_message
