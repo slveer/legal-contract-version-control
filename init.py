@@ -26,15 +26,17 @@ def ask_config_input(data):
     else:
         return data_value
 
+def check_for_prev_init():
+    if Path(os.path.join(document_directory_path, ".sccs")).is_dir():
+        print("This file has already been initialized with SCCS")
+        sys.exit(1)
+
 check_if_arg_entered(entered_document_path)
 
-# Check if the directory already contains an SCCS initialization
-if Path(os.path.join(document_directory_path, ".sccs")).is_dir():
-    print("This file has already been initialized with SCCS")
-    sys.exit(1)
+check_for_prev_init()
 
 # Check if the path ends with .docx and exists
-elif entered_document_path and Path(entered_document_path).suffix.lower() == ".docx" and Path(entered_document_path).is_file():
+if entered_document_path and Path(entered_document_path).suffix.lower() == ".docx" and Path(entered_document_path).is_file():
     try:
         with open(entered_document_path, "rb") as f:
             hasher = hashlib.sha256()
