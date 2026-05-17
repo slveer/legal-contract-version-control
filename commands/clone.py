@@ -66,9 +66,13 @@ def main() -> None:
     """Run functions for the <sccs clone> command."""
     response = request_repo()
 
+    repo_name = resolve_entered_url().split("/")[-2]
+
+    print(f"Cloning repository from {resolve_entered_url()}...")
+
     buffer = io.BytesIO(response.content)
 
-    unzip_repo_file(buffer, resolve_entered_url().split("/")[-2])
+    unzip_repo_file(buffer, repo_name)
 
     print(f"Status Code: {response.status_code}")
     if list(str(response.status_code))[0] != "2":
@@ -76,7 +80,7 @@ def main() -> None:
             f"Failed to clone repository: {response.text}"
         )
     else:
-        print(f"Repository cloned successfully to ./{resolve_entered_url().split('/')[-2]}")
+        print(f"Repository cloned successfully to ./{repo_name}")
 
 
 if __name__ == "__main__":
