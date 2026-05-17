@@ -73,13 +73,12 @@ def main() -> None:
     unzip_repo_file(buffer, repo_name)
 
     print(f"Status Code: {response.status_code}")
-    if list(str(response.status_code))[0] != "2":
+    if 200 <= response.status_code < 300:
+        print(f"Repository cloned successfully to ./{repo_name}")
+    else:
         raise exceptions.HTTPGetRequestError(
             f"Failed to clone repository: {response.text}"
         )
-    else:
-        print(f"Repository cloned successfully to ./{repo_name}")
-
 
 if __name__ == "__main__":
     try:
