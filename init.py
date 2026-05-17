@@ -12,11 +12,14 @@ from sccs_layout_check import wrap_html
 path = sys.argv[2] if len(sys.argv) > 2 else None
 
 # Strip .docx extension from the file name to create a directory
-if path: 
-    directory_path = Path(path).with_suffix('')
-else:
-    print("No file path provided")
-    sys.exit(1)
+def check_if_arg_entered(arg):
+    if not arg:
+        print("No file path provided")
+        sys.exit(1)
+
+check_if_arg_entered(path)
+
+directory_path = Path(path).with_suffix('')
 
 # Check if the directory already contains an SCCS initialization
 if Path(os.path.join(directory_path, ".sccs")).is_dir():
