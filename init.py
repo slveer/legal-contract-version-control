@@ -18,6 +18,14 @@ def check_if_arg_entered(arg):
         print("No file path provided")
         sys.exit(1)
 
+def ask_config_input(data):
+    data_value = input(f"Enter your {data}: ").strip()
+    if data_value == "":
+        print(f"{data} cannot be empty.")
+        sys.exit(1)
+    else:
+        return data_value
+
 check_if_arg_entered(PATH)
 
 # Check if the directory already contains an SCCS initialization
@@ -51,17 +59,9 @@ else:
     sys.exit(1)
 
 # Get user inputted name and email
-NAME = input("Enter your name: ").strip()
+NAME = ask_config_input("name")
 
-if NAME == "":
-    print("Name cannot be empty.")
-    sys.exit(1)
-
-EMAIL = input("Enter your email: ").strip()
-
-if EMAIL == "":
-    print("Email cannot be empty.")
-    sys.exit(1)
+EMAIL = ask_config_input("email")
 
 TIMESTAMP = datetime.now().isoformat()
 INITIAL_COMMIT_MESSAGE = "initial commit (This is a default commit message for initial version)"
