@@ -84,6 +84,9 @@ def create_sccs_directory_layout():
     os.makedirs(os.path.join(document_directory_path, ".sccs", "config"), exist_ok=True)
     os.makedirs(os.path.join(document_directory_path, ".sccs", "current_branch"), exist_ok=True)
 
+def move_document_to_repo_directory():
+    shutil.move(entered_document_path, document_directory_path)
+
 check_if_arg_entered(entered_document_path)
 
 check_for_prev_init()
@@ -94,7 +97,6 @@ hashed_file = hash_document()
 
 html = convert_document_to_html()
 
-
 config_user_name = ask_config_input("name")
 
 config_user_email = ask_config_input("email")
@@ -103,12 +105,11 @@ current_timestamp = datetime.now().isoformat()
 
 initial_commit_message = "initial commit (This is a default commit message for initial version)"
 
-
 sha_hash = create_commit_sha_hash(current_timestamp, config_user_name, config_user_email)
 
 create_sccs_directory_layout()
 
-shutil.move(entered_document_path, document_directory_path)
+move_document_to_repo_directory()
 
 shutil.copy2(os.path.join(document_directory_path, Path(entered_document_path).name), os.path.join(document_directory_path, ".sccs", "objects", "docx", f"{sha_hash}.docx"))
 
