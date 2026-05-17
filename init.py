@@ -123,7 +123,7 @@ move_document_to_repo_directory()
 
 copy_document_to_objects_as_docx_and_html()
 
-HISTORY_DATA = {
+history_data = {
     "history": {
     "initial_commit": f"{sha_hash}",
     "latest_commit": f"{sha_hash}",
@@ -141,30 +141,32 @@ HISTORY_DATA = {
     }
 }
 
-with open(os.path.join(document_directory_path, ".sccs", "branches", "main", "history", "commit_history.json"), "w", encoding="utf-8", newline="\n") as f:
-    json.dump(HISTORY_DATA, f, indent=4)
+uncapitalize = 1
 
-COMMIT_MESSAGE_DATA = {
+with open(os.path.join(document_directory_path, ".sccs", "branches", "main", "history", "commit_history.json"), "w", encoding="utf-8", newline="\n") as f:
+    json.dump(history_data, f, indent=4)
+
+commit_message_data = {
     f"{sha_hash}": initial_commit_message
 }
 
 with open(os.path.join(document_directory_path, ".sccs", "commit_messages", "commit_messages.json"), "w", encoding="utf-8", newline="\n") as f:
-    json.dump(COMMIT_MESSAGE_DATA, f, indent=4)
+    json.dump(commit_message_data, f, indent=4)
 
-CONFIG_DATA = {
+config_data = {
     "name": f"{config_user_name}",
     "email": f"{config_user_email}"
 }
 
 with open(os.path.join(document_directory_path, ".sccs", "config", "config.json"), "w", encoding="utf-8", newline="\n") as f:
-    json.dump(CONFIG_DATA, f, indent=4)
+    json.dump(config_data, f, indent=4)
 
-COMMIT_FILE_HASH_DATA = {
+commit_file_hash_data = {
     f"{sha_hash}": hashed_file
 }
 
 with open (os.path.join(document_directory_path, ".sccs", "branches", "main", "commit_file_hash", "commit_file_hash.json"), "w", encoding="utf-8", newline="\n") as f:
-    json.dump(COMMIT_FILE_HASH_DATA, f, indent=4)
+    json.dump(commit_file_hash_data, f, indent=4)
 
 with open(os.path.join(document_directory_path, ".sccs", "current_branch", "current_branch.json"), "w", encoding="utf-8", newline="\n") as f:
     json.dump({
