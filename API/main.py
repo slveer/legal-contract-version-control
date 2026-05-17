@@ -28,6 +28,14 @@ async def publish(
 ) -> dict:
     """Publish a repository to the hosted API"""
 
+    base_dir = Path("API/repos").resolve()
+    repo_path = (base_dir / repo_name).resolve()
+
+    try:
+        repo_path.relative_to(base_dir)
+    except ValueError:
+        raise HTTPException(status_code=400, detail="Invalid repository name")
+
     try:
         remote = json.loads(data)["remote"]
     except Exception as e:
@@ -41,14 +49,14 @@ async def publish(
             status_code=400, detail="Repository name does not match file name"
         )
 
-    if Path(file.filename).stem in os.listdir("API/repos"):
+    if repo_path.exists():
         raise HTTPException(status_code=400, detail="Repository already exists")
 
     with zipfile.ZipFile(file.file, "r") as f:
         for file in f.infolist():
             if ".." in file.filename or file.filename.startswith("/"):
                 raise HTTPException(status_code=400, detail="Invalid file path in zip")
-        f.extractall(f"API/repos/{repo_name}")
+        f.extractall(repo_path)
 
     return {"message": "File published successfully", "repository_url": remote}
 
