@@ -43,7 +43,12 @@ def request_repo(url: str = resolve_entered_url()) -> requests.Response:
         raise exceptions.HTTPGetRequestError(
             f"Failed to request repository from {url}"
         ) from e
-    return response
+    if response.ok:
+        return response
+    else:
+        raise exceptions.HTTPGetRequestError(
+            f"Failed to request repository from {url}"
+        )
 
 
 def unzip_repo_file(buffer: io.BytesIO, destination: str) -> None:
@@ -59,7 +64,6 @@ def unzip_repo_file(buffer: io.BytesIO, destination: str) -> None:
 
 def main() -> None:
     """Run functions for the <sccs clone> command."""
-
     response = request_repo()
 
     buffer = io.BytesIO(response.content)
