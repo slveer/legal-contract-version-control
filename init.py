@@ -52,6 +52,20 @@ def hash_document():
         sys.exit(1)
     return hashed_file
 
+def convert_document_to_html():
+    try: 
+        with open(entered_document_path, "rb") as f:
+            try:
+                result = mammoth.convert_to_html(f)
+                html = result.value
+            except Exception as e:
+                print(f"Error converting .docx to HTML: {e}")
+                sys.exit(1)
+    except Exception as e:
+        print(f"Error processing .docx file: {e}")
+        sys.exit(1)
+    return html   
+      
 check_if_arg_entered(entered_document_path)
 
 check_for_prev_init()
@@ -60,13 +74,7 @@ check_file_requirements()
 
 hashed_file = hash_document()
 
-try: 
-    with open(entered_document_path, "rb") as f:
-        result = mammoth.convert_to_html(f)
-        html = result.value
-except Exception as e:
-    print(f"Error converting .docx to HTML: {e}")
-    sys.exit(1)
+html = convert_document_to_html()
 
 # Get user inputted name and email
 config_user_name = ask_config_input("name")
