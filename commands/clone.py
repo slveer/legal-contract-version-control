@@ -41,7 +41,7 @@ def request_repo(url: str = resolve_entered_url()) -> requests.Response:
         response = requests.get(url)
     except Exception as e:
         raise exceptions.HTTPGetRequestError(
-            f"Failed to request repository from {url}/clone"
+            f"Failed to request repository from {url}"
         ) from e
     return response
 
