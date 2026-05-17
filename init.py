@@ -9,7 +9,8 @@ import mammoth
 from default_css_styles import styles
 from sccs_layout_check import wrap_html
 # Get user inputted path argument
-path = sys.argv[2] if len(sys.argv) > 2 else None
+PATH = sys.argv[2] if len(sys.argv) > 2 else None
+DIRECTORY_PATH = Path(PATH).with_suffix('')
 
 # Strip .docx extension from the file name to create a directory
 def check_if_arg_entered(arg):
@@ -17,19 +18,17 @@ def check_if_arg_entered(arg):
         print("No file path provided")
         sys.exit(1)
 
-check_if_arg_entered(path)
-
-directory_path = Path(path).with_suffix('')
+check_if_arg_entered(PATH)
 
 # Check if the directory already contains an SCCS initialization
-if Path(os.path.join(directory_path, ".sccs")).is_dir():
+if Path(os.path.join(DIRECTORY_PATH, ".sccs")).is_dir():
     print("This file has already been initialized with SCCS")
     sys.exit(1)
 
 # Check if the path ends with .docx and exists
-elif path and Path(path).suffix.lower() == ".docx" and Path(path).is_file():
+elif PATH and Path(PATH).suffix.lower() == ".docx" and Path(PATH).is_file():
     try:
-        with open(path, "rb") as f:
+        with open(PATH, "rb") as f:
             hasher = hashlib.sha256()
             for chunk in iter(lambda: f.read(65536), b""):
                 hasher.update(chunk)
@@ -38,7 +37,7 @@ elif path and Path(path).suffix.lower() == ".docx" and Path(path).is_file():
         print(f"Error processing .docx file: {e}")
         sys.exit(1)
     try: 
-        with open(path, "rb") as f:
+        with open(PATH, "rb") as f:
             result = mammoth.convert_to_html(f)
             html = result.value
     except Exception as e:
@@ -52,93 +51,93 @@ else:
     sys.exit(1)
 
 # Get user inputted name and email
-name = input("Enter your name: ").strip()
+NAME = input("Enter your name: ").strip()
 
-if name == "":
+if NAME == "":
     print("Name cannot be empty.")
     sys.exit(1)
 
-email = input("Enter your email: ").strip()
+EMAIL = input("Enter your email: ").strip()
 
-if email == "":
+if EMAIL == "":
     print("Email cannot be empty.")
     sys.exit(1)
 
-timestamp = datetime.now().isoformat()
-initial_commit_message = "initial commit (This is a default commit message for initial version)"
+TIMESTAMP = datetime.now().isoformat()
+INITIAL_COMMIT_MESSAGE = "initial commit (This is a default commit message for initial version)"
 
 # Generate a SHA-256 hash for the initial commit
-sha_hash = hashlib.sha256(f'{timestamp}/initial_version/{name}/{email}'.encode()).hexdigest()
+SHA_HASH = hashlib.sha256(f'{TIMESTAMP}/initial_version/{NAME}/{EMAIL}'.encode()).hexdigest()
 
 # Create needed directories
-os.makedirs(directory_path, exist_ok=True)
-shutil.move(path, directory_path)
-os.makedirs(os.path.join(directory_path, ".sccs"), exist_ok=True)
-os.makedirs(os.path.join(directory_path, ".sccs", "objects"), exist_ok=True)
-os.makedirs(os.path.join(directory_path, ".sccs", "objects", "docx"), exist_ok=True)
-os.makedirs(os.path.join(directory_path, ".sccs", "objects", "html"), exist_ok=True)
-os.makedirs(os.path.join(directory_path, ".sccs", "objects", "view_html"), exist_ok=True)
-os.makedirs(os.path.join(directory_path, ".sccs", "branches"), exist_ok=True)
-os.makedirs(os.path.join(directory_path, ".sccs", "branches", "main"), exist_ok=True)
-os.makedirs(os.path.join(directory_path, ".sccs", "branches", "main", "history"), exist_ok=True)
-os.makedirs(os.path.join(directory_path, ".sccs", "branches", "main", "commit_file_hash"), exist_ok=True)
-os.makedirs(os.path.join(directory_path, ".sccs", "commit_messages"), exist_ok=True)
-os.makedirs(os.path.join(directory_path, ".sccs", "config"), exist_ok=True)
-os.makedirs(os.path.join(directory_path, ".sccs", "current_branch"), exist_ok=True)
+os.makedirs(DIRECTORY_PATH, exist_ok=True)
+shutil.move(PATH, DIRECTORY_PATH)
+os.makedirs(os.path.join(DIRECTORY_PATH, ".sccs"), exist_ok=True)
+os.makedirs(os.path.join(DIRECTORY_PATH, ".sccs", "objects"), exist_ok=True)
+os.makedirs(os.path.join(DIRECTORY_PATH, ".sccs", "objects", "docx"), exist_ok=True)
+os.makedirs(os.path.join(DIRECTORY_PATH, ".sccs", "objects", "html"), exist_ok=True)
+os.makedirs(os.path.join(DIRECTORY_PATH, ".sccs", "objects", "view_html"), exist_ok=True)
+os.makedirs(os.path.join(DIRECTORY_PATH, ".sccs", "branches"), exist_ok=True)
+os.makedirs(os.path.join(DIRECTORY_PATH, ".sccs", "branches", "main"), exist_ok=True)
+os.makedirs(os.path.join(DIRECTORY_PATH, ".sccs", "branches", "main", "history"), exist_ok=True)
+os.makedirs(os.path.join(DIRECTORY_PATH, ".sccs", "branches", "main", "commit_file_hash"), exist_ok=True)
+os.makedirs(os.path.join(DIRECTORY_PATH, ".sccs", "commit_messages"), exist_ok=True)
+os.makedirs(os.path.join(DIRECTORY_PATH, ".sccs", "config"), exist_ok=True)
+os.makedirs(os.path.join(DIRECTORY_PATH, ".sccs", "current_branch"), exist_ok=True)
 # Add info to the directories, JSON
 
-shutil.copy2(os.path.join(directory_path, Path(path).name), os.path.join(directory_path, ".sccs", "objects", "docx", f"{sha_hash}.docx"))
+shutil.copy2(os.path.join(DIRECTORY_PATH, Path(PATH).name), os.path.join(DIRECTORY_PATH, ".sccs", "objects", "docx", f"{SHA_HASH}.docx"))
 
-with open(os.path.join(directory_path, ".sccs", "objects", "html", f"{sha_hash}.html"), "w", encoding="utf-8", newline="\n") as f:
+with open(os.path.join(DIRECTORY_PATH, ".sccs", "objects", "html", f"{SHA_HASH}.html"), "w", encoding="utf-8", newline="\n") as f:
     f.write(styles + html)
 
-with open(os.path.join(directory_path, ".sccs", "objects", "view_html", f"{sha_hash}.html"), "w", encoding="utf-8", newline="\n") as f:
+with open(os.path.join(DIRECTORY_PATH, ".sccs", "objects", "view_html", f"{SHA_HASH}.html"), "w", encoding="utf-8", newline="\n") as f:
     f.write(wrap_html(html))
 
-history_data = {
+HISTORY_DATA = {
     "history": {
-    "initial_commit": f"{sha_hash}",
-    "latest_commit": f"{sha_hash}",
+    "initial_commit": f"{SHA_HASH}",
+    "latest_commit": f"{SHA_HASH}",
     "latest_commit_number": 1,
     "commit_order": {
-        "1": f"{sha_hash}"
+        "1": f"{SHA_HASH}"
     }
     },
     "log": {
-    f"{sha_hash}": {
-    "timestamp": timestamp,
-    "author": f"{name} <{email}>",
-    "message": initial_commit_message
+    f"{SHA_HASH}": {
+    "timestamp": TIMESTAMP,
+    "author": f"{NAME} <{EMAIL}>",
+    "message": INITIAL_COMMIT_MESSAGE
     }
     }
 }
 
-with open(os.path.join(directory_path, ".sccs", "branches", "main", "history", "commit_history.json"), "w", encoding="utf-8", newline="\n") as f:
-    json.dump(history_data, f, indent=4)
+with open(os.path.join(DIRECTORY_PATH, ".sccs", "branches", "main", "history", "commit_history.json"), "w", encoding="utf-8", newline="\n") as f:
+    json.dump(HISTORY_DATA, f, indent=4)
 
-commit_message_data = {
-    f"{sha_hash}": initial_commit_message
+COMMIT_MESSAGE_DATA = {
+    f"{SHA_HASH}": INITIAL_COMMIT_MESSAGE
 }
 
-with open(os.path.join(directory_path, ".sccs", "commit_messages", "commit_messages.json"), "w", encoding="utf-8", newline="\n") as f:
-    json.dump(commit_message_data, f, indent=4)
+with open(os.path.join(DIRECTORY_PATH, ".sccs", "commit_messages", "commit_messages.json"), "w", encoding="utf-8", newline="\n") as f:
+    json.dump(COMMIT_MESSAGE_DATA, f, indent=4)
 
-config_data = {
-    "name": f"{name}",
-    "email": f"{email}"
+CONFIG_DATA = {
+    "name": f"{NAME}",
+    "email": f"{EMAIL}"
 }
 
-with open(os.path.join(directory_path, ".sccs", "config", "config.json"), "w", encoding="utf-8", newline="\n") as f:
-    json.dump(config_data, f, indent=4)
+with open(os.path.join(DIRECTORY_PATH, ".sccs", "config", "config.json"), "w", encoding="utf-8", newline="\n") as f:
+    json.dump(CONFIG_DATA, f, indent=4)
 
-commit_file_hash_data = {
-    f"{sha_hash}": hashed_file
+COMMIT_FILE_HASH_DATA = {
+    f"{SHA_HASH}": hashed_file
 }
 
-with open (os.path.join(directory_path, ".sccs", "branches", "main", "commit_file_hash", "commit_file_hash.json"), "w", encoding="utf-8", newline="\n") as f:
-    json.dump(commit_file_hash_data, f, indent=4)
+with open (os.path.join(DIRECTORY_PATH, ".sccs", "branches", "main", "commit_file_hash", "commit_file_hash.json"), "w", encoding="utf-8", newline="\n") as f:
+    json.dump(COMMIT_FILE_HASH_DATA, f, indent=4)
 
-with open(os.path.join(directory_path, ".sccs", "current_branch", "current_branch.json"), "w", encoding="utf-8", newline="\n") as f:
+with open(os.path.join(DIRECTORY_PATH, ".sccs", "current_branch", "current_branch.json"), "w", encoding="utf-8", newline="\n") as f:
     json.dump({
         "current_branch": "main",
         "branches": ["main"]
