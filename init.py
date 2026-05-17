@@ -31,33 +31,30 @@ def check_for_prev_init():
         print("This file has already been initialized with SCCS")
         sys.exit(1)
 
+def check_file_requirements():
+    if not entered_document_path and Path(entered_document_path).suffix.lower() == ".docx" and Path(entered_document_path).is_file():
+        print("Invalid file path, make sure the file exists and is a .docx file")
+        sys.exit(1)
+
 check_if_arg_entered(entered_document_path)
 
 check_for_prev_init()
 
-# Check if the path ends with .docx and exists
-if entered_document_path and Path(entered_document_path).suffix.lower() == ".docx" and Path(entered_document_path).is_file():
-    try:
-        with open(entered_document_path, "rb") as f:
-            hasher = hashlib.sha256()
-            for chunk in iter(lambda: f.read(65536), b""):
-                hasher.update(chunk)
-            hashed_file = hasher.hexdigest()
-    except Exception as e:
-        print(f"Error processing .docx file: {e}")
-        sys.exit(1)
-    try: 
-        with open(entered_document_path, "rb") as f:
-            result = mammoth.convert_to_html(f)
-            html = result.value
-    except Exception as e:
-        print(f"Error converting .docx to HTML: {e}")
-        sys.exit(1)
-
-# if not, exit  
-
-else: 
-    print("Invalid file path, make sure the file exists and is a .docx file")
+try:
+    with open(entered_document_path, "rb") as f:
+        hasher = hashlib.sha256()
+        for chunk in iter(lambda: f.read(65536), b""):
+            hasher.update(chunk)
+        hashed_file = hasher.hexdigest()
+except Exception as e:
+    print(f"Error processing .docx file: {e}")
+    sys.exit(1)
+try: 
+    with open(entered_document_path, "rb") as f:
+        result = mammoth.convert_to_html(f)
+        html = result.value
+except Exception as e:
+    print(f"Error converting .docx to HTML: {e}")
     sys.exit(1)
 
 # Get user inputted name and email
