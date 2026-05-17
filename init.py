@@ -87,8 +87,14 @@ def create_sccs_directory_layout():
 def move_document_to_repo_directory():
     shutil.move(entered_document_path, document_directory_path)
 
-def copy_document_to_objects():
+def copy_document_to_objects_as_docx_and_html():
     shutil.copy2(os.path.join(document_directory_path, Path(entered_document_path).name), os.path.join(document_directory_path, ".sccs", "objects", "docx", f"{sha_hash}.docx"))
+    
+    with open(os.path.join(document_directory_path, ".sccs", "objects", "html", f"{sha_hash}.html"), "w", encoding="utf-8", newline="\n") as f:
+        f.write(styles + html)
+
+    with open(os.path.join(document_directory_path, ".sccs", "objects", "view_html", f"{sha_hash}.html"), "w", encoding="utf-8", newline="\n") as f:
+        f.write(wrap_html(html))
 
 check_if_arg_entered(entered_document_path)
 
@@ -114,13 +120,7 @@ create_sccs_directory_layout()
 
 move_document_to_repo_directory()
 
-copy_document_to_objects()
-
-with open(os.path.join(document_directory_path, ".sccs", "objects", "html", f"{sha_hash}.html"), "w", encoding="utf-8", newline="\n") as f:
-    f.write(styles + html)
-
-with open(os.path.join(document_directory_path, ".sccs", "objects", "view_html", f"{sha_hash}.html"), "w", encoding="utf-8", newline="\n") as f:
-    f.write(wrap_html(html))
+copy_document_to_objects_as_docx_and_html()
 
 HISTORY_DATA = {
     "history": {
