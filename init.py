@@ -65,7 +65,10 @@ def convert_document_to_html():
         print(f"Error processing .docx file: {e}")
         sys.exit(1)
     return html   
-      
+
+def create_commit_sha_hash(timestamp, user_name, user_email):
+    return hashlib.sha256(f'{timestamp}/initial_version/{user_name}/{user_email}'.encode()).hexdigest()
+
 check_if_arg_entered(entered_document_path)
 
 check_for_prev_init()
@@ -86,7 +89,7 @@ current_timestamp = datetime.now().isoformat()
 initial_commit_message = "initial commit (This is a default commit message for initial version)"
 
 # Generate a SHA-256 hash for the initial commit
-sha_hash = hashlib.sha256(f'{current_timestamp}/initial_version/{config_user_name}/{config_user_email}'.encode()).hexdigest()
+sha_hash = create_commit_sha_hash(current_timestamp, config_user_name, config_user_email)
 
 # Create needed directories
 os.makedirs(document_directory_path, exist_ok=True)
