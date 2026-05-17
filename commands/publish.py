@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """Publish a SCCS repository to a hosted API"""
 
 from pathlib import Path

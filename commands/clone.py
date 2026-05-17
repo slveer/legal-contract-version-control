@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """Clone a hosted SCCS repository with a URL"""
 import io
 import zipfile
