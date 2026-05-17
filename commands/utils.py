@@ -249,13 +249,13 @@ def get_key_from_config(key: str, cwd: Path = None) -> str:
         newline="\n",
     ) as f:
 
-        config = json.load(f)
-        if config.get(key) is None:
+        value = json.load(f).get(key)
+        if value is None:
             raise exceptions.InvalidMetadataError(
                 f"Key '{key}' not found in config file. Please configure the "
                 f"information in the config file. with 'sccs config {key} <value>'."
             )
-        return config.get(key)
+        return value
 
 
 def write_key_to_config(key: str, value: str, cwd: Path = None) -> None:
