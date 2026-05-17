@@ -34,7 +34,7 @@ def zip_cwd() -> io.BytesIO:
     return buffer
 
 
-def post_repo(buffer: io.BytesIO, api_url: str =utils.get_api_url_from_config()) -> requests.Response:
+def post_repo(buffer: io.BytesIO, api_url: str) -> requests.Response:
     """Post the repository to the hosted API."""
     try:
         response = requests.post(
@@ -51,8 +51,8 @@ def post_repo(buffer: io.BytesIO, api_url: str =utils.get_api_url_from_config())
 
 def main() -> None:
     """Run functions for the <sccs publish> command."""
-    
-    response = post_repo(zip_cwd())
+    api_url = utils.get_api_url_from_config()
+    response = post_repo(zip_cwd(), api_url)
 
     print(response.status_code)
     print(response.json())
