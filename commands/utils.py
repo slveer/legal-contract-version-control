@@ -252,7 +252,7 @@ def get_key_from_config(key: str, cwd: Path = None) -> str:
 def write_key_to_config(key: str, value: str, cwd: Path = None) -> None:
     """Write a specific key to the config file."""
     if cwd is None:
-        cwd = utils.working_directory_path
+        cwd = working_directory_path
 
     with open(Path(cwd) / ".sccs" / "config" / "config.json", "r+", encoding="utf-8", newline="\n") as f:
         config = json.load(f)
