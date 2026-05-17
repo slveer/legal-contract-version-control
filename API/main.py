@@ -24,9 +24,12 @@ async def root() -> dict:
 
 @app.post("/repos/{repo_name}/publish")
 async def publish(
-    repo_name: str, file: UploadFile = File(...)
+    repo_name: str, file: UploadFile = File(...), remote: str = None
 ) -> dict:
     """Publish a repository to the hosted API"""
+
+    if not remote:
+        raise HTTPException(status_code=400, detail="No remote URL provided")
 
     if not Path(file.filename).stem == repo_name:
         raise HTTPException(
@@ -48,7 +51,7 @@ async def publish(
         f.extractall(f"API/repos/{Path(file.filename).stem}")
     return {
         "message": "File published successfully",
-        "repository_url": f"http://127.0.0.1:8000/repos/{Path(file.filename).stem}",
+        "repository_url": remote
     }
 
 

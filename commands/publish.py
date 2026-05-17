@@ -63,6 +63,7 @@ def post_repo(buffer: io.BytesIO, remote: str) -> requests.Response:
     try:
         response = requests.post(
             f"{remote}/publish",
+            remote=remote,
             files={"file": (Path.cwd().name + ".zip", buffer, "application/zip")},
         )
     except Exception as e:
