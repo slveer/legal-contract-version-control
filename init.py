@@ -159,6 +159,21 @@ def write_config_data():
         print(f"Error opening config data file: {e}")
         sys.exit(1)
 
+def write_hashed_file_commit_data():
+    commit_file_hash_data = {
+        f"{sha_hash}": hashed_file
+    }
+    try:
+        with open(os.path.join(document_directory_path, ".sccs", "branches", "main", "commit_file_hash", "commit_file_hash.json"), "w", encoding="utf-8", newline="\n") as f:
+            try:
+                json.dump(commit_file_hash_data, f, indent=4)
+            except Exception as e:
+                print(f"Error writing commit file hash data: {e}")
+                sys.exit(1)
+    except Exception as e:
+        print(f"Error opening commit file hash data file: {e}")
+        sys.exit(1)
+
 check_if_arg_entered(entered_document_path)
 
 check_for_prev_init()
@@ -189,12 +204,7 @@ write_commit_message_data()
 
 write_config_data()
 
-commit_file_hash_data = {
-    f"{sha_hash}": hashed_file
-}
-
-with open (os.path.join(document_directory_path, ".sccs", "branches", "main", "commit_file_hash", "commit_file_hash.json"), "w", encoding="utf-8", newline="\n") as f:
-    json.dump(commit_file_hash_data, f, indent=4)
+write_hashed_file_commit_data()
 
 with open(os.path.join(document_directory_path, ".sccs", "current_branch", "current_branch.json"), "w", encoding="utf-8", newline="\n") as f:
     json.dump({
