@@ -190,6 +190,9 @@ def write_branch_data():
         print(f"Error opening branch data file: {e}")
         sys.exit(1)
 
+def confirmation_message():
+    print("SCCS initialization complete.")
+
 check_if_arg_entered(entered_document_path)
 
 check_for_prev_init()
@@ -224,4 +227,4 @@ write_hashed_file_commit_data()
 
 write_branch_data()
 
-print("SCCS initialization complete.")
+confirmation_message()
