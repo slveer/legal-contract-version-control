@@ -40,6 +40,8 @@ check_if_arg_entered(entered_document_path)
 
 check_for_prev_init()
 
+check_file_requirements()
+
 try:
     with open(entered_document_path, "rb") as f:
         hasher = hashlib.sha256()
