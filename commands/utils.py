@@ -245,7 +245,7 @@ def get_key_from_config(key: str, cwd: Path = None) -> str:
     with open(Path(cwd) / ".sccs" / "config" / "config.json", "r", encoding="utf-8", newline="\n") as f:
         config = json.load(f)
         if config.get(key) is None:
-            raise exceptions.InvalidMetadataError(f"Key '{key}' not found in config file. Please configure the information in the config file.")
+            raise exceptions.InvalidMetadataError(f"Key '{key}' not found in config file. Please configure the information in the config file. with 'sccs config {key} <value>'.")
         return config.get(key)
     
 
