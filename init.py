@@ -128,6 +128,21 @@ def write_history_data():
         print(f"Error opening commit history file: {e}")
         sys.exit(1)
 
+def write_commit_message_data():
+    commit_message_data = {
+        f"{sha_hash}": initial_commit_message
+    }
+    try:
+        with open(os.path.join(document_directory_path, ".sccs", "commit_messages", "commit_messages.json"), "w", encoding="utf-8", newline="\n") as f:
+            try:
+                json.dump(commit_message_data, f, indent=4)
+            except Exception as e:
+                print(f"Error writing commit message data: {e}")
+                sys.exit(1)
+    except Exception as e:
+        print(f"Error opening commit message data file: {e}")
+        sys.exit(1)
+
 check_if_arg_entered(entered_document_path)
 
 check_for_prev_init()
@@ -154,12 +169,7 @@ copy_document_to_objects_as_docx_and_html()
 
 write_history_data()
 
-commit_message_data = {
-    f"{sha_hash}": initial_commit_message
-}
-
-with open(os.path.join(document_directory_path, ".sccs", "commit_messages", "commit_messages.json"), "w", encoding="utf-8", newline="\n") as f:
-    json.dump(commit_message_data, f, indent=4)
+write_commit_message_data()
 
 config_data = {
     "name": f"{config_user_name}",
