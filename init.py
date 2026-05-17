@@ -69,6 +69,21 @@ def convert_document_to_html():
 def create_commit_sha_hash(timestamp, user_name, user_email):
     return hashlib.sha256(f'{timestamp}/initial_version/{user_name}/{user_email}'.encode()).hexdigest()
 
+def create_sccs_directory_layout():
+    os.makedirs(document_directory_path, exist_ok=True)
+    os.makedirs(os.path.join(document_directory_path, ".sccs"), exist_ok=True)
+    os.makedirs(os.path.join(document_directory_path, ".sccs", "objects"), exist_ok=True)
+    os.makedirs(os.path.join(document_directory_path, ".sccs", "objects", "docx"), exist_ok=True)
+    os.makedirs(os.path.join(document_directory_path, ".sccs", "objects", "html"), exist_ok=True)
+    os.makedirs(os.path.join(document_directory_path, ".sccs", "objects", "view_html"), exist_ok=True)
+    os.makedirs(os.path.join(document_directory_path, ".sccs", "branches"), exist_ok=True)
+    os.makedirs(os.path.join(document_directory_path, ".sccs", "branches", "main"), exist_ok=True)
+    os.makedirs(os.path.join(document_directory_path, ".sccs", "branches", "main", "history"), exist_ok=True)
+    os.makedirs(os.path.join(document_directory_path, ".sccs", "branches", "main", "commit_file_hash"), exist_ok=True)
+    os.makedirs(os.path.join(document_directory_path, ".sccs", "commit_messages"), exist_ok=True)
+    os.makedirs(os.path.join(document_directory_path, ".sccs", "config"), exist_ok=True)
+    os.makedirs(os.path.join(document_directory_path, ".sccs", "current_branch"), exist_ok=True)
+
 check_if_arg_entered(entered_document_path)
 
 check_for_prev_init()
@@ -79,7 +94,7 @@ hashed_file = hash_document()
 
 html = convert_document_to_html()
 
-# Get user inputted name and email
+
 config_user_name = ask_config_input("name")
 
 config_user_email = ask_config_input("email")
@@ -88,25 +103,12 @@ current_timestamp = datetime.now().isoformat()
 
 initial_commit_message = "initial commit (This is a default commit message for initial version)"
 
-# Generate a SHA-256 hash for the initial commit
+
 sha_hash = create_commit_sha_hash(current_timestamp, config_user_name, config_user_email)
 
-# Create needed directories
-os.makedirs(document_directory_path, exist_ok=True)
+create_sccs_directory_layout()
+
 shutil.move(entered_document_path, document_directory_path)
-os.makedirs(os.path.join(document_directory_path, ".sccs"), exist_ok=True)
-os.makedirs(os.path.join(document_directory_path, ".sccs", "objects"), exist_ok=True)
-os.makedirs(os.path.join(document_directory_path, ".sccs", "objects", "docx"), exist_ok=True)
-os.makedirs(os.path.join(document_directory_path, ".sccs", "objects", "html"), exist_ok=True)
-os.makedirs(os.path.join(document_directory_path, ".sccs", "objects", "view_html"), exist_ok=True)
-os.makedirs(os.path.join(document_directory_path, ".sccs", "branches"), exist_ok=True)
-os.makedirs(os.path.join(document_directory_path, ".sccs", "branches", "main"), exist_ok=True)
-os.makedirs(os.path.join(document_directory_path, ".sccs", "branches", "main", "history"), exist_ok=True)
-os.makedirs(os.path.join(document_directory_path, ".sccs", "branches", "main", "commit_file_hash"), exist_ok=True)
-os.makedirs(os.path.join(document_directory_path, ".sccs", "commit_messages"), exist_ok=True)
-os.makedirs(os.path.join(document_directory_path, ".sccs", "config"), exist_ok=True)
-os.makedirs(os.path.join(document_directory_path, ".sccs", "current_branch"), exist_ok=True)
-# Add info to the directories, JSON
 
 shutil.copy2(os.path.join(document_directory_path, Path(entered_document_path).name), os.path.join(document_directory_path, ".sccs", "objects", "docx", f"{sha_hash}.docx"))
 
