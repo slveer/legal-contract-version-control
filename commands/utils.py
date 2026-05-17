@@ -242,10 +242,17 @@ def get_key_from_config(key: str, cwd: Path = None) -> str:
     """Retrieve a specific key from the SCCS config file."""
     if cwd is None:
         cwd = working_directory_path
-    with open(Path(cwd) / ".sccs" / "config" / "config.json", "r", encoding="utf-8", newline="\n") as f:
+    with open(
+            Path(cwd) / ".sccs" / "config" / "config.json",
+            "r", encoding="utf-8", newline="\n"
+        ) as f:
+
         config = json.load(f)
         if config.get(key) is None:
-            raise exceptions.InvalidMetadataError(f"Key '{key}' not found in config file. Please configure the information in the config file. with 'sccs config {key} <value>'.")
+            raise exceptions.InvalidMetadataError(
+                f"Key '{key}' not found in config file. Please configure the "
+                f"information in the config file. with 'sccs config {key} <value>'."
+            )
         return config.get(key)
     
 
@@ -254,7 +261,11 @@ def write_key_to_config(key: str, value: str, cwd: Path = None) -> None:
     if cwd is None:
         cwd = working_directory_path
 
-    with open(Path(cwd) / ".sccs" / "config" / "config.json", "r+", encoding="utf-8", newline="\n") as f:
+    with open(
+            Path(cwd) / ".sccs" / "config" / "config.json",
+            "r+", encoding="utf-8", newline="\n"
+        ) as f:
+        
         config = json.load(f)
         config[key] = value
         f.seek(0)

@@ -7,6 +7,7 @@ import requests
 import sys
 import exceptions
 
+
 def get_entered_url() -> str | None:
     """Retrieve the URL entered by the user."""
     return sys.argv[2] if len(sys.argv) > 2 else None
@@ -35,7 +36,9 @@ def request_repo(url: str = resolve_entered_url()) -> requests.Response:
     try:
         response = requests.get(url)
     except Exception as e:
-        raise exceptions.HTTPGetRequestError(f"Failed to request repository from {url}/clone") from e
+        raise exceptions.HTTPGetRequestError(
+            f"Failed to request repository from {url}/clone"
+        ) from e
     return response
 
 

@@ -32,13 +32,19 @@ def resolve_entered_remote(remote: str) -> str:
     ends with '/repos/<repo-name>'."""
 
     if not remote.startswith("http://") and not remote.startswith("https://"):
-        raise exceptions.InvalidArgumentError("Invalid remote URL provided. Please provide a valid URL starting with 'http://' or 'https://'.")
+        raise exceptions.InvalidArgumentError(
+            "Invalid remote URL provided. Please provide a valid URL starting with "
+            "'http://' or 'https://'."
+        )
 
     if remote.endswith("/"):
         remote = remote[:-1]
 
     if remote.endswith in ["publish", "clone"]:
-        raise exceptions.InvalidArgumentError("Invalid remote URL provided. Please provide a valid URL. It cannot end with '/publish' or '/clone'.")
+        raise exceptions.InvalidArgumentError(
+            "Invalid remote URL provided. Please provide a valid URL. It cannot end "
+            "with '/publish' or '/clone'."
+        )
     
     if not remote.endswith("/repos"):
         remote += "/repos"

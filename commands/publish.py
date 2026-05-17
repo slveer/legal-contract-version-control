@@ -11,11 +11,16 @@ import sys
 import utils
 
 
-def reset_current_branch(cwd: Path = None):
+def reset_current_branch(cwd: Path = None) -> None:
+    """Reset the current branch to 'main'."""
+
     if cwd is None:
         cwd = utils.working_directory_path
 
-    with open(Path(cwd) / ".sccs" / "current_branch" / "current_branch.json", "w", encoding="utf-8", newline="\n") as f:
+    with open(
+        Path(cwd)/".sccs" / "current_branch" / "current_branch.json",
+        "w", encoding="utf-8", newline="\n"
+    ) as f:
         f.write('{"current_branch": "main"}')
 
 
@@ -32,7 +37,9 @@ def zip_cwd() -> io.BytesIO:
                 for file in files:
                     zip_file.write(Path(root) / file)
     except Exception as e:
-        raise exceptions.ZippingFileError("Failed to zip current working directory") from e
+        raise exceptions.ZippingFileError(
+        "Failed to zip current working directory"
+    ) from e
 
     try:
         buffer.seek(0)
@@ -46,7 +53,9 @@ def post_repo(buffer: io.BytesIO, remote: str) -> requests.Response:
     """Post the repository to the hosted API."""
 
     if not remote.split("/")[-2] == "repos":
-        raise exceptions.InvalidAPIURLError("API URL must end with '/repos/<repo_name>'")
+        raise exceptions.InvalidAPIURLError(
+        "API URL must end with '/repos/<repo_name>'"
+    )
 
     try:
         response = requests.post(
@@ -57,7 +66,9 @@ def post_repo(buffer: io.BytesIO, remote: str) -> requests.Response:
             }
         )
     except Exception as e:
-        raise exceptions.HTTPPostRequestError(f"Failed to post repository to {remote}/publish") from e
+        raise exceptions.HTTPPostRequestError(
+            f"Failed to post repository to {remote}/publish"
+        ) from e
     return response
 
 
