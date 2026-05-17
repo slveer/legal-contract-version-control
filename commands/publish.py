@@ -5,6 +5,7 @@ import io
 import os
 import sys
 import zipfile
+from urllib.parse import urlsplit
 from pathlib import Path
 
 import exceptions
@@ -55,7 +56,7 @@ def zip_cwd() -> io.BytesIO:
 def post_repo(buffer: io.BytesIO, remote: str) -> requests.Response:
     """Post the repository to the hosted API."""
 
-    if not remote.split("/")[-2] == "repos":
+    if not urlsplit(remote).path.endswith(f"/repos/{utils.working_directory_path.name}"):
         raise exceptions.InvalidAPIURLError(
             "API URL must end with '/repos/<repo_name>'"
         )
