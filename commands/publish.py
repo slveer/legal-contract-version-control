@@ -11,6 +11,14 @@ import sys
 import utils
 
 
+def reset_current_branch(cwd: Path = None):
+    if cwd is None:
+        cwd = utils.working_directory_path
+    
+    with open(Path(cwd) / ".sccs" / "current_branch" / "current_branch.json", "w", encoding="utf-8", newline="\n") as f:
+        f.write('{"current_branch": "main"}')
+
+
 def zip_cwd() -> io.BytesIO:
     """Zip the current working directory."""
     try:
@@ -51,7 +59,9 @@ def post_repo(buffer: io.BytesIO, api_url: str) -> requests.Response:
 
 def main() -> None:
     """Run functions for the <sccs publish> command."""
-    api_url = utils.get_api_url_from_config()
+    reset_current_branch()
+    
+    api_url = utils.get_key_from_config("api_url")
     response = post_repo(zip_cwd(), api_url)
 
     print(response.status_code)
