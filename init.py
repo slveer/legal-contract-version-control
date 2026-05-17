@@ -143,6 +143,22 @@ def write_commit_message_data():
         print(f"Error opening commit message data file: {e}")
         sys.exit(1)
 
+def write_config_data():
+    config_data = {
+        "name": f"{config_user_name}",
+        "email": f"{config_user_email}"
+    }
+    try:
+        with open(os.path.join(document_directory_path, ".sccs", "config", "config.json"), "w", encoding="utf-8", newline="\n") as f:
+            try:
+                json.dump(config_data, f, indent=4)
+            except Exception as e:
+                print(f"Error writing config data: {e}")
+                sys.exit(1)
+    except Exception as e:
+        print(f"Error opening config data file: {e}")
+        sys.exit(1)
+
 check_if_arg_entered(entered_document_path)
 
 check_for_prev_init()
@@ -171,13 +187,7 @@ write_history_data()
 
 write_commit_message_data()
 
-config_data = {
-    "name": f"{config_user_name}",
-    "email": f"{config_user_email}"
-}
-
-with open(os.path.join(document_directory_path, ".sccs", "config", "config.json"), "w", encoding="utf-8", newline="\n") as f:
-    json.dump(config_data, f, indent=4)
+write_config_data()
 
 commit_file_hash_data = {
     f"{sha_hash}": hashed_file
