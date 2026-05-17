@@ -89,12 +89,15 @@ def move_document_to_repo_directory():
 
 def copy_document_to_objects_as_docx_and_html():
     shutil.copy2(os.path.join(document_directory_path, Path(entered_document_path).name), os.path.join(document_directory_path, ".sccs", "objects", "docx", f"{sha_hash}.docx"))
-    
+
     with open(os.path.join(document_directory_path, ".sccs", "objects", "html", f"{sha_hash}.html"), "w", encoding="utf-8", newline="\n") as f:
         f.write(styles + html)
 
     with open(os.path.join(document_directory_path, ".sccs", "objects", "view_html", f"{sha_hash}.html"), "w", encoding="utf-8", newline="\n") as f:
         f.write(wrap_html(html))
+
+def get_current_iso_time():
+    return datetime.now().isoformat()
 
 check_if_arg_entered(entered_document_path)
 
@@ -110,11 +113,9 @@ config_user_name = ask_config_input("name")
 
 config_user_email = ask_config_input("email")
 
-current_timestamp = datetime.now().isoformat()
-
 initial_commit_message = "initial commit (This is a default commit message for initial version)"
 
-sha_hash = create_commit_sha_hash(current_timestamp, config_user_name, config_user_email)
+sha_hash = create_commit_sha_hash(get_current_iso_time(), config_user_name, config_user_email)
 
 create_sccs_directory_layout()
 
@@ -133,7 +134,7 @@ HISTORY_DATA = {
     },
     "log": {
     f"{sha_hash}": {
-    "timestamp": current_timestamp,
+    "timestamp": get_current_iso_time(),
     "author": f"{config_user_name} <{config_user_email}>",
     "message": initial_commit_message
     }
