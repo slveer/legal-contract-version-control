@@ -36,21 +36,30 @@ def check_file_requirements():
         print("Invalid file path, make sure the file exists and is a .docx file")
         sys.exit(1)
 
+def hash_document():
+    try:
+        with open(entered_document_path, "rb") as f:
+            try:
+                hasher = hashlib.sha256()
+                for chunk in iter(lambda: f.read(65536), b""):
+                    hasher.update(chunk)
+                    hashed_file = hasher.hexdigest()
+            except Exception as e:
+                print(f"Error hashing .docx file: {e}")
+                sys.exit(1)
+    except Exception as e:
+        print(f"Error processing .docx file: {e}")
+        sys.exit(1)
+    return hashed_file
+
 check_if_arg_entered(entered_document_path)
 
 check_for_prev_init()
 
 check_file_requirements()
 
-try:
-    with open(entered_document_path, "rb") as f:
-        hasher = hashlib.sha256()
-        for chunk in iter(lambda: f.read(65536), b""):
-            hasher.update(chunk)
-        hashed_file = hasher.hexdigest()
-except Exception as e:
-    print(f"Error processing .docx file: {e}")
-    sys.exit(1)
+hashed_file = hash_document()
+
 try: 
     with open(entered_document_path, "rb") as f:
         result = mammoth.convert_to_html(f)
