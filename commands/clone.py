@@ -58,7 +58,7 @@ def unzip_repo_file(buffer: io.BytesIO, destination: str) -> None:
 
 
 def main() -> None:
-    """Run functions for the <sccs publish> command."""
+    """Run functions for the <sccs clone> command."""
 
     response = request_repo()
 
@@ -67,6 +67,7 @@ def main() -> None:
     unzip_repo_file(buffer, resolve_entered_url().split("/")[-2])
 
     print(response.status_code)
+    print(f"Repository cloned successfully to ./{resolve_entered_url().split('/')[-2]}")
 
 
 if __name__ == "__main__":

@@ -81,7 +81,7 @@ def main() -> None:
     response = post_repo(zip_cwd(), remote)
 
     print(response.status_code)
-    print(response.json())
+    print(f"Repository published successfully to {remote}/publish")
 
 
 if __name__ == "__main__":
