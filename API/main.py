@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """API Endpoints for hosted SCCS Repositories"""
 
+from http.client import HTTPException
 import io
 import os
 import zipfile
@@ -28,15 +29,21 @@ async def publish(
     """Publish a repository to the hosted API"""
 
     if not Path(file.filename).stem == repo_name:
-        return {"message": "Repository name mismatch"}, 400
+        raise HTTPException(
+            status_code=400, detail="Repository name does not match file name"
+        )
     
     if Path(file.filename).stem in os.listdir("API/repos"):
-        return {"message": "Repository already exists"}, 400
+        raise HTTPException(
+            status_code=400, detail="Repository already exists"
+        )
 
     with zipfile.ZipFile(file.file, "r") as f:
         for file in f.infolist():
             if ".." in file.filename or file.filename.startswith("/"):
-                return {"message": "Invalid file path in zip"}, 400
+                raise HTTPException(
+                    status_code=400, detail="Invalid file path in zip"
+                )
 
         f.extractall(f"API/repos/{Path(file.filename).stem}")
     return {
@@ -50,10 +57,10 @@ async def clone(repo_name: str) -> StreamingResponse:
     """Return a zipped version of a requested repository"""
 
     if ".." in repo_name or repo_name.startswith("/"):
-        return {"message": "Invalid repository name"}, 400
+        raise HTTPException(status_code=400, detail="Invalid repository name")
 
     if not os.path.exists(f"API/repos/{repo_name}"):
-        return {"message": "Repository not found"}, 404
+        raise HTTPException(status_code=404, detail="Repository not found")
 
     buffer = io.BytesIO()
     with zipfile.ZipFile(buffer, "w", zipfile.ZIP_DEFLATED) as f:
