@@ -72,8 +72,8 @@ async def clone(repo_name: str) -> StreamingResponse:
         repo_path.relative_to(base_dir)
     except ValueError:
         raise HTTPException(status_code=400, detail="Invalid repository name")
-
-    if not os.path.exists(f"API/repos/{repo_name}"):
+    
+    if not repo_path.exists() or not repo_path.is_dir():
         raise HTTPException(status_code=404, detail="Repository not found")
 
     buffer = io.BytesIO()
