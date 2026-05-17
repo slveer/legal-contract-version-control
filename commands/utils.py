@@ -248,3 +248,16 @@ def get_key_from_config(key: str, cwd: Path = None) -> str:
             raise exceptions.InvalidMetadataError(f"Key '{key}' not found in config file. Please configure the information in the config file.")
         return config.get(key)
     
+
+def write_key_to_config(key: str, value: str, cwd: Path = None) -> None:
+    """Write a specific key to the config file."""
+    if cwd is None:
+        cwd = utils.working_directory_path
+
+    with open(Path(cwd) / ".sccs" / "config" / "config.json", "r+", encoding="utf-8", newline="\n") as f:
+        config = json.load(f)
+        config[key] = value
+        f.seek(0)
+        json.dump(config, f, indent=4)
+        f.truncate()
+    

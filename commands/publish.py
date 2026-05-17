@@ -14,7 +14,7 @@ import utils
 def reset_current_branch(cwd: Path = None):
     if cwd is None:
         cwd = utils.working_directory_path
-    
+
     with open(Path(cwd) / ".sccs" / "current_branch" / "current_branch.json", "w", encoding="utf-8", newline="\n") as f:
         f.write('{"current_branch": "main"}')
 

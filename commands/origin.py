@@ -34,22 +34,10 @@ def resolve_entered_origin(origin: str = get_entered_origin()) -> str:
     return origin
 
 
-
-def write_origin_to_config(remote: str = resolve_entered_origin()) -> None:
-    """Write the origin to the config file."""
-
-    with open(Path(utils.working_directory_path / ".sccs" / "config" / "config.json"), "r+", encoding="utf-8", newline="\n") as f:
-        config = json.load(f)
-        config["api_url"] = remote
-        f.seek(0)
-        json.dump(config, f, indent=4)
-        f.truncate()
-
-
 def main() -> None:
     """Run functions for the <sccs clone> command."""
 
-    write_origin_to_config()
+    utils.write_key_to_config("api_url", resolve_entered_origin())
 
 
 if __name__ == "__main__":
