@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 """Module for utility functions used in SCCS."""
 
-from datetime import datetime
 import hashlib
 import json
 import re
-from pathlib import Path
 import shutil
+from datetime import datetime
+from pathlib import Path
 
 import exceptions
 import mammoth
@@ -515,5 +515,3 @@ def atomically_update_history(update_dict: dict[Path, dict]) -> None:
             key.with_suffix(".tmp").replace(key)
         except Exception as e:
             raise exceptions.TemporaryFileError from e
-
-
