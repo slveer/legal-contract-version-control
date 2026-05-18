@@ -532,7 +532,7 @@ def commit_changes(commit_msg: str) -> str:
 
     history = get_commit_history()
 
-    parent_hash = get_parent_hash()
+    parent_hash = get_parent_hash(history)
 
     sha_hash = generate_commit_hash(timestamp, commit_message, name, email, parent_hash)
 
