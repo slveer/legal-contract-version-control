@@ -75,7 +75,7 @@ async def publish(
         for file in f.infolist():
             path = Path(base_dir / repo_name / file.filename).resolve()
             try:
-                path.relative_to(base_dir)
+                path.relative_to(repo_path)
             except ValueError:
                 raise HTTPException(status_code=400, detail="Invalid file path in zip")
 
