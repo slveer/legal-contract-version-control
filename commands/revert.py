@@ -45,7 +45,6 @@ def revert(src: Path, dst: Path | None = None) -> None:
     if dst is None:
         dst = utils.current_file_docx_path
 
-
     shutil.copy(src, dst)
 
 
