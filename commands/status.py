@@ -9,10 +9,15 @@ import exceptions
 import utils
 
 
-def get_latest_commit_hash_file(current_branch: str = None, cwd: Path = None) -> str:
+def get_latest_commit_hash_file(
+    current_branch: str | None = None, cwd: Path | None = None
+) -> str:
     """Retrieve the hash of the latest commit from SCCS metadata."""
     if cwd is None:
         cwd = utils.working_directory_path
+
+    if current_branch is None:
+        current_branch = utils.get_current_branch()
     # get the latest commit filename hash from commit history
     history_path = (
         cwd / ".sccs" / "branches" / current_branch / "history" / "commit_history.json"
@@ -45,7 +50,7 @@ def get_latest_commit_hash_file(current_branch: str = None, cwd: Path = None) ->
 
 
 def get_latest_commit_file_binary_hash(
-    current_branch: str = None, cwd: Path = None
+    current_branch: str | None = None, cwd: Path | None = None
 ) -> str:
     """Retrieve the hash of the latest committed file from SCCS metadata."""
 
