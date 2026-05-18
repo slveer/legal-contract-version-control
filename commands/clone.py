@@ -46,9 +46,7 @@ def request_repo(url: str = resolve_entered_url()) -> requests.Response:
     if response.ok:
         return response
     else:
-        raise exceptions.HTTPGetRequestError(
-            f"Failed to request repository from {url}"
-        )
+        raise exceptions.HTTPGetRequestError(f"Failed to request repository from {url}")
 
 
 def unzip_repo_file(buffer: io.BytesIO, destination: str) -> None:

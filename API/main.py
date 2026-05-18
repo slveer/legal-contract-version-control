@@ -2,13 +2,13 @@
 """API Endpoints for hosted SCCS Repositories"""
 
 import io
+import json
 import os
 import zipfile
 from pathlib import Path
-import json
 
 import requests
-from fastapi import FastAPI, File, UploadFile, HTTPException, Form
+from fastapi import FastAPI, File, Form, HTTPException, UploadFile
 from fastapi.responses import StreamingResponse
 from fastapi.staticfiles import StaticFiles
 
@@ -27,8 +27,9 @@ async def publish(
     repo_name: str, file: UploadFile = File(...), data: str = Form(...)
 ) -> dict:
     """Publish a repository to the hosted API"""
-    
-    try: remote = json.loads(data)["remote"]
+
+    try:
+        remote = json.loads(data)["remote"]
     except Exception as e:
         raise HTTPException(status_code=400, detail="Invalid JSON data") from e
 
@@ -39,24 +40,17 @@ async def publish(
         raise HTTPException(
             status_code=400, detail="Repository name does not match file name"
         )
-    
+
     if Path(file.filename).stem in os.listdir("API/repos"):
-        raise HTTPException(
-            status_code=400, detail="Repository already exists"
-        )
+        raise HTTPException(status_code=400, detail="Repository already exists")
 
     with zipfile.ZipFile(file.file, "r") as f:
         for file in f.infolist():
             if ".." in file.filename or file.filename.startswith("/"):
-                raise HTTPException(
-                    status_code=400, detail="Invalid file path in zip"
-                )
+                raise HTTPException(status_code=400, detail="Invalid file path in zip")
         f.extractall(f"API/repos/{repo_name}")
 
-    return {
-        "message": "File published successfully",
-        "repository_url": remote
-    }
+    return {"message": "File published successfully", "repository_url": remote}
 
 
 @app.get("/repos/{repo_name}/clone")
