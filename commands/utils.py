@@ -7,12 +7,10 @@ import re
 import shutil
 from datetime import datetime
 from pathlib import Path
-import shutil
-
-from requests import utils
 
 import exceptions
 import mammoth
+from requests import utils
 
 working_directory_path = Path.cwd()
 
@@ -537,9 +535,7 @@ def commit_changes(commit_msg: str) -> str:
 
     parent_hash = get_parent_hash()
 
-    sha_hash =generate_commit_hash(
-        timestamp, commit_message, name, email, parent_hash
-    )
+    sha_hash = generate_commit_hash(timestamp, commit_message, name, email, parent_hash)
 
     copy_docx_to_objects(sha_hash)
 
