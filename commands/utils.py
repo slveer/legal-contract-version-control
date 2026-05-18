@@ -328,7 +328,7 @@ def get_parent_hash(history: dict | None = None) -> str | None:
 
 
 def generate_commit_hash(
-    timestamp: str, commit_message: str, name: str, email: str, parent_hash: str
+    timestamp: str, commit_message: str, name: str, email: str, parent_hash: str | None
 ) -> str:
     """Generate a SHA-256 hash for the commit."""
 
