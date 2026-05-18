@@ -15,7 +15,10 @@ import utils
 def get_commit_message() -> str:
     """Retrieve the commit message from the user."""
 
-    return sys.argv[2] if len(sys.argv) > 2 else "No commit message provided."
+    if len(sys.argv) <= 2 or not sys.argv[2].strip():
+        raise exceptions.EmptyCommitMessageError("Commit message cannot be empty.")
+
+    return sys.argv[2].strip()
 
 
 def print_commit_confirmation_message(sha_hash: str) -> None:
