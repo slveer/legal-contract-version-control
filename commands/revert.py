@@ -25,7 +25,7 @@ def validate_commit(cwd: Path | None = None, commit: Path | None = None) -> Path
 
     commit = commit.with_suffix(".docx")
 
-    commit = Path(cwd / ".sccs" / "objects" / "docx" / commit)
+    commit = cwd / ".sccs" / "objects" / "docx" / commit.name
 
     if not commit.is_file():
         raise exceptions.InvalidArgumentError(
@@ -75,7 +75,7 @@ def main() -> None:
 
     docx_html = utils.convert_docx_to_html()
 
-    commit_message = f"Revert to commit '{validated_commit.name}'"
+    commit_message = f"Revert to commit '{validated_commit.stem}'"
 
     timestamp = utils.get_timestamp()
 
