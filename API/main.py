@@ -64,8 +64,6 @@ async def clone(repo_name: str) -> StreamingResponse:
         repo_path.relative_to(base_dir)
     except ValueError:
         raise HTTPException(status_code=400, detail="Invalid repository name")
-    
-
 
     if not os.path.exists(f"API/repos/{repo_name}"):
         raise HTTPException(status_code=404, detail="Repository not found")
@@ -75,10 +73,7 @@ async def clone(repo_name: str) -> StreamingResponse:
         for root, dirs, files in os.walk(repo_path):
             for file in files:
                 file_path = Path(root) / file
-                f.write(
-                    filename=file_path,
-                    arcname=file_path.relative_to(repo_path)
-                )
+                f.write(filename=file_path, arcname=file_path.relative_to(repo_path))
 
     buffer.seek(0)
     return StreamingResponse(
