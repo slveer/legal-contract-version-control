@@ -44,7 +44,7 @@ async def publish(
     """Publish a repository to the hosted API"""
     repo_name = resolve_path(Path(repo_name))
     base_dir = Path("API/repos").resolve()
-    repo_path = (base_dir / repo_name).resolve()
+    repo_path = Path(base_dir / repo_name).resolve()
 
     try:
         repo_path.relative_to(base_dir)
@@ -83,9 +83,9 @@ async def publish(
             )
 
         for file in f.infolist():
-            path = Path(base_dir / repo_name / file.filename).resolve()
+            path = Path(repo_path / file.filename).resolve()
             try:
-                Path(file.filename).relative_to(Path(repo_path))
+                path.relative_to(Path(repo_path))
             except ValueError:
                 raise HTTPException(status_code=400, detail="Invalid file path in zip")
 
