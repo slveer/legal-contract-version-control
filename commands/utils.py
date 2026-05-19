@@ -7,6 +7,9 @@ import re
 import shutil
 from datetime import datetime
 from pathlib import Path
+import shutil
+
+from requests import utils
 
 import exceptions
 import mammoth
@@ -515,3 +518,53 @@ def atomically_update_history(update_dict: dict[Path, dict]) -> None:
             key.with_suffix(".tmp").replace(key)
         except Exception as e:
             raise exceptions.TemporaryFileError from e
+
+
+def commit_changes(commit_msg: str) -> str:
+    """Commit changes to the current branch with the given commit information."""
+
+    name = get_key_from_config("name")
+
+    email = get_key_from_config("email")
+
+    docx_html = convert_docx_to_html()
+
+    commit_message = commit_msg
+
+    timestamp = get_timestamp()
+
+    history = get_commit_history()
+
+    parent_hash = get_parent_hash()
+
+    sha_hash =generate_commit_hash(
+        timestamp, commit_message, name, email, parent_hash
+    )
+
+    copy_docx_to_objects(sha_hash)
+
+    write_diff_html(sha_hash, docx_html)
+
+    write_view_html(sha_hash, docx_html)
+
+    updated_commit_log_history = update_commit_log_history(
+        history, sha_hash, timestamp, name, email, commit_message
+    )
+
+    current_branch_binary_hash = hash_current_docx_binary()
+
+    updated_commit_binary_hash_history = update_commit_binary_hash_history(
+        sha_hash, current_branch_binary_hash
+    )
+
+    updated_commit_messages = update_commit_messages(sha_hash, commit_message)
+
+    combined_history_update_dicts = combine_update_dicts(
+        updated_commit_log_history,
+        updated_commit_binary_hash_history,
+        updated_commit_messages,
+    )
+
+    atomically_update_history(combined_history_update_dicts)
+
+    return sha_hash

@@ -51,14 +51,12 @@ def revert(src: Path, dst: Path | None = None) -> None:
         )
 
     shutil.copy(src, dst)
-    print_revert_confirmation_message(src)
 
 
-def print_revert_confirmation_message(commit: Path) -> None:
+def print_revert_confirmation_message(commit: Path, new_commit_hash: str) -> None:
     """Print a confirmation message for the revert."""
 
-    print(f"Document successfully reverted to commit '{commit.name}'.")
-
+    print(f"Document successfully reverted to commit '{commit.stem}' on commit '{new_commit_hash}'.")
 
 def main() -> None:
     """Main function to handle the revert command."""
@@ -69,49 +67,11 @@ def main() -> None:
     validated_commit = validate_commit(cwd, commit)
     revert(validated_commit)
 
-    name = utils.get_key_from_config("name")
-
-    email = utils.get_key_from_config("email")
-
-    docx_html = utils.convert_docx_to_html()
-
-    commit_message = f"Revert to commit '{validated_commit.stem}'"
-
-    timestamp = utils.get_timestamp()
-
-    history = utils.get_commit_history()
-
-    parent_hash = utils.get_parent_hash(history)
-
-    sha_hash = utils.generate_commit_hash(
-        timestamp, commit_message, name, email, parent_hash
+    new_commit_hash = utils.commit_changes(
+        f"Revert to commit '{validated_commit.stem}'"
     )
 
-    utils.copy_docx_to_objects(sha_hash)
-
-    utils.write_diff_html(sha_hash, docx_html)
-
-    utils.write_view_html(sha_hash, docx_html)
-
-    updated_commit_log_history = utils.update_commit_log_history(
-        history, sha_hash, timestamp, name, email, commit_message
-    )
-
-    current_branch_binary_hash = utils.hash_current_docx_binary()
-
-    updated_commit_binary_hash_history = utils.update_commit_binary_hash_history(
-        sha_hash, current_branch_binary_hash
-    )
-
-    updated_commit_messages = utils.update_commit_messages(sha_hash, commit_message)
-
-    combined_history_update_dicts = utils.combine_update_dicts(
-        updated_commit_log_history,
-        updated_commit_binary_hash_history,
-        updated_commit_messages,
-    )
-
-    utils.atomically_update_history(combined_history_update_dicts)
+    print_revert_confirmation_message(validated_commit, new_commit_hash)
 
 
 if __name__ == "__main__":
