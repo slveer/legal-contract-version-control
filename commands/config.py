@@ -74,6 +74,8 @@ def main() -> None:
 
     utils.write_key_to_config(key, value)
 
+    print(f"Configuration '{key}' set to '{value}' successfully.")
+
 
 if __name__ == "__main__":
     try:
