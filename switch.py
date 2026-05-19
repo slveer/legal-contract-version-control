@@ -28,7 +28,12 @@ except Exception as e:
     print(f"Error reading commit history for branch '{branch_to_switch}': {e}")
     sys.exit(1)
 
-latest_commit_on_branch = commit_history["history"]["latest_commit"]
+try:
+    latest_commit_on_branch = commit_history["history"]["latest_commit"]
+
+except KeyError as e:
+    print(f"Error: Missing key {e} in commit history for branch '{branch_to_switch}'.")
+    sys.exit(1)
 
 if not os.path.isfile(os.path.join(directory_path, ".sccs", "objects", "docx", f"{latest_commit_on_branch}.docx")):
     print(f"Error: Commit object '{latest_commit_on_branch}' not found.")
@@ -67,7 +72,8 @@ except Exception as e:
     sys.exit(1)
 
 if not commit_file_hash == hashed_file:
-    print(f"Error: Cannot switch to branch '{branch_to_switch}' because the current file has uncommitted changes, or the byte content does not match the latest commit. Please commit your changes before switching branches.")
+    print(f"Error: Cannot switch to branch '{branch_to_switch}' because the current file has uncommitted changes, or the byte content does not match the latest commit. Please commit your changes before switching branches.
+          ")
     sys.exit(1)
 
 try:
