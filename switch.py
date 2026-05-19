@@ -1,4 +1,4 @@
-from sccs_layout_check import check_sccs, directory_path
+from sccs_layout_check import check_sccs, directory_path, sanitize_dirname
 import sys
 import os
 import json
@@ -6,6 +6,9 @@ import shutil
 check_sccs()
 
 branch_to_switch = sys.argv[2] if len(sys.argv) > 2 else None
+
+if branch_to_switch:
+    branch_to_switch = sanitize_dirname(branch_to_switch)
 
 if not branch_to_switch:
     print("No branch specified. Please provide a branch name to switch to.")

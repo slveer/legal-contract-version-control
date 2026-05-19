@@ -1,6 +1,7 @@
 import json
 import os
 from pathlib import Path
+import re
 import sys
 from default_css_styles import styles
 
@@ -9,6 +10,9 @@ directory_path = os.getcwd()
 path = os.path.join(directory_path, f"{os.path.basename(directory_path)}.docx")
 
 sccs_dir = os.path.join(directory_path, ".sccs")
+
+def sanitize_dirname(name):
+    return re.sub(r'[\\/:*?"<>|]', '-', name).strip('. ')
 
 def check_sccs():
 

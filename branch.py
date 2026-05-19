@@ -3,12 +3,9 @@ import sys
 import os
 import json
 import shutil
-from sccs_layout_check import check_sccs, directory_path
+from sccs_layout_check import check_sccs, directory_path, sanitize_dirname
 
 check_sccs()
-
-def sanitize_dirname(name):
-    return re.sub(r'[\\/:*?"<>|]', '-', name).strip('. ')
 
 current_branch_path = os.path.join(directory_path, ".sccs", "current_branch", "current_branch.json")
 try:
