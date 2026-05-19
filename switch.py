@@ -12,7 +12,7 @@ if not branch_to_switch:
     sys.exit(1)
 
 try:
-    with open(os.path.join(directory_path, ".sccs",  "branches", branch_to_switch, "history", "commit_history.json"), "r") as f:
+    with open(os.path.join(directory_path, ".sccs",  "branches", branch_to_switch, "history", "commit_history.json"), "r", encoding="utf-8", newline="\n") as f:
         try:
             commit_history = json.load(f)
             
@@ -36,7 +36,7 @@ except Exception as e:
     sys.exit(1)
 
 try: 
-    with open(os.path.join(directory_path, ".sccs", "current_branch", "current_branch.json"), "r") as f:
+    with open(os.path.join(directory_path, ".sccs", "current_branch", "current_branch.json"), "r", encoding="utf-8", newline="\n") as f:
         try:
             current_branch = json.load(f)
         except Exception as e:
@@ -49,9 +49,9 @@ except Exception as e:
 current_branch["current_branch"] = branch_to_switch
 
 try:
-    with open(os.path.join(directory_path, ".sccs", "current_branch", "current_branch.json"), "w") as f:
+    with open(os.path.join(directory_path, ".sccs", "current_branch", "current_branch.json"), "w", encoding="utf-8", newline="\n") as f:
         try:
-            json.dump(current_branch, f)
+            json.dump(current_branch, f, indent=4)
         except Exception as e:
             print(f"Error writing current branch information: {e}")
             sys.exit(1)
