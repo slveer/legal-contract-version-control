@@ -27,7 +27,7 @@ except Exception as e:
     print(f"Error reading commit history for branch '{branch_to_switch}': {e}")
     sys.exit(1)
 
-latest_commit_on_branch = commit_history["history"]["commit_order"][f"{commit_history['history']['latest_commit_number']}"]
+latest_commit_on_branch = commit_history["history"]["latest_commit"]
 
 if not os.path.isfile(os.path.join(directory_path, ".sccs", "objects", "docx", f"{latest_commit_on_branch}.docx")):
     print(f"Error: Commit object '{latest_commit_on_branch}' not found.")
