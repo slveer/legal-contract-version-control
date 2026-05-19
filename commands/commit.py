@@ -18,7 +18,7 @@ def get_commit_message() -> str:
     if len(sys.argv) <= 2 or not sys.argv[2].strip():
         raise exceptions.EmptyCommitMessageError("Commit message cannot be empty.")
 
-    return sys.argv[2].strip()
+    return " ".join(sys.argv[2:]).strip()
 
 
 def print_commit_confirmation_message(sha_hash: str) -> None:
