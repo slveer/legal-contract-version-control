@@ -29,27 +29,17 @@ except Exception as e:
     sys.exit(1)
 
 try:
-    latest_commit_on_branch = commit_history["history"]["latest_commit"]
+    latest_commit_on_branch_to_switch = commit_history["history"]["latest_commit"]
 
 except KeyError as e:
     print(f"Error: Missing key {e} in commit history for branch '{branch_to_switch}'.")
     sys.exit(1)
 
-if not os.path.isfile(os.path.join(directory_path, ".sccs", "objects", "docx", f"{latest_commit_on_branch}.docx")):
-    print(f"Error: Commit object '{latest_commit_on_branch}' not found.")
+if not os.path.isfile(os.path.join(directory_path, ".sccs", "objects", "docx", f"{latest_commit_on_branch_to_switch}.docx")):
+    print(f"Error: Commit object '{latest_commit_on_branch_to_switch}' not found.")
     sys.exit(1)
 
 try:
-    with open(path, "rb") as f:
-        hasher = hashlib.sha256()
-        for chunk in iter(lambda: f.read(65536), b""):
-            hasher.update(chunk)
-        hashed_file = hasher.hexdigest()
-except Exception as e:
-    print(f"Error processing .docx file: {e}")
-    sys.exit(1)
-    
-try: 
     with open(os.path.join(directory_path, ".sccs", "current_branch", "current_branch.json"), "r", encoding="utf-8", newline="\n") as f:
         try:
             current_branch = json.load(f)
@@ -59,29 +49,6 @@ try:
 except Exception as e:
     print(f"Error accessing current branch information: {e}")
     sys.exit(1)
-
-try:
-    with open(os.path.join(directory_path, ".sccs", "branches", current_branch["current_branch"], "commit_file_hash", "commit_file_hash.json"), "r", encoding="utf-8", newline="\n") as f:
-        try:
-            commit_file_hash = json.load(f).get(latest_commit_on_branch)
-        except Exception as e:    
-            print(f"Error reading commit file hash information: {e}")
-            sys.exit(1)
-except Exception as e:
-    print(f"Error accessing commit file hash information: {e}")
-    sys.exit(1)
-
-if not commit_file_hash == hashed_file:
-    print(f"Error: Cannot switch to branch '{branch_to_switch}' because the current file has uncommitted changes, or the byte content does not match the latest commit. Please commit your changes before switching branches.")
-    sys.exit(1)
-
-try:
-    shutil.copy2(os.path.join(directory_path, ".sccs", "objects", "docx", f"{latest_commit_on_branch}.docx"), os.path.join(directory_path, f"{os.path.basename(directory_path)}.docx"))
-except Exception as e:
-    print(f"Error switching to branch '{branch_to_switch}': {e}")
-    sys.exit(1)
-
-
 
 current_branch["current_branch"] = branch_to_switch
 
@@ -94,6 +61,13 @@ try:
             sys.exit(1)
 except Exception as e:
     print(f"Error updating current branch information: {e}")
+    sys.exit(1)
+
+try:
+    shutil.copy2(os.path.join(directory_path, ".sccs", "objects", "docx", f"{latest_commit_on_branch_to_switch}.docx"), os.path.join(directory_path, f"{os.path.basename(directory_path)}.docx"))
+except Exception as e:
+    print(f"Error switching to branch '{branch_to_switch}': {e}")
+    
     sys.exit(1)
 
 print(f"Successfully switched to branch '{branch_to_switch}'.")
