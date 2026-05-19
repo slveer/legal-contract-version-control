@@ -72,8 +72,7 @@ except Exception as e:
     sys.exit(1)
 
 if not commit_file_hash == hashed_file:
-    print(f"Error: Cannot switch to branch '{branch_to_switch}' because the current file has uncommitted changes, or the byte content does not match the latest commit. Please commit your changes before switching branches.
-          ")
+    print(f"Error: Cannot switch to branch '{branch_to_switch}' because the current file has uncommitted changes, or the byte content does not match the latest commit. Please commit your changes before switching branches.")
     sys.exit(1)
 
 try:
