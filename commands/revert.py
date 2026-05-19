@@ -29,7 +29,7 @@ def validate_commit(cwd: Path | None = None, commit: Path | None = None) -> Path
 
     if not commit.is_file():
         raise exceptions.InvalidArgumentError(
-            f"Commit file '{commit}' does not exist. Please provide a valid commit file"
+            f"Commit file '{commit.stem}' does not exist. Please provide a valid commit file"
             f" path."
         )
 
@@ -40,7 +40,7 @@ def revert(src: Path, dst: Path | None = None) -> None:
     """Revert the current document to the specified commit."""
 
     if not src.is_file():
-        raise exceptions.InvalidArgumentError(f"Source file '{src}' does not exist.")
+        raise exceptions.InvalidArgumentError(f"Source file '{src.stem}' does not exist.")
 
     if dst is None:
         dst = utils.current_file_docx_path
