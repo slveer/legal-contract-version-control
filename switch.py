@@ -29,18 +29,12 @@ latest_commit_on_branch = commit_history["history"]["commit_order"][f"{commit_hi
 if not os.path.isfile(os.path.join(directory_path, ".sccs", "objects", "docx", f"{latest_commit_on_branch}.docx")):
     print(f"Error: Commit object '{latest_commit_on_branch}' not found.")
     sys.exit(1)
+try:
+    shutil.copy2(os.path.join(directory_path, ".sccs", "objects", "docx", f"{latest_commit_on_branch}.docx"), os.path.join(directory_path, f"{os.path.basename(directory_path)}.docx"))
+except Exception as e:
+    print(f"Error switching to branch '{branch_to_switch}': {e}")
+    sys.exit(1)
 
-confirmation = input(f"Are you sure you want to switch to branch '{branch_to_switch}'? This will overwrite all uncommitted changes (Y/N): ")
-
-if confirmation.lower() == "y": confirmation = True 
-else:  confirmation = False
-   
-if confirmation:
-    try:
-        shutil.copy2(os.path.join(directory_path, ".sccs", "objects", "docx", f"{latest_commit_on_branch}.docx"), os.path.join(directory_path, f"{os.path.basename(directory_path)}.docx"))
-    except Exception as e:
-        print(f"Error switching to branch '{branch_to_switch}': {e}")
-        sys.exit(1)
 try: 
     with open(os.path.join(directory_path, ".sccs", "current_branch", "current_branch.json"), "r") as f:
         try:
