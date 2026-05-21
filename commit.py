@@ -104,6 +104,10 @@ def write_diff_html(sha_hash, docx_html):
     with open(os.path.join(directory_path, ".sccs", "objects", "html", f"{sha_hash}.html"), "w", encoding="utf-8", newline="\n") as f:
         f.write(styles + docx_html)
 
+def write_view_html(sha_hash, docx_html):
+    with open(os.path.join(directory_path, ".sccs", "objects", "view_html", f"{sha_hash}.html"), "w", encoding="utf-8", newline="\n") as f:
+        f.write(wrap_html(docx_html))
+
 hash_docx_binary = hash_current_docx_binary()
 
 name = get_obj_from_config("name")
@@ -128,8 +132,7 @@ copy_docx_to_objects(sha_hash)
 
 write_diff_html(sha_hash, docx_html)
 
-with open(os.path.join(directory_path, ".sccs", "objects", "view_html", f"{sha_hash}.html"), "w", encoding="utf-8", newline="\n") as f:
-    f.write(wrap_html(docx_html))    
+write_view_html(sha_hash, docx_html)
 
 # Update history
 history["history"]["latest_commit"] = f"{sha_hash}"
