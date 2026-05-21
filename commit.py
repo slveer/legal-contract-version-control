@@ -94,6 +94,9 @@ def get_parent_hash():
     parent_hash = history["history"].get("latest_commit")
     return parent_hash
 
+def generate_commit_hash(timestamp, commit_message, name, email, parent_hash):
+    return hashlib.sha256(f'{timestamp}/{commit_message}/{name}/{email}/{parent_hash}'.encode()).hexdigest()
+
 hash_docx_binary = hash_current_docx_binary()
 
 name = get_obj_from_config("name")
@@ -112,8 +115,7 @@ history = get_commit_history()
 
 parent_hash = get_parent_hash()
 
-# Generate commit hash from time, message, name, email, and previous commit hash
-sha_hash = hashlib.sha256(f'{timestamp}/{commit_message}/{name}/{email}/{parent_hash}'.encode()).hexdigest()
+sha_hash = generate_commit_hash(timestamp, commit_message, name, email, parent_hash)
 
 shutil.copy2(os.path.join(directory_path, Path(path).name) , os.path.join(directory_path, ".sccs", "objects", "docx", f"{sha_hash}.docx"))
 
