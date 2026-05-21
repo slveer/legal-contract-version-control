@@ -13,7 +13,8 @@ def print_items():
     for item in MESSAGES_TO_PRINT:
         print(item)
 
-print_items()
+if __name__ == "__main__":
+    print_items()
 
 
 
