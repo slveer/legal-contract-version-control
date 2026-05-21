@@ -90,7 +90,7 @@ def get_commit_history():
 
     return history
 
-def get_parent_hash():
+def get_parent_hash(history):
     parent_hash = history["history"].get("latest_commit")
     return parent_hash
 
@@ -113,7 +113,7 @@ current_branch = get_current_branch()
 
 history = get_commit_history()
 
-parent_hash = get_parent_hash()
+parent_hash = get_parent_hash(history)
 
 sha_hash = generate_commit_hash(timestamp, commit_message, name, email, parent_hash)
 
