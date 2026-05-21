@@ -29,11 +29,10 @@ def convert_docx_to_html():
     try: 
         with open(path, "rb") as f:
             result = mammoth.convert_to_html(f)
-            html = result.value
+            return result.value
     except Exception as e:
         print(f"Error converting .docx to HTML: {e}")
         sys.exit(1)
-        return html
 
 def get_obj_from_config(object):
     # Get name and email entered on init
