@@ -126,6 +126,21 @@ def update_commit_log_history(history, sha_hash, timestamp, name, email, commit_
     with open(get_history_path(), "w", encoding="utf-8", newline="\n") as history_file:
         json.dump(history, history_file, indent=4)
 
+def update_commit_messages(sha_hash, commit_message):
+    # Update commit messages
+    commit_messages_path = os.path.join(directory_path, ".sccs", "commit_messages", "commit_messages.json")
+    if not Path(commit_messages_path).is_file():
+        print("Commit messages file not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
+        sys.exit(1)
+
+    with open(commit_messages_path, "r", encoding="utf-8", newline="\n") as commit_messages_file:
+        messages = json.load(commit_messages_file)
+
+    messages[f"{sha_hash}"] = f"{commit_message}"
+
+    with open(commit_messages_path, "w", encoding="utf-8", newline="\n") as commit_messages_file:
+        json.dump(messages, commit_messages_file, indent=4)
+
 hash_docx_binary = hash_current_docx_binary()
 
 name = get_obj_from_config("name")
@@ -154,19 +169,7 @@ write_view_html(sha_hash, docx_html)
 
 update_commit_log_history(history, sha_hash, timestamp, name, email, commit_message)
 
-# Update commit messages
-commit_messages_path = os.path.join(directory_path, ".sccs", "commit_messages", "commit_messages.json")
-if not Path(commit_messages_path).is_file():
-    print("Commit messages file not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
-    sys.exit(1)
-
-with open(commit_messages_path, "r", encoding="utf-8", newline="\n") as commit_messages_file:
-    messages = json.load(commit_messages_file)
-
-messages[f"{sha_hash}"] = f"{commit_message}"
-
-with open(commit_messages_path, "w", encoding="utf-8", newline="\n") as commit_messages_file:
-    json.dump(messages, commit_messages_file, indent=4)
+update_commit_messages(sha_hash, commit_message)
 
 # Update commit file hash
 commit_file_hash_path = os.path.join(directory_path, ".sccs", "branches", current_branch, "commit_file_hash", "commit_file_hash.json")
