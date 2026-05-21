@@ -161,6 +161,9 @@ def update_commit_binary_hash_history(sha_hash, hash_docx_binary):
     with open(commit_file_hash_path, "w", encoding="utf-8", newline="\n") as f:
         json.dump(commit_file_hash, f, indent=4)
 
+def print_confirmation_message(sha_hash):
+    print(f"Commit {sha_hash} created successfully.")
+
 hash_docx_binary = hash_current_docx_binary()
 
 name = get_obj_from_config("name")
@@ -193,4 +196,4 @@ update_commit_messages(sha_hash, commit_message)
 
 update_commit_binary_hash_history(sha_hash, hash_docx_binary)
 
-print(f"Commit {sha_hash} created successfully.")
+print_confirmation_message(sha_hash)
