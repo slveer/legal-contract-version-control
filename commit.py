@@ -141,6 +141,26 @@ def update_commit_messages(sha_hash, commit_message):
     with open(commit_messages_path, "w", encoding="utf-8", newline="\n") as commit_messages_file:
         json.dump(messages, commit_messages_file, indent=4)
 
+def update_commit_binary_hash_history(sha_hash, hash_docx_binary):
+    # Update commit file hash
+    commit_file_hash_path = os.path.join(directory_path, ".sccs", "branches", get_current_branch(), "commit_file_hash", "commit_file_hash.json")
+    if not Path(commit_file_hash_path).is_file():
+        print("Commit file hash not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
+        sys.exit(1)
+
+    try: 
+        with open(commit_file_hash_path, "r", encoding="utf-8", newline="\n") as f:
+            commit_file_hash = json.load(f)
+
+    except (json.JSONDecodeError, KeyError, TypeError, OSError) as e:
+        print("Commit file hash is missing or corrupted. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
+        sys.exit(1)
+
+    commit_file_hash[f"{sha_hash}"] = hash_docx_binary
+
+    with open(commit_file_hash_path, "w", encoding="utf-8", newline="\n") as f:
+        json.dump(commit_file_hash, f, indent=4)
+
 hash_docx_binary = hash_current_docx_binary()
 
 name = get_obj_from_config("name")
@@ -171,23 +191,6 @@ update_commit_log_history(history, sha_hash, timestamp, name, email, commit_mess
 
 update_commit_messages(sha_hash, commit_message)
 
-# Update commit file hash
-commit_file_hash_path = os.path.join(directory_path, ".sccs", "branches", current_branch, "commit_file_hash", "commit_file_hash.json")
-if not Path(commit_file_hash_path).is_file():
-    print("Commit file hash not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
-    sys.exit(1)
-
-try: 
-    with open(commit_file_hash_path, "r", encoding="utf-8", newline="\n") as f:
-        commit_file_hash = json.load(f)
-
-except (json.JSONDecodeError, KeyError, TypeError, OSError) as e:
-    print("Commit file hash is missing or corrupted. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
-    sys.exit(1)
-
-commit_file_hash[f"{sha_hash}"] = hash_docx_binary
-
-with open(commit_file_hash_path, "w", encoding="utf-8", newline="\n") as f:
-    json.dump(commit_file_hash, f, indent=4)
+update_commit_binary_hash_history(sha_hash, hash_docx_binary)
 
 print(f"Commit {sha_hash} created successfully.")
