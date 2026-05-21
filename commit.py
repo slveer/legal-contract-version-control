@@ -73,8 +73,11 @@ def get_current_branch():
 
     return current_branch
 
+def get_history_path():
+    return os.path.join(directory_path, ".sccs", "branches", get_current_branch(), "history", "commit_history.json")
+
 def get_commit_history():
-    history_path = os.path.join(directory_path, ".sccs", "branches", current_branch, "history", "commit_history.json")
+    history_path = get_history_path()
     if not Path(history_path).is_file():
         print("History file not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
         sys.exit(1)
@@ -145,7 +148,7 @@ history["log"][f"{sha_hash}"] = {
     "message": commit_message
 }
 
-with open(history_path, "w", encoding="utf-8", newline="\n") as history_file:
+with open(get_history_path(), "w", encoding="utf-8", newline="\n") as history_file:
     json.dump(history, history_file, indent=4)
 
 # Update commit messages
