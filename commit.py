@@ -111,6 +111,21 @@ def write_view_html(sha_hash, docx_html):
     with open(os.path.join(directory_path, ".sccs", "objects", "view_html", f"{sha_hash}.html"), "w", encoding="utf-8", newline="\n") as f:
         f.write(wrap_html(docx_html))
 
+def update_commit_log_history(history, sha_hash, timestamp, name, email, commit_message):
+    # Update history
+    history["history"]["latest_commit"] = f"{sha_hash}"
+    history["history"]["latest_commit_number"] = history["history"].get("latest_commit_number", 0) + 1
+    history["history"]["commit_order"][str(history["history"]["latest_commit_number"])] = f"{sha_hash}"
+
+    history["log"][f"{sha_hash}"] = {
+        "timestamp": timestamp,
+        "author": f"{name} <{email}>",
+        "message": commit_message
+    }
+
+    with open(get_history_path(), "w", encoding="utf-8", newline="\n") as history_file:
+        json.dump(history, history_file, indent=4)
+
 hash_docx_binary = hash_current_docx_binary()
 
 name = get_obj_from_config("name")
@@ -137,19 +152,7 @@ write_diff_html(sha_hash, docx_html)
 
 write_view_html(sha_hash, docx_html)
 
-# Update history
-history["history"]["latest_commit"] = f"{sha_hash}"
-history["history"]["latest_commit_number"] = history["history"].get("latest_commit_number", 0) + 1
-history["history"]["commit_order"][str(history["history"]["latest_commit_number"])] = f"{sha_hash}"
-
-history["log"][f"{sha_hash}"] = {
-    "timestamp": timestamp,
-    "author": f"{name} <{email}>",
-    "message": commit_message
-}
-
-with open(get_history_path(), "w", encoding="utf-8", newline="\n") as history_file:
-    json.dump(history, history_file, indent=4)
+update_commit_log_history(history, sha_hash, timestamp, name, email, commit_message)
 
 # Update commit messages
 commit_messages_path = os.path.join(directory_path, ".sccs", "commit_messages", "commit_messages.json")
@@ -164,8 +167,6 @@ messages[f"{sha_hash}"] = f"{commit_message}"
 
 with open(commit_messages_path, "w", encoding="utf-8", newline="\n") as commit_messages_file:
     json.dump(messages, commit_messages_file, indent=4)
-
-
 
 # Update commit file hash
 commit_file_hash_path = os.path.join(directory_path, ".sccs", "branches", current_branch, "commit_file_hash", "commit_file_hash.json")
