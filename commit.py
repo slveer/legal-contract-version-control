@@ -111,19 +111,30 @@ def write_view_html(sha_hash, docx_html):
         f.write(wrap_html(docx_html))
 
 def update_commit_log_history(history, sha_hash, timestamp, name, email, commit_message):
-    # Update history
-    history["history"]["latest_commit"] = f"{sha_hash}"
-    history["history"]["latest_commit_number"] = history["history"].get("latest_commit_number", 0) + 1
-    history["history"]["commit_order"][str(history["history"]["latest_commit_number"])] = f"{sha_hash}"
+    try:
+        # Update history
+        history["history"]["latest_commit"] = f"{sha_hash}"
+        history["history"]["latest_commit_number"] = history["history"].get("latest_commit_number", 0) + 1
+        history["history"]["commit_order"][str(history["history"]["latest_commit_number"])] = f"{sha_hash}"
 
-    history["log"][f"{sha_hash}"] = {
-        "timestamp": timestamp,
-        "author": f"{name} <{email}>",
-        "message": commit_message
-    }
-
-    with open(get_history_path(), "w", encoding="utf-8", newline="\n") as history_file:
-        json.dump(history, history_file, indent=4)
+        history["log"][f"{sha_hash}"] = {
+            "timestamp": timestamp,
+            "author": f"{name} <{email}>",
+            "message": commit_message
+        }
+        try:
+            with open(get_history_path(), "w", encoding="utf-8", newline="\n") as history_file:
+                try:
+                    json.dump(history, history_file, indent=4)
+                except Exception as e:
+                    print(f"Error writing JSON to history file: {e}")
+                    sys.exit(1)
+        except Exception as e:
+            print(f"Error opening history file: {e}")
+            sys.exit(1)
+    except Exception as e:
+        print(f"Error updating commit log history: {e}")
+        sys.exit(1)
 
 def update_commit_messages(sha_hash, commit_message):
     # Update commit messages
@@ -132,13 +143,29 @@ def update_commit_messages(sha_hash, commit_message):
         print("Commit messages file not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
         sys.exit(1)
 
-    with open(commit_messages_path, "r", encoding="utf-8", newline="\n") as commit_messages_file:
-        messages = json.load(commit_messages_file)
+    try:
+        with open(commit_messages_path, "r", encoding="utf-8", newline="\n") as commit_messages_file:
+            try:
+                messages = json.load(commit_messages_file)
+            except Exception as e:
+                print(f"Error reading commit messages: {e}")
+                sys.exit(1)
 
-    messages[f"{sha_hash}"] = f"{commit_message}"
+        messages[f"{sha_hash}"] = f"{commit_message}"
+        try:
+            with open(commit_messages_path, "w", encoding="utf-8", newline="\n") as commit_messages_file:
+                try:
+                    json.dump(messages, commit_messages_file, indent=4)
+                except Exception as e:
+                    print(f"Error writing commit messages: {e}")
+                    sys.exit(1)
+        except Exception as e:
+            print(f"Error opening commit messages file: {e}")
+            sys.exit(1)
 
-    with open(commit_messages_path, "w", encoding="utf-8", newline="\n") as commit_messages_file:
-        json.dump(messages, commit_messages_file, indent=4)
+    except Exception as e:
+        print(f"Error updating commit messages: {e}")
+        sys.exit(1)
 
 def update_commit_binary_hash_history(sha_hash, hash_docx_binary):
     # Update commit file hash
@@ -149,16 +176,27 @@ def update_commit_binary_hash_history(sha_hash, hash_docx_binary):
 
     try: 
         with open(commit_file_hash_path, "r", encoding="utf-8", newline="\n") as f:
-            commit_file_hash = json.load(f)
-
+            try:
+                commit_file_hash = json.load(f)
+            except Exception as e:
+                print(f"Error reading commit file hash: {e}")
+                sys.exit(1)
     except (json.JSONDecodeError, KeyError, TypeError, OSError) as e:
         print("Commit file hash is missing or corrupted. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
         sys.exit(1)
 
     commit_file_hash[f"{sha_hash}"] = hash_docx_binary
 
-    with open(commit_file_hash_path, "w", encoding="utf-8", newline="\n") as f:
-        json.dump(commit_file_hash, f, indent=4)
+    try:
+        with open(commit_file_hash_path, "w", encoding="utf-8", newline="\n") as f:
+            try:
+                json.dump(commit_file_hash, f, indent=4)
+            except Exception as e:
+                print(f"Error writing commit file hash: {e}")
+                sys.exit(1)
+    except Exception as e:
+        print(f"Error opening commit file hash file: {e}")
+        sys.exit(1)
 
 def print_confirmation_message(sha_hash):
     print(f"Commit {sha_hash} created successfully.")
