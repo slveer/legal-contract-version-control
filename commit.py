@@ -164,36 +164,38 @@ def update_commit_binary_hash_history(sha_hash, hash_docx_binary):
 def print_confirmation_message(sha_hash):
     print(f"Commit {sha_hash} created successfully.")
 
-hash_docx_binary = hash_current_docx_binary()
+if __name__ == "__main__":
 
-name = get_obj_from_config("name")
+    hash_docx_binary = hash_current_docx_binary()
 
-email = get_obj_from_config("email")
+    name = get_obj_from_config("name")
 
-docx_html = convert_docx_to_html()
+    email = get_obj_from_config("email")
 
-commit_message = get_commit_message()
+    docx_html = convert_docx_to_html()
 
-timestamp = get_timestamp()
+    commit_message = get_commit_message()
 
-current_branch = get_current_branch()
+    timestamp = get_timestamp()
 
-history = get_commit_history()
+    current_branch = get_current_branch()
 
-parent_hash = get_parent_hash(history)
+    history = get_commit_history()
 
-sha_hash = generate_commit_hash(timestamp, commit_message, name, email, parent_hash)
+    parent_hash = get_parent_hash(history)
 
-copy_docx_to_objects(sha_hash)
+    sha_hash = generate_commit_hash(timestamp, commit_message, name, email, parent_hash)
 
-write_diff_html(sha_hash, docx_html)
+    copy_docx_to_objects(sha_hash)
 
-write_view_html(sha_hash, docx_html)
+    write_diff_html(sha_hash, docx_html)
 
-update_commit_log_history(history, sha_hash, timestamp, name, email, commit_message)
+    write_view_html(sha_hash, docx_html)
 
-update_commit_messages(sha_hash, commit_message)
+    update_commit_log_history(history, sha_hash, timestamp, name, email, commit_message)
 
-update_commit_binary_hash_history(sha_hash, hash_docx_binary)
+    update_commit_messages(sha_hash, commit_message)
 
-print_confirmation_message(sha_hash)
+    update_commit_binary_hash_history(sha_hash, hash_docx_binary)
+
+    print_confirmation_message(sha_hash)
