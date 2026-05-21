@@ -97,6 +97,9 @@ def get_parent_hash(history):
 def generate_commit_hash(timestamp, commit_message, name, email, parent_hash):
     return hashlib.sha256(f'{timestamp}/{commit_message}/{name}/{email}/{parent_hash}'.encode()).hexdigest()
 
+def copy_docx_to_objects(sha_hash):
+    shutil.copy2(os.path.join(directory_path, Path(path).name) , os.path.join(directory_path, ".sccs", "objects", "docx", f"{sha_hash}.docx"))
+
 hash_docx_binary = hash_current_docx_binary()
 
 name = get_obj_from_config("name")
@@ -117,7 +120,7 @@ parent_hash = get_parent_hash(history)
 
 sha_hash = generate_commit_hash(timestamp, commit_message, name, email, parent_hash)
 
-shutil.copy2(os.path.join(directory_path, Path(path).name) , os.path.join(directory_path, ".sccs", "objects", "docx", f"{sha_hash}.docx"))
+copy_docx_to_objects(sha_hash)
 
 with open(os.path.join(directory_path, ".sccs", "objects", "html", f"{sha_hash}.html"), "w", encoding="utf-8", newline="\n") as f:
     f.write(styles + docx_html)
