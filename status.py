@@ -29,27 +29,32 @@ def hash_current_docx_binary(path):
         print(f"Error processing .docx file: {e}")
         sys.exit(1)
 
+def get_latest_commit_hash_file():
+    # get the latest commit filename hash from commit history
+    history_path = os.path.join(directory_path, ".sccs", "branches", current_branch, "history", "commit_history.json")
+    if not Path(history_path).is_file():
+        print("History file not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
+        sys.exit(1)
+
+    try:
+        with open(history_path, "r", encoding="utf-8", newline="\n") as history_file:
+            history = json.load(history_file)
+            latest_commit_hash = history["history"]["latest_commit"]
+    except (json.JSONDecodeError, KeyError, TypeError):
+        print("History file is missing or corrupted. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
+        sys.exit(1)
+
+    if not latest_commit_hash:
+        print("History file is missing the latest commit information. Please reinitialize SCCS for this file.") 
+        sys.exit(1)
+    
+    return latest_commit_hash
+
 current_branch = get_current_branch()
 
 hashed_file = hash_current_docx_binary(path)
 
-# get the latest commit filename hash from commit history
-history_path = os.path.join(directory_path, ".sccs", "branches", current_branch, "history", "commit_history.json")
-if not Path(history_path).is_file():
-    print("History file not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
-    sys.exit(1)
-
-try:
-    with open(history_path, "r", encoding="utf-8", newline="\n") as history_file:
-        history = json.load(history_file)
-        latest_commit_hash = history["history"]["latest_commit"]
-except (json.JSONDecodeError, KeyError, TypeError):
-    print("History file is missing or corrupted. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
-    sys.exit(1)
-
-if not latest_commit_hash:
-    print("History file is missing the latest commit information. Please reinitialize SCCS for this file.") 
-    sys.exit(1)
+latest_commit_hash = get_latest_commit_hash_file()
 
 # get the hash of the latest committed file
 latest_commit_file_hash_path = os.path.join(directory_path, ".sccs", "branches", current_branch, "commit_file_hash", "commit_file_hash.json")
