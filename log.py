@@ -38,3 +38,5 @@ def print_log():
            f"Message: {log_data['log'][entry]['message']}\n"
            "------------------------------"
        )
+    
+print_log()
