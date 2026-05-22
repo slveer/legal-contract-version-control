@@ -9,18 +9,24 @@ import mammoth
 from default_css_styles import styles
 from sccs_layout_check import check_sccs, path, directory_path, wrap_html
 
+def hash_current_docx_binary():
+    try:
+        with open(path, "rb") as f:
+                hasher = hashlib.sha256()
+                for chunk in iter(lambda: f.read(65536), b""):
+                    hasher.update(chunk)
+                hashed_file = hasher.hexdigest()
+    except Exception as e:
+        print(f"Error processing .docx file: {e}")
+        sys.exit(1)
+    print(f"Error processing .docx file: {e}")
+    sys.exit(1)
+    return hashed_file
+
 
 check_sccs()
 
-try:
-    with open(path, "rb") as f:
-        hasher = hashlib.sha256()
-        for chunk in iter(lambda: f.read(65536), b""):
-            hasher.update(chunk)
-        hashed_file = hasher.hexdigest()
-except Exception as e:
-    print(f"Error processing .docx file: {e}")
-    sys.exit(1)
+hash_docx_binary = hash_current_docx_binary()
 
 try: 
     with open(path, "rb") as f:
@@ -133,7 +139,7 @@ except (json.JSONDecodeError, KeyError, TypeError, OSError) as e:
     print("Commit file hash is missing or corrupted. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
     sys.exit(1)
 
-commit_file_hash[f"{sha_hash}"] = hashed_file
+commit_file_hash[f"{sha_hash}"] = hash_docx_binary
 
 with open(commit_file_hash_path, "w", encoding="utf-8", newline="\n") as f:
     json.dump(commit_file_hash, f, indent=4)
