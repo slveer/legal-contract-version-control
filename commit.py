@@ -23,18 +23,20 @@ def hash_current_docx_binary():
     sys.exit(1)
     return hashed_file
 
+def convert_docx_to_html():
+    try: 
+        with open(path, "rb") as f:
+            result = mammoth.convert_to_html(f)
+            html = result.value
+    except Exception as e:
+        print(f"Error converting .docx to HTML: {e}")
+        sys.exit(1)
+        return html
 
 check_sccs()
 
 hash_docx_binary = hash_current_docx_binary()
-
-try: 
-    with open(path, "rb") as f:
-        result = mammoth.convert_to_html(f)
-        html = result.value
-except Exception as e:
-    print(f"Error converting .docx to HTML: {e}")
-    sys.exit(1)
+docx_html = convert_docx_to_html()
 
 # Get name and email entered on init
 config_path = os.path.join(directory_path, ".sccs", "config", "config.json")
@@ -90,10 +92,10 @@ sha_hash = hashlib.sha256(f'{timestamp}/{commit_message}/{name}/{email}/{parent_
 shutil.copy2(os.path.join(directory_path, Path(path).name) , os.path.join(directory_path, ".sccs", "objects", "docx", f"{sha_hash}.docx"))
 
 with open(os.path.join(directory_path, ".sccs", "objects", "html", f"{sha_hash}.html"), "w", encoding="utf-8", newline="\n") as f:
-    f.write(styles + html)
+    f.write(styles + docx_html)
 
 with open(os.path.join(directory_path, ".sccs", "objects", "view_html", f"{sha_hash}.html"), "w", encoding="utf-8", newline="\n") as f:
-    f.write(wrap_html(html))    
+    f.write(wrap_html(docx_html))    
 
 # Update history
 history["history"]["latest_commit"] = f"{sha_hash}"
