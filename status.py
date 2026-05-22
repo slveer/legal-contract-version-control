@@ -13,19 +13,25 @@ CURRENT_BRANCH_PATH = os.path.join(directory_path, ".sccs", "current_branch", "c
 
 check_sccs()
 
+def get_current_branch():
+    with open(CURRENT_BRANCH_PATH, "r", encoding="utf-8", newline="\n") as current_branch_file:
+        current_branch = json.load(current_branch_file).get("current_branch")
+    return current_branch
 
-with open(CURRENT_BRANCH_PATH, "r", encoding="utf-8", newline="\n") as current_branch_file:
-    current_branch = json.load(current_branch_file).get("current_branch")
+def hash_current_docx_binary(path):
+    try:
+        with open(path, "rb") as f:
+            hasher = hashlib.sha256()
+            for chunk in iter(lambda: f.read(65536), b""):
+                hasher.update(chunk)
+            hashed_file = hasher.hexdigest()
+    except Exception as e:
+        print(f"Error processing .docx file: {e}")
+        sys.exit(1)
 
-try:
-    with open(path, "rb") as f:
-        hasher = hashlib.sha256()
-        for chunk in iter(lambda: f.read(65536), b""):
-            hasher.update(chunk)
-        hashed_file = hasher.hexdigest()
-except Exception as e:
-    print(f"Error processing .docx file: {e}")
-    sys.exit(1)
+current_branch = get_current_branch()
+
+hashed_file = hash_current_docx_binary(path)
 
 # get the latest commit filename hash from commit history
 history_path = os.path.join(directory_path, ".sccs", "branches", current_branch, "history", "commit_history.json")
