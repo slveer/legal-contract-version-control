@@ -38,5 +38,6 @@ def print_log():
            f"Message: {log_data['log'][entry]['message']}\n"
            "------------------------------"
        )
-    
-print_log()
+
+if __name__ == "__main__":
+    print_log()
