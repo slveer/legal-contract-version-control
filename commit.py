@@ -56,6 +56,10 @@ def get_commit_message():
         sys.exit(1)
     
     return commit_message
+
+def get_timestamp():
+    return datetime.now().isoformat()
+
 check_sccs()
 
 hash_docx_binary = hash_current_docx_binary()
@@ -66,7 +70,7 @@ docx_html = convert_docx_to_html()
 
 commit_message = get_commit_message()
 
-timestamp = datetime.now().isoformat()
+timestamp = get_timestamp()
 
 #Get current branch
 current_branch_path = os.path.join(directory_path, ".sccs", "current_branch", "current_branch.json")
