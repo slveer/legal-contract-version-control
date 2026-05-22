@@ -7,14 +7,14 @@ from sccs_layout_check import directory_path
 
 from sccs_layout_check import check_sccs
 
+CURRENT_BRANCH_PATH = os.path.join(directory_path, ".sccs", "current_branch", "current_branch.json")
+
+def get_current_branch():
+    with open(CURRENT_BRANCH_PATH, "r", encoding="utf-8", newline="\n") as current_branch_file:
+            current_branch = json.load(current_branch_file).get("current_branch")
+    return current_branch
+
 check_sccs()
-
-current_branch_path = os.path.join(directory_path, ".sccs", "current_branch", "current_branch.json")
-
-with open(current_branch_path, "r", encoding="utf-8", newline="\n") as current_branch_file:
-    current_branch = json.load(current_branch_file).get("current_branch")
-
-
 
 # Get JSON log data
 log_path = os.path.join(directory_path, ".sccs", "branches", current_branch, "history", "commit_history.json")
