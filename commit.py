@@ -9,6 +9,8 @@ import mammoth
 from default_css_styles import styles
 from sccs_layout_check import check_sccs, path, directory_path, wrap_html
 
+check_sccs()
+
 def hash_current_docx_binary():
     try:
         with open(path, "rb") as f:
@@ -59,7 +61,6 @@ def get_commit_message():
 def get_timestamp():
     return datetime.now().isoformat()
 
-check_sccs()
 
 hash_docx_binary = hash_current_docx_binary()
 
