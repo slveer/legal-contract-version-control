@@ -28,16 +28,16 @@ def get_log_data():
     return log_data
 
 def print_log():
-   log_data = get_log_data()
-   for entry in log_data["log"]:
-       print(
-           "------------------------------\n"
-           f"Commit File: {entry}\n"
-           f"Author: {log_data['log'][entry]['author']}\n"
-           f"Date: {log_data['log'][entry]['timestamp']}\n"
-           f"Message: {log_data['log'][entry]['message']}\n"
-           "------------------------------"
-       )
+    log_data = get_log_data()
+    for entry in log_data["log"]:
+        print(
+            "------------------------------\n"
+            f"Commit File: {entry}\n"
+            f"Author: {log_data['log'][entry]['author']}\n"
+            f"Date: {log_data['log'][entry]['timestamp']}\n"
+            f"Message: {log_data['log'][entry]['message']}\n"
+            "------------------------------"
+        )
 
 if __name__ == "__main__":
     print_log()
