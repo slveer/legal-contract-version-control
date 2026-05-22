@@ -61,6 +61,17 @@ def get_commit_message():
 def get_timestamp():
     return datetime.now().isoformat()
 
+def get_current_branch():
+   #Get current branch
+    current_branch_path = os.path.join(directory_path, ".sccs", "current_branch", "current_branch.json")
+    if not Path(current_branch_path).is_file():
+        print("Current branch file not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
+        sys.exit(1)
+
+    with open(current_branch_path, "r", encoding="utf-8", newline="\n") as current_branch_file:
+        current_branch = json.load(current_branch_file).get("current_branch") 
+
+    return current_branch
 
 hash_docx_binary = hash_current_docx_binary()
 
@@ -74,15 +85,7 @@ commit_message = get_commit_message()
 
 timestamp = get_timestamp()
 
-#Get current branch
-current_branch_path = os.path.join(directory_path, ".sccs", "current_branch", "current_branch.json")
-if not Path(current_branch_path).is_file():
-    print("Current branch file not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
-    sys.exit(1)
-
-with open(current_branch_path, "r", encoding="utf-8", newline="\n") as current_branch_file:
-    current_branch = json.load(current_branch_file).get("current_branch")
-
+current_branch = get_current_branch()
 
 history_path = os.path.join(directory_path, ".sccs", "branches", current_branch, "history", "commit_history.json")
 if not Path(history_path).is_file():
