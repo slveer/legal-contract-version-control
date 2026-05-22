@@ -33,7 +33,7 @@ def convert_docx_to_html():
         sys.exit(1)
         return html
 
-def get_name_and_email():
+def get_obj_from_config(object):
     # Get name and email entered on init
     config_path = os.path.join(directory_path, ".sccs", "config", "config.json")
     if not Path(config_path).is_file():
@@ -42,10 +42,9 @@ def get_name_and_email():
 
     with open(config_path, "r", encoding="utf-8", newline="\n") as config_file:
         config = json.load(config_file)
-        name = config.get("name")
-        email = config.get("email")
+        object = config.get(object)
     
-    return name, email
+    return object
 
 def get_commit_message():
     # Get commit message
@@ -64,7 +63,9 @@ check_sccs()
 
 hash_docx_binary = hash_current_docx_binary()
 
-name, email = get_name_and_email()
+name = get_obj_from_config("name")
+
+email = get_obj_from_config("email")
 
 docx_html = convert_docx_to_html()
 
