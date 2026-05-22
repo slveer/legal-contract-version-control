@@ -33,21 +33,27 @@ def convert_docx_to_html():
         sys.exit(1)
         return html
 
+def get_name_and_email():
+    # Get name and email entered on init
+    config_path = os.path.join(directory_path, ".sccs", "config", "config.json")
+    if not Path(config_path).is_file():
+        print("Configuration file not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
+        sys.exit(1)
+
+    with open(config_path, "r", encoding="utf-8", newline="\n") as config_file:
+        config = json.load(config_file)
+        name = config.get("name")
+        email = config.get("email")
+    
+    return name, email
+
 check_sccs()
 
 hash_docx_binary = hash_current_docx_binary()
+
+name, email = get_name_and_email()
+
 docx_html = convert_docx_to_html()
-
-# Get name and email entered on init
-config_path = os.path.join(directory_path, ".sccs", "config", "config.json")
-if not Path(config_path).is_file():
-    print("Configuration file not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
-    sys.exit(1)
-
-with open(config_path, "r", encoding="utf-8", newline="\n") as config_file:
-    config = json.load(config_file)
-    name = config.get("name")
-    email = config.get("email")
 
 # Get commit message
 commit_message = input("Enter commit message: ").strip()
