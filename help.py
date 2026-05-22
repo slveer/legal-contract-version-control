@@ -6,15 +6,17 @@ MESSAGES_TO_PRINT = [
     "  log     - Show commit history",
     "  diff    - Compare the current .docx converted to HTML with a specified commit .html file",
     "  status  - Show the status of a repository",
+    "  branch  - List, create, and delete branches",
+    "  switch  - Switch to a different branch",
     "  help    - Show this help message"
 ]
 
-def print_items():
+def print_help():
     for item in MESSAGES_TO_PRINT:
         print(item)
 
 if __name__ == "__main__":
-    print_items()
+    print_help()
 
 
 
