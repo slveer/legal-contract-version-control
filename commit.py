@@ -110,7 +110,7 @@ def write_view_html(sha_hash, docx_html):
     with open(os.path.join(directory_path, ".sccs", "objects", "view_html", f"{sha_hash}.html"), "w", encoding="utf-8", newline="\n") as f:
         f.write(wrap_html(docx_html))
 
-def update_commit_log_history(history, sha_hash, timestamp, name, email, commit_message)
+def update_commit_log_history(history, sha_hash, timestamp, name, email, commit_message):
     commit_history_file = get_history_path()
     if not os.path.isfile(commit_history_file):
         print("History file not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
@@ -225,6 +225,6 @@ if __name__ == "__main__":
 
     write_view_html(sha_hash, docx_html)
 
-    combine_update_dicts(update_commit_log_history(history, sha_hash, timestamp, name, email, commit_message), update_commit_binary_hash_history(sha_hash, hash_docx_binary), update_commit_messages(sha_hash, commit_message))
+    atomically_update_history(combine_update_dicts(update_commit_log_history(history, sha_hash, timestamp, name, email, commit_message), update_commit_binary_hash_history(sha_hash, hash_docx_binary), update_commit_messages(sha_hash, commit_message)))
 
     print_confirmation_message(sha_hash)
