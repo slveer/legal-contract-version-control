@@ -175,6 +175,25 @@ def combine_update_dicts(func1, func2, func3):
         update_dict.update(func())
     return update_dict
 
+def atomically_update_history(dict):
+    for key, value in dict.items():
+        try: 
+            with open(Path(value).with_suffix("tmp"), "w", encoding="utf-8", newline="\n") as f:
+                try:
+                    json.dump(key, f)
+                except Exception as e:
+                    print(f"Error writing to temporary file: {e}")
+                    sys.exit(1)
+        except Exception as e:
+            print(f"Error opening temporary file: {e}")
+            sys.exit(1)
+    for key, value in dict.items():
+        try:
+            os.replace(Path(value).with_suffix("tmp"), value)
+        except Exception as e:
+            print(f"Error replacing temporary file: {e}")
+            sys.exit(1)
+
 def print_confirmation_message(sha_hash):
     print(f"Commit {sha_hash} created successfully.")
 
