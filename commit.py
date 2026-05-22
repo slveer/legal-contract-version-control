@@ -73,6 +73,27 @@ def get_current_branch():
 
     return current_branch
 
+def get_commit_history():
+    history_path = os.path.join(directory_path, ".sccs", "branches", current_branch, "history", "commit_history.json")
+    if not Path(history_path).is_file():
+        print("History file not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
+        sys.exit(1)
+
+    try:
+        with open(history_path, "r", encoding="utf-8", newline="\n") as history_file:
+        
+            history = json.load(history_file)
+
+    except Exception as e:
+        print(f"Error retrieving JSON from history file: {e}")
+        sys.exit(1)
+
+    return history
+
+def get_parent_hash():
+    parent_hash = history["history"].get("latest_commit")
+    return parent_hash
+
 hash_docx_binary = hash_current_docx_binary()
 
 name = get_obj_from_config("name")
@@ -87,21 +108,9 @@ timestamp = get_timestamp()
 
 current_branch = get_current_branch()
 
-history_path = os.path.join(directory_path, ".sccs", "branches", current_branch, "history", "commit_history.json")
-if not Path(history_path).is_file():
-    print("History file not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
-    sys.exit(1)
+history = get_commit_history()
 
-try:
-    with open(history_path, "r", encoding="utf-8", newline="\n") as history_file:
-    
-        history = json.load(history_file)
-        parent_hash = history["history"].get("latest_commit")
-
-except Exception as e:
-    print(f"Error retrieving JSON from history file: {e}")
-    sys.exit(1)
-
+parent_hash = get_parent_hash()
 
 # Generate commit hash from time, message, name, email, and previous commit hash
 sha_hash = hashlib.sha256(f'{timestamp}/{commit_message}/{name}/{email}/{parent_hash}'.encode()).hexdigest()
