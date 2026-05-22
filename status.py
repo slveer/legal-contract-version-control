@@ -50,29 +50,34 @@ def get_latest_commit_hash_file():
     
     return latest_commit_hash
 
+def get_latest_commit_file_hash():
+    # get the hash of the latest committed file
+    latest_commit_file_hash_path = os.path.join(directory_path, ".sccs", "branches", current_branch, "commit_file_hash", "commit_file_hash.json")
+    if not Path(latest_commit_file_hash_path).is_file():
+        print("Latest commit file hash not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
+        sys.exit(1)
+
+    try:
+        with open(latest_commit_file_hash_path, "r", encoding="utf-8", newline="\n") as f:
+            commit_file_hash_data = json.load(f)
+            latest_commit_file_hash = commit_file_hash_data.get(latest_commit_hash)
+    except (json.JSONDecodeError, KeyError, TypeError, OSError) as e:
+        print("Latest commit file hash is missing or corrupted. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
+        sys.exit(1)
+
+    if not latest_commit_file_hash:
+        print("Latest commit file hash is missing. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
+        sys.exit(1)
+    
+    return latest_commit_file_hash
+
 current_branch = get_current_branch()
 
 hashed_file = hash_current_docx_binary(path)
 
 latest_commit_hash = get_latest_commit_hash_file()
 
-# get the hash of the latest committed file
-latest_commit_file_hash_path = os.path.join(directory_path, ".sccs", "branches", current_branch, "commit_file_hash", "commit_file_hash.json")
-if not Path(latest_commit_file_hash_path).is_file():
-    print("Latest commit file hash not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
-    sys.exit(1)
-
-try:
-    with open(latest_commit_file_hash_path, "r", encoding="utf-8", newline="\n") as f:
-        commit_file_hash_data = json.load(f)
-        latest_commit_file_hash = commit_file_hash_data.get(latest_commit_hash)
-except (json.JSONDecodeError, KeyError, TypeError, OSError) as e:
-    print("Latest commit file hash is missing or corrupted. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
-    sys.exit(1)
-
-if not latest_commit_file_hash:
-    print("Latest commit file hash is missing. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
-    sys.exit(1)
+latest_commit_file_hash = get_latest_commit_file_hash()
 
 if hashed_file == latest_commit_file_hash:
     print("No changes detected since the latest commit. Nothing to commit.")
