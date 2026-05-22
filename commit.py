@@ -172,7 +172,7 @@ def combine_update_dicts(func1, func2, func3):
     update_dict = {}
     funcs = [func1, func2, func3]
     for func in funcs:
-        update_dict.update(func())
+        update_dict.update(func)
     return update_dict
 
 def atomically_update_history(dict):
