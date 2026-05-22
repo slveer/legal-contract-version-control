@@ -13,7 +13,7 @@ check_sccs()
 
 def get_current_branch():
     with open(CURRENT_BRANCH_PATH, "r", encoding="utf-8", newline="\n") as current_branch_file:
-            current_branch = json.load(current_branch_file).get("current_branch")
+        current_branch = json.load(current_branch_file).get("current_branch")
     return current_branch
 
 def get_log_data():
