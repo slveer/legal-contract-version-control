@@ -27,14 +27,13 @@ def get_log_data():
         log_data = json.load(log_file)
     return log_data
 
-
-# Print log data
-for entry in get_log_data()["log"]:
-    print(
-        "------------------------------\n"
-        f"Commit File: {entry}\n"
-        f"Author: {get_log_data()['log'][entry]['author']}\n"
-        f"Date: {get_log_data()['log'][entry]['timestamp']}\n"
-        f"Message: {get_log_data()['log'][entry]['message']}\n"
-        "------------------------------"
-    )
+def print_log():
+   for entry in get_log_data()["log"]:
+       print(
+           "------------------------------\n"
+           f"Commit File: {entry}\n"
+           f"Author: {get_log_data()['log'][entry]['author']}\n"
+           f"Date: {get_log_data()['log'][entry]['timestamp']}\n"
+           f"Message: {get_log_data()['log'][entry]['message']}\n"
+           "------------------------------"
+       )
