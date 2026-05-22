@@ -21,8 +21,6 @@ def hash_current_docx_binary():
     except Exception as e:
         print(f"Error processing .docx file: {e}")
         sys.exit(1)
-    print(f"Error processing .docx file: {e}")
-    sys.exit(1)
     return hashed_file
 
 def convert_docx_to_html():
@@ -168,11 +166,10 @@ def update_commit_binary_hash_history(sha_hash, hash_docx_binary):
 
     return {commit_file_hash, commit_file_hash_path}
 
-def combine_update_dicts(func1, func2, func3):
+def combine_update_dicts(*dicts):
     update_dict = {}
-    funcs = [func1, func2, func3]
-    for func in funcs:
-        update_dict.update(func)
+    for d in dicts:
+        update_dict.update(d)
     return update_dict
 
 def atomically_update_history(dict):
