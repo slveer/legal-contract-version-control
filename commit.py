@@ -47,6 +47,15 @@ def get_name_and_email():
     
     return name, email
 
+def get_commit_message():
+    # Get commit message
+    commit_message = input("Enter commit message: ").strip()
+
+    if commit_message == "":
+        print("Commit message cannot be empty.")
+        sys.exit(1)
+    
+    return commit_message
 check_sccs()
 
 hash_docx_binary = hash_current_docx_binary()
@@ -55,16 +64,9 @@ name, email = get_name_and_email()
 
 docx_html = convert_docx_to_html()
 
-# Get commit message
-commit_message = input("Enter commit message: ").strip()
-
-if commit_message == "":
-    print("Commit message cannot be empty.")
-    sys.exit(1)
+commit_message = get_commit_message()
 
 timestamp = datetime.now().isoformat()
-
-# Get parent hash
 
 #Get current branch
 current_branch_path = os.path.join(directory_path, ".sccs", "current_branch", "current_branch.json")
