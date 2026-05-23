@@ -35,6 +35,9 @@ def check_changes():
         print("The commit file is the same as the current file. No changes will be made.")
         sys.exit(0)
 
+def open_file_commit():
+    shutil.copy2(commit_path, path)
+
 commit_path = get_commit_path_input()
 
 check_commit_path_input()
@@ -43,6 +46,6 @@ confirm_before_proceeding()
 
 check_changes()
 
-shutil.copy2(commit_path, path)
+open_file_commit()
 
 print(f"File '{os.path.basename(path)}' has been updated with the contents of '{os.path.basename(commit_path)}'.")
