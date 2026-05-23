@@ -14,9 +14,19 @@ def update_current_branch(branch):
             try:
                 current_branch = json.load(f)
                 current_branch["current_branch"] = branch
-                json.dump(current_branch, f, indent=4)
             except Exception as e:
                 print(f"Error reading or updating current branch information: {e}")
+                sys.exit(1)
+    except Exception as e:
+        print(f"Error accessing current branch information: {e}")
+        sys.exit(1)
+
+    try: 
+        with open(os.path.join(directory_path, ".sccs", "current_branch", "current_branch.json"), "w", encoding="utf-8", newline="\n") as f:
+            try:
+                json.dump(current_branch, f, indent=4)
+            except Exception as e:
+                print(f"Error updating current branch information: {e}")
                 sys.exit(1)
     except Exception as e:
         print(f"Error accessing current branch information: {e}")
