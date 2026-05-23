@@ -4,8 +4,6 @@ import json
 import shutil
 import utils
 
-utils.check_sccs()
-
 subcommand = sys.argv[2] if len(sys.argv) > 2 else None
 
 branch_name = sys.argv[3] if len(sys.argv) > 3 else None
@@ -134,6 +132,8 @@ def run_specified_subcommand(subcommand, current_branch, branch_data):
         branch_list_subcommand(current_branch, branch_data)
 
 if __name__ == "__main__":
+
+    utils.check_sccs()
 
     current_branch, branch_data = get_branch_data()
 

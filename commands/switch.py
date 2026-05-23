@@ -4,7 +4,6 @@ import sys
 import os
 import json
 import shutil
-utils.check_sccs()
 
 branch_to_switch = sys.argv[2] if len(sys.argv) > 2 else None
 
@@ -124,6 +123,8 @@ def print_confirmation(branch_to_switch):
     print(f"Successfully switched to branch '{branch_to_switch}'.")
 
 if __name__ == "__main__":
+    utils.check_sccs()
+
     branch, branches = get_branch_data()
 
     latest_commit = get_latest_commit(branch)

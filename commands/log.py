@@ -6,7 +6,7 @@ import utils
 
 CURRENT_BRANCH_PATH = os.path.join(utils.directory_path, ".sccs", "current_branch", "current_branch.json")
 
-utils.check_sccs()
+
 
 def get_current_branch():
     with open(CURRENT_BRANCH_PATH, "r", encoding="utf-8", newline="\n") as current_branch_file:
@@ -37,4 +37,6 @@ def print_log():
         )
 
 if __name__ == "__main__":
+    utils.check_sccs()
+    
     print_log()

@@ -8,8 +8,6 @@ import json
 import mammoth
 import utils
 
-utils.check_sccs()
-
 def hash_current_docx_binary():
     try:
         with open(utils.path, "rb") as f:
@@ -193,6 +191,7 @@ def print_confirmation_message(sha_hash):
     print(f"Commit {sha_hash} created successfully.")
 
 if __name__ == "__main__":
+    utils.check_sccs()
 
     hash_docx_binary = hash_current_docx_binary()
 
