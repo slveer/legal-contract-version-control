@@ -194,8 +194,7 @@ bs4_commit_soup = convert_html_to_soup(commit_html)
 commit_list = format_bs4_html_list(bs4_commit_soup)
 
 opcodes = get_opcodes(bs4_commit_soup, bs4_docx_current_version_soup)
-redline = get_redline_html(bs4_commit_soup)
 
-format_redline_html(redline, opcodes, commit_list, docx_current_version_list)
+redline = format_redline_html(get_redline_html(bs4_commit_soup), opcodes, commit_list, docx_current_version_list)
 
 write_redline_html_file(redline)
