@@ -30,14 +30,18 @@ def confirm_before_proceeding():
         print("Update canceled.")
         sys.exit(0)
 
+def check_changes():
+    if Path(path).exists() and Path(commit_path).exists() and os.path.samefile(path, commit_path):
+        print("The commit file is the same as the current file. No changes will be made.")
+        sys.exit(0)
+
 commit_path = get_commit_path_input()
 
 check_commit_path_input()
 
 confirm_before_proceeding()
-if Path(path).exists() and Path(commit_path).exists() and os.path.samefile(path, commit_path):
-    print("The commit file is the same as the current file. No changes will be made.")
-    sys.exit(0)
+
+check_changes()
 
 shutil.copy2(commit_path, path)
 
