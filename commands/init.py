@@ -15,7 +15,10 @@ def get_entered_document_path():
     return sys.argv[2] if len(sys.argv) > 2 else None
 
 def get_document_repo_path():
-    return Path(get_entered_document_path()).with_suffix('')
+    path = get_entered_document_path()
+    if not path:
+        return None
+    return Path(path).with_suffix('')
 
 def check_if_arg_entered(arg):
     if not arg:
@@ -38,21 +41,6 @@ def check_for_prev_init():
 def check_file_requirements():
     if not get_entered_document_path() or Path(get_entered_document_path()).suffix.lower() != ".docx" or not Path(get_entered_document_path()).is_file():
         print("Invalid file path, make sure the file exists and is a .docx file")
-        sys.exit(1)
-
-def hash_document():
-    try:
-        with open(get_entered_document_path(), "rb") as f:
-            try:
-                hasher = hashlib.sha256()
-                for chunk in iter(lambda: f.read(65536), b""):
-                    hasher.update(chunk)
-                return hasher.hexdigest()
-            except Exception as e:
-                print(f"Error hashing .docx file: {e}")
-                sys.exit(1)
-    except Exception as e:
-        print(f"Error processing .docx file: {e}")
         sys.exit(1)
 
 def convert_document_to_html():
@@ -207,13 +195,17 @@ if __name__ == "__main__":
 
     config_user_email = ask_config_input("email")
 
-    sha_hash = create_commit_sha_hash(get_current_iso_time(), config_user_name, config_user_email)
+    current_iso_time = get_current_iso_time()
+
+    sha_hash = create_commit_sha_hash(current_iso_time, config_user_name, config_user_email)
 
     create_sccs_directory_layout()
+    
+    document_as_html = convert_document_to_html()
 
     move_document_to_repo_directory()
 
-    copy_document_to_objects_as_docx_and_html(sha_hash, convert_document_to_html())
+    copy_document_to_objects_as_docx_and_html(sha_hash, document_as_html)
 
     write_history_data(sha_hash, config_user_name, config_user_email)
 
@@ -221,7 +213,9 @@ if __name__ == "__main__":
 
     write_config_data(config_user_name, config_user_email)
 
-    write_hashed_file_commit_data(sha_hash, hash_document())
+    current_branch_binary_hash = utils.hash_current_docx_binary()
+
+    write_hashed_file_commit_data(sha_hash, current_branch_binary_hash)
 
     write_branch_data()
 

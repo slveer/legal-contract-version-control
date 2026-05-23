@@ -45,7 +45,7 @@ def get_timestamp():
     return datetime.now().isoformat()
 
 def get_history_path():
-    return os.path.join(utils.working_directory_path, ".sccs", "branches", utils.get_current_branch(utils.current_branch_path), "history", "commit_history.json")
+    return os.path.join(utils.working_directory_path, ".sccs", "branches", utils.current_branch, "history", "commit_history.json")
 
 def get_commit_history():
     history_path = get_history_path()
@@ -81,6 +81,7 @@ def write_diff_html(sha_hash, docx_html):
 def write_view_html(sha_hash, docx_html):
     with open(os.path.join(utils.working_directory_path, ".sccs", "objects", "view_html", f"{sha_hash}.html"), "w", encoding="utf-8", newline="\n") as f:
         f.write(utils.wrap_html(docx_html))
+
 def update_commit_log_history(history, sha_hash, timestamp, name, email, commit_message):
     commit_history_file = get_history_path()
     if not os.path.isfile(commit_history_file):
@@ -119,7 +120,7 @@ def update_commit_messages(sha_hash, commit_message):
 
 def update_commit_binary_hash_history(sha_hash, hash_docx_binary):
     # Update commit file hash
-    commit_file_hash_path = os.path.join(utils.working_directory_path, ".sccs", "branches", utils.get_current_branch(utils.current_branch_path), "commit_file_hash", "commit_file_hash.json")
+    commit_file_hash_path = os.path.join(utils.working_directory_path, ".sccs", "branches", utils.current_branch, "commit_file_hash", "commit_file_hash.json")
     if not Path(commit_file_hash_path).is_file():
         print("Commit file hash not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
         sys.exit(1)
@@ -170,8 +171,6 @@ def print_commit_confirmation_message(sha_hash):
 if __name__ == "__main__":
     utils.check_sccs_layout()
 
-    hash_docx_binary = utils.hash_current_docx_binary()
-
     name = get_obj_from_config("name")
 
     email = get_obj_from_config("email")
@@ -181,8 +180,6 @@ if __name__ == "__main__":
     commit_message = get_commit_message()
 
     timestamp = get_timestamp()
-
-    current_branch = utils.get_current_branch(utils.current_branch_path)
 
     history = get_commit_history()
 
@@ -196,6 +193,16 @@ if __name__ == "__main__":
 
     write_view_html(sha_hash, docx_html)
 
-    atomically_update_history(combine_update_dicts(update_commit_log_history(history, sha_hash, timestamp, name, email, commit_message), update_commit_binary_hash_history(sha_hash, hash_docx_binary), update_commit_messages(sha_hash, commit_message)))
+    updated_commit_log_history = update_commit_log_history(history, sha_hash, timestamp, name, email, commit_message)
+
+    current_branch_binary_hash = utils.hash_current_docx_binary()
+
+    updated_commit_binary_hash_history = update_commit_binary_hash_history(sha_hash, current_branch_binary_hash)
+
+    updated_commit_messages = update_commit_messages(sha_hash, commit_message)
+
+    combined_history_update_dicts = combine_update_dicts(updated_commit_log_history, updated_commit_binary_hash_history, updated_commit_messages)
+
+    atomically_update_history(combined_history_update_dicts)
 
     print_commit_confirmation_message(sha_hash)
