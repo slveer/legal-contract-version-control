@@ -150,6 +150,9 @@ def remove_inline_semantics(html):
             continue
     return soup
 
+def convert_html_to_soup(html):
+    return BeautifulSoup(html, "html.parser")
+
 check_sccs()
 
 validate_commit(COMMIT_TO_DIFF)
@@ -158,16 +161,15 @@ docx_current_version_html = convert_current_docx_to_html(DOCX_CURRENT_VERSION)
 
 commit_html = get_commit_html(COMMIT_TO_DIFF)
 
-bs4_docx_current_version_soup = BeautifulSoup(docx_current_version_html, "html.parser")
+bs4_docx_current_version_soup = convert_html_to_soup(docx_current_version_html)
 
 docx_current_version_list = tags_to_list(number_tags(remove_inline_semantics(copy.copy(bs4_docx_current_version_soup))))
 
-bs4_commit_soup = BeautifulSoup(commit_html, "html.parser")
+bs4_commit_soup = convert_html_to_soup(commit_html)
 commit_list = tags_to_list(number_tags(remove_inline_semantics(copy.copy(bs4_commit_soup))))
 
 opcodes = difflib.SequenceMatcher(None, tags_to_list(remove_inline_semantics(copy.copy(bs4_commit_soup))), tags_to_list(remove_inline_semantics(copy.copy(bs4_docx_current_version_soup)))).get_opcodes()
 redline = number_tags(remove_inline_semantics(copy.copy(bs4_commit_soup)))
-
 
 for opcode in reversed(opcodes):
     tag, i1, i2, j1, j2 = opcode
