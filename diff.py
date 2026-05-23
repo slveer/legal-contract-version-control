@@ -139,14 +139,6 @@ def insert_tag(html, new_changed_strings, i1):
     
     return soup
 
-check_sccs()
-
-validate_commit(COMMIT_TO_DIFF)
-
-docx_current_version_html = convert_current_docx_to_html(DOCX_CURRENT_VERSION)
-
-commit_html = get_commit_html(COMMIT_TO_DIFF)
-
 def remove_inline_semantics(html):
     soup = html
     for tag in soup.find_all():
@@ -158,6 +150,13 @@ def remove_inline_semantics(html):
             continue
     return soup
 
+check_sccs()
+
+validate_commit(COMMIT_TO_DIFF)
+
+docx_current_version_html = convert_current_docx_to_html(DOCX_CURRENT_VERSION)
+
+commit_html = get_commit_html(COMMIT_TO_DIFF)
 
 bs4_docx_current_version_soup = BeautifulSoup(docx_current_version_html, "html.parser")
 
