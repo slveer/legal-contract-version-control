@@ -71,8 +71,17 @@ def get_latest_commit_file_binary_hash(current_branch):
 
     try:
         with open(latest_commit_file_hash_path, "r", encoding="utf-8", newline="\n") as f:
-            commit_file_hash_data = json.load(f)
-            latest_commit_file_hash = commit_file_hash_data.get(latest_commit_hash)
+            try:
+                commit_file_hash_data = json.load(f)
+            except json.JSONDecodeError as e:
+                print(f"Error decoding JSON from latest commit file hash: {e}")
+                sys.exit(1)
+            try:
+                latest_commit_file_hash = commit_file_hash_data.get(latest_commit_hash)
+            except Exception as e:
+                print(f"Error retrieving latest commit file hash: {e}")
+                sys.exit(1)
+                
             if not latest_commit_file_hash:
                 print("Latest commit file hash is missing from JSON. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
                 sys.exit(1)
