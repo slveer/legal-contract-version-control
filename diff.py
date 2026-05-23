@@ -162,6 +162,19 @@ def get_opcodes(commit_soup, current_soup):
 def get_redline_html(commit_soup):
     return number_tags(remove_inline_semantics(copy.copy(commit_soup)))
 
+def format_redline_html(redline, opcodes):
+    for opcode in reversed(opcodes):
+        tag, i1, i2, j1, j2 = opcode
+        
+        old_changed_strings = commit_list[i1:i2]
+        new_changed_strings = docx_current_version_list[j1:j2]
+        if tag == "replace":
+            redline = replace_tag(redline, old_changed_strings, new_changed_strings)
+        if tag =="insert":
+            redline = insert_tag(redline, new_changed_strings, i1)
+        if tag =="delete":
+            redline = delete_tag(redline, old_changed_strings)
+
 check_sccs()
 
 validate_commit(COMMIT_TO_DIFF)
@@ -180,16 +193,7 @@ commit_list = format_bs4_html_list(bs4_commit_soup)
 opcodes = get_opcodes(bs4_commit_soup, bs4_docx_current_version_soup)
 redline = get_redline_html(bs4_commit_soup)
 
-for opcode in reversed(opcodes):
-    tag, i1, i2, j1, j2 = opcode
-    
-    old_changed_strings = commit_list[i1:i2]
-    new_changed_strings = docx_current_version_list[j1:j2]
-    if tag == "replace":
-        redline = replace_tag(redline, old_changed_strings, new_changed_strings)
-    if tag =="insert":
-        redline = insert_tag(redline, new_changed_strings, i1)
-    if tag =="delete":
-        redline = delete_tag(redline, old_changed_strings)
+format_redline_html(redline, opcodes)
+
 with open("redline.html", "w", encoding="utf-8", newline="\n") as f:
     f.write(wrap_html(str(strip_number_attribute(redline))))
