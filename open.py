@@ -24,15 +24,17 @@ def check_commit_path_input():
         sys.exit(1)
     return commit_path
 
-check_commit_path_input()
+def confirm_before_proceeding():
+    confirm = input(f"Are you sure you want to overwrite '{os.path.basename(path)}' with the contents of '{os.path.basename(commit_path)}'?\nThis action will replace the current content of the .docx file. (Y/N): ").strip().lower()
+    if confirm != 'y':
+        print("Update canceled.")
+        sys.exit(0)
 
 commit_path = get_commit_path_input()
 
-confirm = input(f"Are you sure you want to overwrite '{os.path.basename(path)}' with the contents of '{os.path.basename(commit_path)}'?\nThis action will replace the current content of the .docx file. (Y/N): ").strip().lower()
-if confirm != 'y':
-    print("Update canceled.")
-    sys.exit(0)
+check_commit_path_input()
 
+confirm_before_proceeding()
 if Path(path).exists() and Path(commit_path).exists() and os.path.samefile(path, commit_path):
     print("The commit file is the same as the current file. No changes will be made.")
     sys.exit(0)
