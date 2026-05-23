@@ -6,8 +6,7 @@ import hashlib
 from datetime import datetime
 import json
 import mammoth
-from default_css_styles import styles
-from utils import wrap_html
+import utils
 # Get user inputted path argument
 INITIAL_COMMIT_MESSAGE = "initial commit (This is a default commit message for initial version)"
 ENTERED_DOCUMENT_PATH = sys.argv[2] if len(sys.argv) > 2 else None
@@ -91,10 +90,10 @@ def copy_document_to_objects_as_docx_and_html():
     shutil.copy2(os.path.join(DOCUMENT_DIRECTORY_PATH, Path(ENTERED_DOCUMENT_PATH).name), os.path.join(DOCUMENT_DIRECTORY_PATH, ".sccs", "objects", "docx", f"{sha_hash}.docx"))
 
     with open(os.path.join(DOCUMENT_DIRECTORY_PATH, ".sccs", "objects", "html", f"{sha_hash}.html"), "w", encoding="utf-8", newline="\n") as f:
-        f.write(styles + html)
+        f.write(utils.default_styles + html)
 
     with open(os.path.join(DOCUMENT_DIRECTORY_PATH, ".sccs", "objects", "view_html", f"{sha_hash}.html"), "w", encoding="utf-8", newline="\n") as f:
-        f.write(wrap_html(html))
+        f.write(utils.wrap_html(html))
 
 def get_current_iso_time():
     return datetime.now().isoformat()

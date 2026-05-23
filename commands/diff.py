@@ -4,10 +4,10 @@ import sys
 from bs4 import BeautifulSoup
 import mammoth
 import difflib
-from utils import check_sccs, wrap_html, directory_path
+import utils
 import copy
 COMMIT_TO_DIFF = sys.argv[2] if len(sys.argv) > 2 else None 
-DOCX_CURRENT_VERSION = os.path.join(directory_path, f"{os.path.basename(directory_path)}.docx")
+DOCX_CURRENT_VERSION = os.path.join(utils.directory_path, f"{os.path.basename(utils.directory_path)}.docx")
 
 def validate_commit(commit_to_diff, docx_current_version):
     if not commit_to_diff:
@@ -174,11 +174,11 @@ def format_redline_html(redline, opcodes, commit_list, docx_current_version_list
 
 def write_redline_html_file(redline, filename="redline.html"):
     with open(filename, "w", encoding="utf-8", newline="\n") as f:
-        f.write(wrap_html(str(strip_number_attribute(redline))))
+        f.write(utils.wrap_html(str(utils.strip_number_attribute(redline))))
 
 if __name__ == "__main__":
 
-    check_sccs()
+    utils.check_sccs()
 
     validate_commit(COMMIT_TO_DIFF, DOCX_CURRENT_VERSION)
 
