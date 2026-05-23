@@ -22,7 +22,7 @@ def update_current_branch(branch):
         sys.exit(1)
 
     try: 
-        with open(os.path.join(directory_path, ".sccs", "current_branch", "current_branch.json"), "w", encoding="utf-8", newline="\n") as f:
+        with open(os.path.join("tmp"), "w", encoding="utf-8", newline="\n") as f:
             try:
                 json.dump(current_branch, f, indent=4)
             except Exception as e:
@@ -30,6 +30,12 @@ def update_current_branch(branch):
                 sys.exit(1)
     except Exception as e:
         print(f"Error accessing current branch information: {e}")
+        sys.exit(1)
+    
+    try: 
+        os.replace("tmp", os.path.join(directory_path, ".sccs", "current_branch", "current_branch.json"))
+    except Exception as e:
+        print(f"Error replacing current branch information: {e}")
         sys.exit(1)
 
 try:
