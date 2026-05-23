@@ -7,7 +7,7 @@ from sccs_layout_check import path
 
 from sccs_layout_check import check_sccs
 
-check_sccs()
+
 
 def get_commit_path_input():
     commit_path = input("Enter the path to the commit file (.docx): ").strip()
@@ -44,14 +44,17 @@ def open_file_commit(commit_path, path):
 def print_confirmation_message(commit_path, path):
     print(f"File '{os.path.basename(path)}' has been updated with the contents of '{os.path.basename(commit_path)}'.")
 
-commit_path = get_commit_path_input()
+if __name__ == "__main__":
+    check_sccs()
 
-check_commit_path_input(commit_path)
+    commit_path = get_commit_path_input()
 
-confirm_before_proceeding(commit_path, path)
+    check_commit_path_input(commit_path)
 
-check_changes(commit_path, path)
+    confirm_before_proceeding(commit_path, path)
 
-open_file_commit(commit_path, path)
+    check_changes(commit_path, path)
 
-print_confirmation_message(commit_path, path)
+    open_file_commit(commit_path, path)
+
+    print_confirmation_message(commit_path, path)
