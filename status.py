@@ -29,6 +29,8 @@ def hash_current_docx_binary(path):
         print(f"Error processing .docx file: {e}")
         sys.exit(1)
 
+    return hashed_file
+
 def get_latest_commit_hash_file():
     # get the latest commit filename hash from commit history
     history_path = os.path.join(directory_path, ".sccs", "branches", get_current_branch(), "history", "commit_history.json")
