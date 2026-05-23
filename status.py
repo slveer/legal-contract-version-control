@@ -14,13 +14,21 @@ CURRENT_BRANCH_PATH = os.path.join(directory_path, ".sccs", "current_branch", "c
 check_sccs()
 
 def get_current_branch():
-    with open(CURRENT_BRANCH_PATH, "r", encoding="utf-8", newline="\n") as current_branch_file:
-        current_branch = json.load(current_branch_file).get("current_branch")
+    try:
+        with open(CURRENT_BRANCH_PATH, "r", encoding="utf-8", newline="\n") as current_branch_file:
+            try:
+                current_branch = json.load(current_branch_file).get("current_branch")
+            except json.JSONDecodeError as e:
+                print(f"Error decoding JSON from current branch file: {e}")
+                sys.exit(1)
+    except Exception as e:
+        print(f"Error reading current branch: {e}")
+        sys.exit(1)
     return current_branch
 
-def hash_current_docx_binary(path):
+def hash_current_docx_binary(file_path):
     try:
-        with open(path, "rb") as f:
+        with open(file_path, "rb") as f:
             hasher = hashlib.sha256()
             for chunk in iter(lambda: f.read(65536), b""):
                 hasher.update(chunk)
@@ -40,10 +48,14 @@ def get_latest_commit_hash_file():
 
     try:
         with open(history_path, "r", encoding="utf-8", newline="\n") as history_file:
-            history = json.load(history_file)
-            latest_commit_hash = history["history"]["latest_commit"]
-    except (json.JSONDecodeError, KeyError, TypeError):
-        print("History file is missing or corrupted. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
+            try:
+                history = json.load(history_file)
+                latest_commit_hash = history["history"]["latest_commit"]
+            except (json.JSONDecodeError, KeyError, TypeError) as e:
+                print(f"Error reading history file: {e}")
+                sys.exit(1)
+    except Exception as e:
+        print(f"Error opening history file: {e}")
         sys.exit(1)
 
     if not latest_commit_hash:
@@ -65,7 +77,7 @@ def get_latest_commit_file_binary_hash():
             commit_file_hash_data = json.load(f)
             latest_commit_file_hash = commit_file_hash_data.get(latest_commit_hash)
     except (json.JSONDecodeError, KeyError, TypeError, OSError) as e:
-        print("Latest commit file hash is missing or corrupted. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
+        print(f"Error reading latest commit file hash: {e}")
         sys.exit(1)
 
     if not latest_commit_file_hash:
