@@ -153,6 +153,9 @@ def remove_inline_semantics(html):
 def convert_html_to_soup(html):
     return BeautifulSoup(html, "html.parser")
 
+def format_bs4_html_list(bs4_obj):
+    tags_to_list(number_tags(remove_inline_semantics(copy.copy(bs4_obj))))
+
 check_sccs()
 
 validate_commit(COMMIT_TO_DIFF)
@@ -163,10 +166,10 @@ commit_html = get_commit_html(COMMIT_TO_DIFF)
 
 bs4_docx_current_version_soup = convert_html_to_soup(docx_current_version_html)
 
-docx_current_version_list = tags_to_list(number_tags(remove_inline_semantics(copy.copy(bs4_docx_current_version_soup))))
+docx_current_version_list = format_bs4_html_list(bs4_docx_current_version_soup)
 
 bs4_commit_soup = convert_html_to_soup(commit_html)
-commit_list = tags_to_list(number_tags(remove_inline_semantics(copy.copy(bs4_commit_soup))))
+commit_list = format_bs4_html_list(bs4_commit_soup)
 
 opcodes = difflib.SequenceMatcher(None, tags_to_list(remove_inline_semantics(copy.copy(bs4_commit_soup))), tags_to_list(remove_inline_semantics(copy.copy(bs4_docx_current_version_soup)))).get_opcodes()
 redline = number_tags(remove_inline_semantics(copy.copy(bs4_commit_soup)))
