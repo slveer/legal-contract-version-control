@@ -38,6 +38,9 @@ def check_changes():
 def open_file_commit():
     shutil.copy2(commit_path, path)
 
+def print_confirmation_message():
+    print(f"File '{os.path.basename(path)}' has been updated with the contents of '{os.path.basename(commit_path)}'.")
+
 commit_path = get_commit_path_input()
 
 check_commit_path_input()
@@ -48,4 +51,4 @@ check_changes()
 
 open_file_commit()
 
-print(f"File '{os.path.basename(path)}' has been updated with the contents of '{os.path.basename(commit_path)}'.")
+print_confirmation_message()
