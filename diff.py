@@ -26,11 +26,11 @@ def validate_commit(commit_to_diff):
         print("Docx file not found. Re-initialize SCCS for this file with 'sccs init <file_path>'")
         sys.exit(1)
 
-
+check_sccs()
 
 validate_commit(COMMIT_TO_DIFF)
 
-check_sccs()
+
 
 try:
     with open(DOCX_CURRENT_VERSION, "rb") as f:
