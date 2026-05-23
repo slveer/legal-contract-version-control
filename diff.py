@@ -74,36 +74,6 @@ def get_data_number(tag_list):
                 data_number.add(parsed_tag.get('data-number'))
     return data_number
 
-check_sccs()
-
-validate_commit(COMMIT_TO_DIFF)
-
-docx_current_version_html = convert_current_docx_to_html(DOCX_CURRENT_VERSION)
-
-commit_html = get_commit_html(COMMIT_TO_DIFF)
-
-def remove_inline_semantics(html):
-    soup = html
-    for tag in soup.find_all():
-        if tag.name in ["b", "i", "u", "strong", "em"]:
-            tag.unwrap()
-        
-        if tag.name == "style":
-            tag.decompose()
-            continue
-    return soup
-
-
-bs4_docx_current_version_soup = BeautifulSoup(docx_current_version_html, "html.parser")
-
-docx_current_version_list = tags_to_list(number_tags(remove_inline_semantics(copy.copy(bs4_docx_current_version_soup))))
-
-bs4_commit_soup = BeautifulSoup(commit_html, "html.parser")
-commit_list = tags_to_list(number_tags(remove_inline_semantics(copy.copy(bs4_commit_soup))))
-
-opcodes = difflib.SequenceMatcher(None, tags_to_list(remove_inline_semantics(copy.copy(bs4_commit_soup))), tags_to_list(remove_inline_semantics(copy.copy(bs4_docx_current_version_soup)))).get_opcodes()
-redline = number_tags(remove_inline_semantics(copy.copy(bs4_commit_soup)))
-
 def delete_tag(html, old_changed_strings):
     old_data_numbers = get_data_number(old_changed_strings)
     soup = html
@@ -168,6 +138,37 @@ def insert_tag(html, new_changed_strings, i1):
         soup.append(frag)    
     
     return soup
+
+check_sccs()
+
+validate_commit(COMMIT_TO_DIFF)
+
+docx_current_version_html = convert_current_docx_to_html(DOCX_CURRENT_VERSION)
+
+commit_html = get_commit_html(COMMIT_TO_DIFF)
+
+def remove_inline_semantics(html):
+    soup = html
+    for tag in soup.find_all():
+        if tag.name in ["b", "i", "u", "strong", "em"]:
+            tag.unwrap()
+        
+        if tag.name == "style":
+            tag.decompose()
+            continue
+    return soup
+
+
+bs4_docx_current_version_soup = BeautifulSoup(docx_current_version_html, "html.parser")
+
+docx_current_version_list = tags_to_list(number_tags(remove_inline_semantics(copy.copy(bs4_docx_current_version_soup))))
+
+bs4_commit_soup = BeautifulSoup(commit_html, "html.parser")
+commit_list = tags_to_list(number_tags(remove_inline_semantics(copy.copy(bs4_commit_soup))))
+
+opcodes = difflib.SequenceMatcher(None, tags_to_list(remove_inline_semantics(copy.copy(bs4_commit_soup))), tags_to_list(remove_inline_semantics(copy.copy(bs4_docx_current_version_soup)))).get_opcodes()
+redline = number_tags(remove_inline_semantics(copy.copy(bs4_commit_soup)))
+
 
 for opcode in reversed(opcodes):
     tag, i1, i2, j1, j2 = opcode
