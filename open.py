@@ -13,7 +13,7 @@ def get_commit_path_input():
     commit_path = input("Enter the path to the commit file (.docx): ").strip()
     return commit_path
 
-def check_commit_path_input():
+def check_commit_path_input(commit_path):
     if commit_path == "":
         print("Commit file path cannot be empty.")
         sys.exit(1)
@@ -23,35 +23,35 @@ def check_commit_path_input():
         sys.exit(1)
     return commit_path
 
-def confirm_before_proceeding():
+def confirm_before_proceeding(commit_path, path):
     confirm = input(f"Are you sure you want to overwrite '{os.path.basename(path)}' with the contents of '{os.path.basename(commit_path)}'?\nThis action will replace the current content of the .docx file. (Y/N): ").strip().lower()
     if confirm != 'y':
         print("Update canceled.")
         sys.exit(0)
 
-def check_changes():
+def check_changes(commit_path, path):
     if Path(path).exists() and Path(commit_path).exists() and os.path.samefile(path, commit_path):
         print("The commit file is the same as the current file. No changes will be made.")
         sys.exit(0)
 
-def open_file_commit():
+def open_file_commit(commit_path, path):
     try:
         shutil.copy2(commit_path, path)
     except Exception as e:
         print(f"Error occurred while updating the file: {e}")
         sys.exit(1)
 
-def print_confirmation_message():
+def print_confirmation_message(commit_path, path):
     print(f"File '{os.path.basename(path)}' has been updated with the contents of '{os.path.basename(commit_path)}'.")
 
 commit_path = get_commit_path_input()
 
-check_commit_path_input()
+check_commit_path_input(commit_path)
 
-confirm_before_proceeding()
+confirm_before_proceeding(commit_path, path)
 
-check_changes()
+check_changes(commit_path, path)
 
-open_file_commit()
+open_file_commit(commit_path, path)
 
-print_confirmation_message()
+print_confirmation_message(commit_path, path)
