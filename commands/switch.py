@@ -58,17 +58,6 @@ def get_latest_commit_binary_hash(branch, latest_commit):
         print(f"Error accessing commit file hash for branch '{branch}': {e}")
         sys.exit(1)
 
-def hash_current_document():
-    try:
-        with open(utils.current_file_docx_path, "rb") as f:
-            hasher = hashlib.sha256()
-            for chunk in iter(lambda: f.read(65536), b""):
-                hasher.update(chunk)
-            return hasher.hexdigest()
-    except Exception as e:
-        print(f"Error processing .docx file: {e}")
-        sys.exit(1)
-
 def check_for_changes(branch, latest_commit_binary_hash, current_document_hash):
     if not current_document_hash == latest_commit_binary_hash:
         print(f"Error: The current file has uncommitted changes on the current branch '{branch}'. Please commit your changes before switching branches." )
@@ -112,17 +101,17 @@ def print_confirmation(branch_to_switch):
 if __name__ == "__main__":
     utils.check_sccs_layout()
 
-    branches = utils.get_branch_data(utils.current_branch_path, "branches")
+    branches = utils.get_branch_data(key="branches")
 
-    branch = utils.get_current_branch()
+    current_branch = utils.get_current_branch()
 
-    latest_commit = get_latest_commit(branch)
+    latest_commit = get_latest_commit(current_branch)
 
-    latest_commit_binary_hash = get_latest_commit_binary_hash(branch, latest_commit)
+    latest_commit_binary_hash = get_latest_commit_binary_hash(current_branch, latest_commit)
 
-    current_document_hash = hash_current_document()
+    current_document_hash = utils.hash_current_docx_binary()
 
-    check_for_changes(branch, latest_commit_binary_hash, current_document_hash)
+    check_for_changes(current_branch, latest_commit_binary_hash, current_document_hash)
 
     check_branch_to_switch(branch_to_switch, branches)
 

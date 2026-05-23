@@ -4,8 +4,6 @@ import json
 import shutil
 import utils
 
-
-
 def get_entered_subcommand():
     return sys.argv[2] if len(sys.argv) > 2 else None
 
@@ -121,8 +119,8 @@ if __name__ == "__main__":
 
     utils.check_sccs_layout()
 
-    validate_subcommand()
+    validate_subcommand(get_entered_subcommand(), get_entered_branch_name())
 
-    run_specified_subcommand(get_entered_subcommand(), utils.get_current_branch(utils.current_branch_path), utils.get_branch_data(utils.current_branch_path))
+    run_specified_subcommand(get_entered_subcommand(), utils.current_branch, utils.branch_data)
 
     
