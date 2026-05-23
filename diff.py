@@ -174,6 +174,11 @@ def format_redline_html(redline, opcodes):
             redline = insert_tag(redline, new_changed_strings, i1)
         if tag =="delete":
             redline = delete_tag(redline, old_changed_strings)
+    return redline
+
+def write_redline_html_file(redline, filename="redline.html"):
+    with open(filename, "w", encoding="utf-8", newline="\n") as f:
+        f.write(wrap_html(str(strip_number_attribute(redline))))
 
 check_sccs()
 
@@ -195,5 +200,4 @@ redline = get_redline_html(bs4_commit_soup)
 
 format_redline_html(redline, opcodes)
 
-with open("redline.html", "w", encoding="utf-8", newline="\n") as f:
-    f.write(wrap_html(str(strip_number_attribute(redline))))
+write_redline_html_file(redline)
