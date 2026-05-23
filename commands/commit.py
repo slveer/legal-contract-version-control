@@ -8,7 +8,6 @@ import json
 import mammoth
 import utils
 
-current_branch_path = os.path.join(utils.working_directory_path, ".sccs", "current_branch", "current_branch.json")
 
 def convert_docx_to_html():
     try: 
@@ -46,7 +45,7 @@ def get_timestamp():
     return datetime.now().isoformat()
 
 def get_history_path():
-    return os.path.join(utils.working_directory_path, ".sccs", "branches", utils.get_current_branch(current_branch_path), "history", "commit_history.json")
+    return os.path.join(utils.working_directory_path, ".sccs", "branches", utils.get_current_branch(utils.current_branch_path), "history", "commit_history.json")
 
 def get_commit_history():
     history_path = get_history_path()
@@ -120,7 +119,7 @@ def update_commit_messages(sha_hash, commit_message):
 
 def update_commit_binary_hash_history(sha_hash, hash_docx_binary):
     # Update commit file hash
-    commit_file_hash_path = os.path.join(utils.working_directory_path, ".sccs", "branches", utils.get_current_branch(current_branch_path), "commit_file_hash", "commit_file_hash.json")
+    commit_file_hash_path = os.path.join(utils.working_directory_path, ".sccs", "branches", utils.get_current_branch(utils.current_branch_path), "commit_file_hash", "commit_file_hash.json")
     if not Path(commit_file_hash_path).is_file():
         print("Commit file hash not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
         sys.exit(1)
@@ -183,7 +182,7 @@ if __name__ == "__main__":
 
     timestamp = get_timestamp()
 
-    current_branch = utils.get_current_branch(current_branch_path)
+    current_branch = utils.get_current_branch(utils.current_branch_path)
 
     history = get_commit_history()
 

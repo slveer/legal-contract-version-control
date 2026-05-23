@@ -7,11 +7,9 @@ import shutil
 
 branch_to_switch = sys.argv[2] if len(sys.argv) > 2 else None
 
-current_branch_path = os.path.join(utils.working_directory_path, ".sccs", "current_branch", "current_branch.json")
-
 def update_current_branch(branch):
     try:
-        with open(current_branch_path, "r", encoding="utf-8", newline="\n") as f:
+        with open(utils.current_branch_path, "r", encoding="utf-8", newline="\n") as f:
             try:
                 current_branch = json.load(f)
                 current_branch["current_branch"] = branch
@@ -114,7 +112,7 @@ def print_confirmation(branch_to_switch):
 if __name__ == "__main__":
     utils.check_sccs_layout()
 
-    branches = utils.get_branch_data(current_branch_path, "branches")
+    branches = utils.get_branch_data(utils.current_branch_path, "branches")
 
     branch = utils.get_current_branch()
 

@@ -4,7 +4,7 @@ import json
 import shutil
 import utils
 
-current_branch_path = os.path.join(utils.working_directory_path, ".sccs", "current_branch", "current_branch.json")
+
 
 def get_entered_subcommand():
     return sys.argv[2] if len(sys.argv) > 2 else None
@@ -44,7 +44,7 @@ def branch_create_subcommand(current_branch, branch_data):
         
     shutil.copytree(os.path.join(utils.working_directory_path, ".sccs", "branches", current_branch), os.path.join(utils.working_directory_path, ".sccs", "branches", sanitized_branch_name))
     try:
-        with open(current_branch_path, "w", encoding="utf-8", newline="\n") as current_branch_file:
+        with open(utils.current_branch_path, "w", encoding="utf-8", newline="\n") as current_branch_file:
             try:    
                 branch_data["branches"].append(sanitized_branch_name)
                 branch_data["current_branch"] = sanitized_branch_name
@@ -78,7 +78,7 @@ def branch_delete_subcommand(current_branch, branch_data):
         sys.exit(1)
 
     try:
-        with open(current_branch_path, "w", encoding="utf-8", newline="\n") as current_branch_file:
+        with open(utils.current_branch_path, "w", encoding="utf-8", newline="\n") as current_branch_file:
             branch_data["branches"].remove(sanitized_branch_name)
             json.dump(branch_data, current_branch_file, indent=4)
 
@@ -92,7 +92,7 @@ def branch_delete_subcommand(current_branch, branch_data):
     except Exception as e:
         print(f"Error deleting branch '{sanitized_branch_name}': {e}")
         try:
-            with open(current_branch_path, "w", encoding="utf-8", newline="\n") as current_branch_file:
+            with open(utils.current_branch_path, "w", encoding="utf-8", newline="\n") as current_branch_file:
                 branch_data["branches"].append(sanitized_branch_name)
                 json.dump(branch_data, current_branch_file, indent=4)
         except Exception as e:
@@ -123,6 +123,6 @@ if __name__ == "__main__":
 
     validate_subcommand()
 
-    run_specified_subcommand(get_entered_subcommand(), utils.get_current_branch(current_branch_path), utils.get_branch_data(current_branch_path))
+    run_specified_subcommand(get_entered_subcommand(), utils.get_current_branch(utils.current_branch_path), utils.get_branch_data(utils.current_branch_path))
 
     

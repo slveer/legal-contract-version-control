@@ -5,7 +5,6 @@ import hashlib
 import json
 import utils
 
-current_branch_path = os.path.join(utils.working_directory_path, ".sccs", "current_branch", "current_branch.json")
 
 def get_latest_commit_hash_file(current_branch):
     # get the latest commit filename hash from commit history
@@ -79,5 +78,5 @@ def print_changes_message_and_exit(old_hash, new_hash):
 
 if __name__ == "__main__":
     utils.check_sccs_layout()
-    current_branch = utils.get_current_branch(current_branch_path)
+    current_branch = utils.get_current_branch(utils.current_branch_path)
     print_changes_message_and_exit(get_latest_commit_file_binary_hash(current_branch), utils.hash_current_docx_binary(utils.current_file_docx_path))
