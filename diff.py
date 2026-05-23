@@ -9,7 +9,7 @@ import copy
 COMMIT_TO_DIFF = sys.argv[2] if len(sys.argv) > 2 else None 
 DOCX_CURRENT_VERSION = os.path.join(directory_path, f"{os.path.basename(directory_path)}.docx")
 
-def validate_commit(commit_to_diff):
+def validate_commit(commit_to_diff, docx_current_version):
     if not commit_to_diff:
         print("No commit file specified.")
         sys.exit(1)
@@ -22,7 +22,7 @@ def validate_commit(commit_to_diff):
         print("Commit file is not a .html file. Please provide a valid .html commit file.")
         sys.exit(1)
 
-    if not Path(DOCX_CURRENT_VERSION).is_file():
+    if not Path(docx_current_version).is_file():
         print("Docx file not found. Re-initialize SCCS for this file with 'sccs init <file_path>'")
         sys.exit(1)
 
@@ -182,7 +182,7 @@ if __name__ == "__main__":
 
     check_sccs()
 
-    validate_commit(COMMIT_TO_DIFF)
+    validate_commit(COMMIT_TO_DIFF, DOCX_CURRENT_VERSION)
 
     docx_current_version_html = convert_current_docx_to_html(DOCX_CURRENT_VERSION)
 
