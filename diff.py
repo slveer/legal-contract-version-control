@@ -26,20 +26,22 @@ def validate_commit(commit_to_diff):
         print("Docx file not found. Re-initialize SCCS for this file with 'sccs init <file_path>'")
         sys.exit(1)
 
+def convert_docx_to_html(docx_path):
+    try:
+        with open(docx_path, "rb") as f:
+            docx_current_version_html = mammoth.convert_to_html(f).value
+
+    except Exception as e:
+        print(f"Error converting .docx to HTML: {e}")
+        sys.exit(1)
+
+    return docx_current_version_html
+
 check_sccs()
 
 validate_commit(COMMIT_TO_DIFF)
 
-
-
-try:
-    with open(DOCX_CURRENT_VERSION, "rb") as f:
-        docx_current_version_html = mammoth.convert_to_html(f).value
-
-except Exception as e:
-    print(f"Error converting .docx to HTML: {e}")
-    sys.exit(1)
-
+docx_current_version_html = convert_docx_to_html(DOCX_CURRENT_VERSION)
 
 try:
     with open(COMMIT_TO_DIFF, "r", encoding="utf-8", newline="\n") as f:
