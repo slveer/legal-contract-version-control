@@ -14,7 +14,6 @@ def get_commit_path_input():
     return commit_path
 
 def check_commit_path_input():
-    commit_path = get_commit_path_input()
     if commit_path == "":
         print("Commit file path cannot be empty.")
         sys.exit(1)
@@ -36,7 +35,11 @@ def check_changes():
         sys.exit(0)
 
 def open_file_commit():
-    shutil.copy2(commit_path, path)
+    try:
+        shutil.copy2(commit_path, path)
+    except Exception as e:
+        print(f"Error occurred while updating the file: {e}")
+        sys.exit(1)
 
 def print_confirmation_message():
     print(f"File '{os.path.basename(path)}' has been updated with the contents of '{os.path.basename(commit_path)}'.")
