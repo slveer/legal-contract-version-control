@@ -52,7 +52,7 @@ def get_latest_commit_hash_file():
     
     return latest_commit_hash
 
-def get_latest_commit_file_hash():
+def get_latest_commit_file_binary_hash():
     # get the hash of the latest committed file
     latest_commit_hash = get_latest_commit_hash_file()
     latest_commit_file_hash_path = os.path.join(directory_path, ".sccs", "branches", get_current_branch(), "commit_file_hash", "commit_file_hash.json")
@@ -77,10 +77,12 @@ def get_latest_commit_file_hash():
 def compare_hashes(old_hash, new_hash):
     return old_hash == new_hash
 
-if compare_hashes(hash_current_docx_binary(path), get_latest_commit_file_hash()):
-    print("No changes detected since the latest commit. Nothing to commit.")
-    sys.exit(0)
+def print_changes_message(old_hash, new_hash):
+    if compare_hashes(old_hash, new_hash):
+        print("No changes detected since the latest commit. Nothing to commit.")
+        sys.exit(0)
+    else:
+        print("Changes detected since the latest commit. You can proceed with committing these changes.")
+        sys.exit(0)
 
-else: 
-    print("Changes detected since the latest commit. You can proceed with committing these changes.")
-    sys.exit(0)
+print_changes_message(get_latest_commit_file_binary_hash(), hash_current_docx_binary(path))
