@@ -51,9 +51,9 @@ if __name__ == "__main__":
 
     check_commit_path_input(commit_path)
 
-    confirm_before_proceeding(commit_path, path)
-
     check_changes(commit_path, path)
+    
+    confirm_before_proceeding(commit_path, path)
 
     open_file_commit(commit_path, path)
 
