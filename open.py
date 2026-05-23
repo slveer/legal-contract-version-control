@@ -30,7 +30,7 @@ def check_changes(commit_path, path):
         print("The commit file is the same as the current file. No changes will be made.")
         sys.exit(0)
 
-def open_file_commit(commit_path, path):
+def copy_file_commit(commit_path, path):
     try:
         shutil.copy2(commit_path, path)
     except Exception as e:
@@ -51,6 +51,6 @@ if __name__ == "__main__":
 
     confirm_before_proceeding(commit_path, path)
 
-    open_file_commit(commit_path, path)
+    copy_file_commit(commit_path, path)
 
     print_confirmation_message(commit_path, path)
