@@ -5,7 +5,6 @@ import sys
 import hashlib
 from datetime import datetime
 import json
-import mammoth
 import utils
 # Strip .docx extension from the file name to create a directory
 def get_entered_document_path():
@@ -39,20 +38,6 @@ def check_file_requirements():
     if not get_entered_document_path() or Path(get_entered_document_path()).suffix.lower() != ".docx" or not Path(get_entered_document_path()).is_file():
         print("Invalid file path, make sure the file exists and is a .docx file")
         sys.exit(1)
-
-def convert_document_to_html():
-    try: 
-        with open(get_entered_document_path(), "rb") as f:
-            try:
-                result = mammoth.convert_to_html(f)
-                html = result.value
-            except Exception as e:
-                print(f"Error converting .docx to HTML: {e}")
-                sys.exit(1)
-    except Exception as e:
-        print(f"Error processing .docx file: {e}")
-        sys.exit(1)
-    return html   
 
 def create_commit_sha_hash(timestamp, user_name, user_email):
     return hashlib.sha256(f'{timestamp}/initial_version/{user_name}/{user_email}'.encode()).hexdigest()
@@ -198,7 +183,7 @@ if __name__ == "__main__":
 
     create_sccs_directory_layout()
     
-    document_as_html = convert_document_to_html()
+    document_as_html = utils.convert_docx_to_html()
 
     move_document_to_repo_directory()
 

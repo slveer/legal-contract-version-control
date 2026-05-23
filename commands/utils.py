@@ -4,6 +4,7 @@ import os
 from pathlib import Path
 import re
 import sys
+import mammoth
 
 working_directory_path = os.getcwd()
 
@@ -167,6 +168,17 @@ def get_branch_data(file_path=current_branch_path, key=None):
 
     except Exception as e:
         print(f"Error reading current branch data: {e}")
+        sys.exit(1)
+
+def convert_docx_to_html(docx_path=None):
+    if docx_path is None:
+        docx_path = current_file_docx_path
+    try: 
+        with open(docx_path, "rb") as f:
+            result = mammoth.convert_to_html(f)
+            return result.value
+    except Exception as e:
+        print(f"Error converting .docx to HTML: {e}")
         sys.exit(1)
 
 current_branch = get_current_branch()

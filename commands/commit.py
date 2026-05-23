@@ -5,20 +5,7 @@ import sys
 import hashlib
 from datetime import datetime
 import json
-import mammoth
 import utils
-
-
-def convert_docx_to_html(docx_path=None):
-    if docx_path is None:
-        docx_path = utils.current_file_docx_path
-    try: 
-        with open(docx_path, "rb") as f:
-            result = mammoth.convert_to_html(f)
-            return result.value
-    except Exception as e:
-        print(f"Error converting .docx to HTML: {e}")
-        sys.exit(1)
 
 def get_obj_from_config(object, cwd=None):
     if cwd is None:
@@ -198,7 +185,7 @@ if __name__ == "__main__":
 
     email = get_obj_from_config("email")
 
-    docx_html = convert_docx_to_html()
+    docx_html = utils.convert_docx_to_html()
 
     commit_message = get_commit_message()
 
