@@ -4,13 +4,11 @@ import sys
 from bs4 import BeautifulSoup
 import mammoth
 import difflib
-from sccs_layout_check import check_sccs, wrap_html
+from sccs_layout_check import check_sccs, wrap_html, directory_path
 import copy
 
 
 commit_to_diff = sys.argv[2] if len(sys.argv) > 2 else None 
-
-directory_path = os.getcwd()
 
 docx_current_version = os.path.join(directory_path, f"{os.path.basename(directory_path)}.docx")
 
