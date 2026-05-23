@@ -37,18 +37,22 @@ def convert_current_docx_to_html(docx_path):
 
     return docx_current_version_html
 
+def get_commit_html(commit_path):
+    try:
+        with open(commit_path, "r", encoding="utf-8", newline="\n") as f:
+            commit_html = f.read()
+    except Exception as e:
+        print(f"Error reading commit file: {e}")
+        sys.exit(1)
+    return commit_html
+
 check_sccs()
 
 validate_commit(COMMIT_TO_DIFF)
 
 docx_current_version_html = convert_current_docx_to_html(DOCX_CURRENT_VERSION)
 
-try:
-    with open(COMMIT_TO_DIFF, "r", encoding="utf-8", newline="\n") as f:
-        commit_html = f.read()
-except Exception as e:
-    print(f"Error reading commit file: {e}")
-    sys.exit(1)
+commit_html = get_commit_html(COMMIT_TO_DIFF)
 
 def remove_inline_semantics(html):
     soup = html
