@@ -1,3 +1,4 @@
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -97,6 +98,51 @@ def check_sccs_layout():
 
 def wrap_html(html):
     return f"<!DOCTYPE html><html><head><meta charset='UTF-8'>{default_html_styles}</head><body><div class='center'><div id='target'>{html}</div></div></body></html>"
+
+def hash_current_docx_binary(file_path):
+    try:
+        with open(file_path, "rb") as f:
+            hasher = hashlib.sha256()
+            for chunk in iter(lambda: f.read(65536), b""):
+                hasher.update(chunk)
+            hashed_file = hasher.hexdigest()
+    except Exception as e:
+        print(f"Error processing .docx file: {e}")
+        sys.exit(1)
+
+    return hashed_file
+
+def get_current_branch(file_path):
+    try:
+        with open(file_path, "r", encoding="utf-8", newline="\n") as current_branch_file:
+            try:
+                current_branch = json.load(current_branch_file).get("current_branch")
+                if not current_branch:
+                    print("Current branch is missing from JSON. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
+                    sys.exit(1)
+            except json.JSONDecodeError as e:
+                print(f"Error decoding JSON from current branch file: {e}")
+                sys.exit(1)
+    except Exception as e:
+        print(f"Error reading current branch: {e}")
+        sys.exit(1)
+    return current_branch
+
+def get_branch_data(file_path, key=None, ):
+    try:
+        with open(file_path, "r", encoding="utf-8", newline="\n") as f:
+            try:
+                data = json.load(f)
+                if key:
+                    return data.get(key)
+                return data
+            except json.JSONDecodeError as e:
+                print(f"Error decoding JSON from current branch file: {e}")
+                sys.exit(1)
+
+    except Exception as e:
+        print(f"Error reading current branch data: {e}")
+        sys.exit(1)
 
 default_html_styles = """<style>
 * {

@@ -8,17 +8,7 @@ import json
 import mammoth
 import utils
 
-def hash_current_docx_binary():
-    try:
-        with open(utils.current_file_docx_path, "rb") as f:
-                hasher = hashlib.sha256()
-                for chunk in iter(lambda: f.read(65536), b""):
-                    hasher.update(chunk)
-                hashed_file = hasher.hexdigest()
-    except Exception as e:
-        print(f"Error processing .docx file: {e}")
-        sys.exit(1)
-    return hashed_file
+current_branch_path = os.path.join(utils.working_directory_path, ".sccs", "current_branch", "current_branch.json")
 
 def convert_docx_to_html():
     try: 
@@ -55,20 +45,8 @@ def get_commit_message():
 def get_timestamp():
     return datetime.now().isoformat()
 
-def get_current_branch():
-   #Get current branch
-    current_branch_path = os.path.join(utils.working_directory_path, ".sccs", "current_branch", "current_branch.json")
-    if not Path(current_branch_path).is_file():
-        print("Current branch file not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
-        sys.exit(1)
-
-    with open(current_branch_path, "r", encoding="utf-8", newline="\n") as current_branch_file:
-        current_branch = json.load(current_branch_file).get("current_branch") 
-
-    return current_branch
-
 def get_history_path():
-    return os.path.join(utils.working_directory_path, ".sccs", "branches", get_current_branch(), "history", "commit_history.json")
+    return os.path.join(utils.working_directory_path, ".sccs", "branches", utils.get_current_branch(current_branch_path), "history", "commit_history.json")
 
 def get_commit_history():
     history_path = get_history_path()
@@ -142,7 +120,7 @@ def update_commit_messages(sha_hash, commit_message):
 
 def update_commit_binary_hash_history(sha_hash, hash_docx_binary):
     # Update commit file hash
-    commit_file_hash_path = os.path.join(utils.working_directory_path, ".sccs", "branches", get_current_branch(), "commit_file_hash", "commit_file_hash.json")
+    commit_file_hash_path = os.path.join(utils.working_directory_path, ".sccs", "branches", utils.get_current_branch(current_branch_path), "commit_file_hash", "commit_file_hash.json")
     if not Path(commit_file_hash_path).is_file():
         print("Commit file hash not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
         sys.exit(1)
@@ -187,13 +165,13 @@ def atomically_update_history(dict):
             print(f"Error replacing temporary file: {e}")
             sys.exit(1)
 
-def print_confirmation_message(sha_hash):
+def print_commit_confirmation_message(sha_hash):
     print(f"Commit {sha_hash} created successfully.")
 
 if __name__ == "__main__":
     utils.check_sccs_layout()
 
-    hash_docx_binary = hash_current_docx_binary()
+    hash_docx_binary = utils.hash_current_docx_binary()
 
     name = get_obj_from_config("name")
 
@@ -205,7 +183,7 @@ if __name__ == "__main__":
 
     timestamp = get_timestamp()
 
-    current_branch = get_current_branch()
+    current_branch = utils.get_current_branch(current_branch_path)
 
     history = get_commit_history()
 
@@ -221,4 +199,4 @@ if __name__ == "__main__":
 
     atomically_update_history(combine_update_dicts(update_commit_log_history(history, sha_hash, timestamp, name, email, commit_message), update_commit_binary_hash_history(sha_hash, hash_docx_binary), update_commit_messages(sha_hash, commit_message)))
 
-    print_confirmation_message(sha_hash)
+    print_commit_confirmation_message(sha_hash)

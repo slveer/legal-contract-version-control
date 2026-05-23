@@ -35,7 +35,7 @@ def copy_file_commit(commit_path, path):
         print(f"Error occurred while updating the file: {e}")
         sys.exit(1)
 
-def print_confirmation_message(commit_path, path):
+def print_rewrite_confirmation_message(commit_path, path):
     print(f"File '{os.path.basename(path)}' has been updated with the contents of '{os.path.basename(commit_path)}'.")
 
 if __name__ == "__main__":
@@ -51,4 +51,4 @@ if __name__ == "__main__":
 
     copy_file_commit(commit_path, utils.current_file_docx_path)
 
-    print_confirmation_message(commit_path, utils.current_file_docx_path)
+    print_rewrite_confirmation_message(commit_path, utils.current_file_docx_path)

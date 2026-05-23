@@ -8,23 +8,7 @@ subcommand = sys.argv[2] if len(sys.argv) > 2 else None
 
 branch_name = sys.argv[3] if len(sys.argv) > 3 else None
 
-def get_current_branch_path():
-    return os.path.join(utils.working_directory_path, ".sccs", "current_branch", "current_branch.json")
-
-def get_branch_data():
-    try:
-        with open(get_current_branch_path(), "r", encoding="utf-8", newline="\n") as f:
-            try:
-                data = json.load(f)
-                return data.get("current_branch"), data
-                
-            except json.JSONDecodeError as e:
-                print(f"Error decoding JSON from current branch file: {e}")
-                sys.exit(1)
-
-    except Exception as e:
-        print(f"Error reading current branch data: {e}")
-        sys.exit(1)
+current_branch_path = os.path.join(utils.working_directory_path, ".sccs", "current_branch", "current_branch.json")
 
 def validate_subcommand(subcommand, branch_name):
     if not subcommand:
@@ -58,7 +42,7 @@ def branch_create_subcommand(current_branch, branch_data):
         
     shutil.copytree(os.path.join(utils.working_directory_path, ".sccs", "branches", current_branch), os.path.join(utils.working_directory_path, ".sccs", "branches", sanitized_branch_name))
     try:
-        with open(get_current_branch_path(), "w", encoding="utf-8", newline="\n") as current_branch_file:
+        with open(current_branch_path, "w", encoding="utf-8", newline="\n") as current_branch_file:
             try:    
                 branch_data["branches"].append(sanitized_branch_name)
                 branch_data["current_branch"] = sanitized_branch_name
@@ -92,7 +76,7 @@ def branch_delete_subcommand(current_branch, branch_data):
         sys.exit(1)
 
     try:
-        with open(get_current_branch_path(), "w", encoding="utf-8", newline="\n") as current_branch_file:
+        with open(current_branch_path, "w", encoding="utf-8", newline="\n") as current_branch_file:
             branch_data["branches"].remove(sanitized_branch_name)
             json.dump(branch_data, current_branch_file, indent=4)
 
@@ -106,7 +90,7 @@ def branch_delete_subcommand(current_branch, branch_data):
     except Exception as e:
         print(f"Error deleting branch '{sanitized_branch_name}': {e}")
         try:
-            with open(get_current_branch_path(), "w", encoding="utf-8", newline="\n") as current_branch_file:
+            with open(current_branch_path, "w", encoding="utf-8", newline="\n") as current_branch_file:
                 branch_data["branches"].append(sanitized_branch_name)
                 json.dump(branch_data, current_branch_file, indent=4)
         except Exception as e:
@@ -135,7 +119,9 @@ if __name__ == "__main__":
 
     utils.check_sccs_layout()
 
-    current_branch, branch_data = get_branch_data()
+    branch_data = utils.get_branch_data(current_branch_path)
+
+    current_branch = utils.get_current_branch(current_branch_path)
 
     validate_subcommand()
 

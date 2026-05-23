@@ -7,9 +7,11 @@ import shutil
 
 branch_to_switch = sys.argv[2] if len(sys.argv) > 2 else None
 
+current_branch_path = os.path.join(utils.working_directory_path, ".sccs", "current_branch", "current_branch.json")
+
 def update_current_branch(branch):
     try:
-        with open(os.path.join(utils.working_directory_path, ".sccs", "current_branch", "current_branch.json"), "r", encoding="utf-8", newline="\n") as f:
+        with open(current_branch_path, "r", encoding="utf-8", newline="\n") as f:
             try:
                 current_branch = json.load(f)
                 current_branch["current_branch"] = branch
@@ -21,7 +23,7 @@ def update_current_branch(branch):
         sys.exit(1)
 
     try: 
-        with open(os.path.join("tmp"), "w", encoding="utf-8", newline="\n") as f:
+        with open(os.path.join(utils.working_directory_path, ".sccs", "current_branch", "tmp"), "w", encoding="utf-8", newline="\n") as f:
             try:
                 json.dump(current_branch, f, indent=4)
             except Exception as e:
@@ -32,22 +34,9 @@ def update_current_branch(branch):
         sys.exit(1)
     
     try: 
-        os.replace("tmp", os.path.join(utils.working_directory_path, ".sccs", "current_branch", "current_branch.json"))
+        os.replace(os.path.join(utils.working_directory_path, ".sccs", "current_branch", "tmp"), os.path.join(utils.working_directory_path, ".sccs", "current_branch", "current_branch.json"))
     except Exception as e:
         print(f"Error replacing current branch information: {e}")
-        sys.exit(1)
-
-def get_branch_data():
-    try:
-        with open(os.path.join(utils.working_directory_path, ".sccs", "current_branch", "current_branch.json"), "r", encoding="utf-8", newline="\n") as f:
-            try:
-                data = json.load(f)
-                return data.get("current_branch"), data.get("branches")
-            except Exception as e:
-                print(f"Error reading current branch information: {e}")
-                sys.exit(1)
-    except Exception as e:
-        print(f"Error accessing current branch information: {e}")
         sys.exit(1)
 
 def check_branch_to_switch(branch_to_switch, branches):
@@ -125,7 +114,9 @@ def print_confirmation(branch_to_switch):
 if __name__ == "__main__":
     utils.check_sccs_layout()
 
-    branch, branches = get_branch_data()
+    branches = utils.get_branch_data(current_branch_path, "branches")
+
+    branch = utils.get_current_branch()
 
     latest_commit = get_latest_commit(branch)
 

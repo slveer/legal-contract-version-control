@@ -6,14 +6,9 @@ import utils
 
 current_branch_path = os.path.join(utils.working_directory_path, ".sccs", "current_branch", "current_branch.json")
 
-def get_current_branch():
-    with open(current_branch_path, "r", encoding="utf-8", newline="\n") as current_branch_file:
-        current_branch = json.load(current_branch_file).get("current_branch")
-    return current_branch
-
 def get_log_data():
     # Get JSON log data
-    log_path = os.path.join(utils.working_directory_path, ".sccs", "branches", get_current_branch(), "history", "commit_history.json")
+    log_path = os.path.join(utils.working_directory_path, ".sccs", "branches", utils.get_current_branch(current_branch_path), "history", "commit_history.json")
     if not Path(log_path).is_file():
         print("Log file not found. Please make sure the file has been initialized with SCCS.")
         sys.exit(1)

@@ -7,35 +7,6 @@ import utils
 
 current_branch_path = os.path.join(utils.working_directory_path, ".sccs", "current_branch", "current_branch.json")
 
-def get_current_branch():
-    try:
-        with open(current_branch_path, "r", encoding="utf-8", newline="\n") as current_branch_file:
-            try:
-                current_branch = json.load(current_branch_file).get("current_branch")
-                if not current_branch:
-                    print("Current branch is missing from JSON. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
-                    sys.exit(1)
-            except json.JSONDecodeError as e:
-                print(f"Error decoding JSON from current branch file: {e}")
-                sys.exit(1)
-    except Exception as e:
-        print(f"Error reading current branch: {e}")
-        sys.exit(1)
-    return current_branch
-
-def hash_current_docx_binary(file_path):
-    try:
-        with open(file_path, "rb") as f:
-            hasher = hashlib.sha256()
-            for chunk in iter(lambda: f.read(65536), b""):
-                hasher.update(chunk)
-            hashed_file = hasher.hexdigest()
-    except Exception as e:
-        print(f"Error processing .docx file: {e}")
-        sys.exit(1)
-
-    return hashed_file
-
 def get_latest_commit_hash_file(current_branch):
     # get the latest commit filename hash from commit history
     history_path = os.path.join(utils.working_directory_path, ".sccs", "branches", current_branch, "history", "commit_history.json")
@@ -108,5 +79,5 @@ def print_changes_message_and_exit(old_hash, new_hash):
 
 if __name__ == "__main__":
     utils.check_sccs_layout()
-    current_branch = get_current_branch()
-    print_changes_message_and_exit(get_latest_commit_file_binary_hash(current_branch), hash_current_docx_binary(utils.current_file_docx_path))
+    current_branch = utils.get_current_branch(current_branch_path)
+    print_changes_message_and_exit(get_latest_commit_file_binary_hash(current_branch), utils.hash_current_docx_binary(utils.current_file_docx_path))
