@@ -46,25 +46,6 @@ def get_commit_html(commit_path):
         sys.exit(1)
     return commit_html
 
-check_sccs()
-
-validate_commit(COMMIT_TO_DIFF)
-
-docx_current_version_html = convert_current_docx_to_html(DOCX_CURRENT_VERSION)
-
-commit_html = get_commit_html(COMMIT_TO_DIFF)
-
-def remove_inline_semantics(html):
-    soup = html
-    for tag in soup.find_all():
-        if tag.name in ["b", "i", "u", "strong", "em"]:
-            tag.unwrap()
-        
-        if tag.name == "style":
-            tag.decompose()
-            continue
-    return soup
-
 def number_tags(html):
     soup = html
     for i, tag in enumerate(soup.find_all()):
@@ -92,6 +73,26 @@ def get_data_number(tag_list):
             if parsed_tag.get('data-number') is not None:
                 data_number.add(parsed_tag.get('data-number'))
     return data_number
+
+check_sccs()
+
+validate_commit(COMMIT_TO_DIFF)
+
+docx_current_version_html = convert_current_docx_to_html(DOCX_CURRENT_VERSION)
+
+commit_html = get_commit_html(COMMIT_TO_DIFF)
+
+def remove_inline_semantics(html):
+    soup = html
+    for tag in soup.find_all():
+        if tag.name in ["b", "i", "u", "strong", "em"]:
+            tag.unwrap()
+        
+        if tag.name == "style":
+            tag.decompose()
+            continue
+    return soup
+
 
 bs4_docx_current_version_soup = BeautifulSoup(docx_current_version_html, "html.parser")
 
