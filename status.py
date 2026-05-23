@@ -33,9 +33,9 @@ def hash_current_docx_binary(file_path):
 
     return hashed_file
 
-def get_latest_commit_hash_file():
+def get_latest_commit_hash_file(current_branch):
     # get the latest commit filename hash from commit history
-    history_path = os.path.join(directory_path, ".sccs", "branches", get_current_branch(), "history", "commit_history.json")
+    history_path = os.path.join(directory_path, ".sccs", "branches", current_branch, "history", "commit_history.json")
     if not Path(history_path).is_file():
         print("History file not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
         sys.exit(1)
@@ -58,10 +58,10 @@ def get_latest_commit_hash_file():
     
     return latest_commit_hash
 
-def get_latest_commit_file_binary_hash():
+def get_latest_commit_file_binary_hash(current_branch):
     # get the hash of the latest committed file
-    latest_commit_hash = get_latest_commit_hash_file()
-    latest_commit_file_hash_path = os.path.join(directory_path, ".sccs", "branches", get_current_branch(), "commit_file_hash", "commit_file_hash.json")
+    latest_commit_hash = get_latest_commit_hash_file(current_branch)
+    latest_commit_file_hash_path = os.path.join(directory_path, ".sccs", "branches", current_branch, "commit_file_hash", "commit_file_hash.json")
     if not Path(latest_commit_file_hash_path).is_file():
         print("Latest commit file hash not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
         sys.exit(1)
@@ -93,4 +93,5 @@ def print_changes_message(old_hash, new_hash):
 
 if __name__ == "__main__":
     check_sccs()
-    print_changes_message(get_latest_commit_file_binary_hash(), hash_current_docx_binary(path))
+    current_branch = get_current_branch()
+    print_changes_message(get_latest_commit_file_binary_hash(current_branch), hash_current_docx_binary(path))
