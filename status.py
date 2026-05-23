@@ -11,8 +11,6 @@ from sccs_layout_check import path
 from sccs_layout_check import check_sccs
 CURRENT_BRANCH_PATH = os.path.join(directory_path, ".sccs", "current_branch", "current_branch.json")
 
-check_sccs()
-
 def get_current_branch():
     try:
         with open(CURRENT_BRANCH_PATH, "r", encoding="utf-8", newline="\n") as current_branch_file:
@@ -97,4 +95,6 @@ def print_changes_message(old_hash, new_hash):
         print("Changes detected since the latest commit. You can proceed with committing these changes.")
         sys.exit(0)
 
-print_changes_message(get_latest_commit_file_binary_hash(), hash_current_docx_binary(path))
+if __name__ == "__main__":
+    check_sccs()
+    print_changes_message(get_latest_commit_file_binary_hash(), hash_current_docx_binary(path))
