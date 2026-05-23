@@ -152,9 +152,8 @@ def remove_inline_semantics(html):
 
 def convert_html_to_soup(html):
     return BeautifulSoup(html, "html.parser")
-
 def format_bs4_html_list(bs4_obj):
-    tags_to_list(number_tags(remove_inline_semantics(copy.copy(bs4_obj))))
+    return tags_to_list(number_tags(remove_inline_semantics(copy.copy(bs4_obj))))
 def get_opcodes(commit_soup, current_soup):
     return difflib.SequenceMatcher(None, tags_to_list(remove_inline_semantics(copy.copy(commit_soup))), tags_to_list(remove_inline_semantics(copy.copy(current_soup)))).get_opcodes()
 
