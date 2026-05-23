@@ -3,11 +3,7 @@ import shutil
 import sys
 from pathlib import Path
 
-from sccs_layout_check import path
-
-from sccs_layout_check import check_sccs
-
-
+from sccs_layout_check import path, check_sccs
 
 def get_commit_path_input():
     commit_path = input("Enter the path to the commit file (.docx): ").strip()
@@ -52,7 +48,7 @@ if __name__ == "__main__":
     check_commit_path_input(commit_path)
 
     check_changes(commit_path, path)
-    
+
     confirm_before_proceeding(commit_path, path)
 
     open_file_commit(commit_path, path)
