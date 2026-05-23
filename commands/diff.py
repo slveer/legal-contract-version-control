@@ -6,8 +6,8 @@ import mammoth
 import difflib
 import utils
 import copy
-COMMIT_TO_DIFF = sys.argv[2] if len(sys.argv) > 2 else None 
-DOCX_CURRENT_VERSION = os.path.join(utils.working_directory_path, f"{os.path.basename(utils.working_directory_path)}.docx")
+commit_to_diff = sys.argv[2] if len(sys.argv) > 2 else None 
+docx_current_version = os.path.join(utils.working_directory_path, f"{os.path.basename(utils.working_directory_path)}.docx")
 
 def validate_commit(commit_to_diff, docx_current_version):
     if not commit_to_diff:
@@ -180,11 +180,11 @@ if __name__ == "__main__":
 
     utils.check_sccs_layout()
 
-    validate_commit(COMMIT_TO_DIFF, DOCX_CURRENT_VERSION)
+    validate_commit(commit_to_diff, docx_current_version)
 
-    docx_current_version_html = convert_current_docx_to_html(DOCX_CURRENT_VERSION)
+    docx_current_version_html = convert_current_docx_to_html(docx_current_version)
 
-    commit_html = get_commit_html(COMMIT_TO_DIFF)
+    commit_html = get_commit_html(commit_to_diff)
 
     bs4_docx_current_version_soup = convert_html_to_soup(docx_current_version_html)
 

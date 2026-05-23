@@ -5,11 +5,11 @@ import hashlib
 import json
 import utils
 
-CURRENT_BRANCH_PATH = os.path.join(utils.working_directory_path, ".sccs", "current_branch", "current_branch.json")
+current_branch_path = os.path.join(utils.working_directory_path, ".sccs", "current_branch", "current_branch.json")
 
 def get_current_branch():
     try:
-        with open(CURRENT_BRANCH_PATH, "r", encoding="utf-8", newline="\n") as current_branch_file:
+        with open(current_branch_path, "r", encoding="utf-8", newline="\n") as current_branch_file:
             try:
                 current_branch = json.load(current_branch_file).get("current_branch")
                 if not current_branch:

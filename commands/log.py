@@ -4,12 +4,10 @@ import os
 import sys
 import utils
 
-CURRENT_BRANCH_PATH = os.path.join(utils.working_directory_path, ".sccs", "current_branch", "current_branch.json")
-
-
+current_branch_path = os.path.join(utils.working_directory_path, ".sccs", "current_branch", "current_branch.json")
 
 def get_current_branch():
-    with open(CURRENT_BRANCH_PATH, "r", encoding="utf-8", newline="\n") as current_branch_file:
+    with open(current_branch_path, "r", encoding="utf-8", newline="\n") as current_branch_file:
         current_branch = json.load(current_branch_file).get("current_branch")
     return current_branch
 

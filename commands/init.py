@@ -9,8 +9,8 @@ import mammoth
 import utils
 # Get user inputted path argument
 INITIAL_COMMIT_MESSAGE = "initial commit (This is a default commit message for initial version)"
-ENTERED_DOCUMENT_PATH = sys.argv[2] if len(sys.argv) > 2 else None
-DOCUMENT_DIRECTORY_PATH = Path(ENTERED_DOCUMENT_PATH).with_suffix('')
+entered_document_path = sys.argv[2] if len(sys.argv) > 2 else None
+document_repo_path = Path(entered_document_path).with_suffix('')
 
 # Strip .docx extension from the file name to create a directory
 def check_if_arg_entered(arg):
@@ -27,18 +27,18 @@ def ask_config_input(data):
         return data_value
 
 def check_for_prev_init():
-    if Path(os.path.join(DOCUMENT_DIRECTORY_PATH, ".sccs")).is_dir():
+    if Path(os.path.join(document_repo_path, ".sccs")).is_dir():
         print("This file has already been initialized with SCCS")
         sys.exit(1)
 
 def check_file_requirements():
-    if not ENTERED_DOCUMENT_PATH or Path(ENTERED_DOCUMENT_PATH).suffix.lower() != ".docx" or not Path(ENTERED_DOCUMENT_PATH).is_file():
+    if not entered_document_path or Path(entered_document_path).suffix.lower() != ".docx" or not Path(entered_document_path).is_file():
         print("Invalid file path, make sure the file exists and is a .docx file")
         sys.exit(1)
 
 def hash_document():
     try:
-        with open(ENTERED_DOCUMENT_PATH, "rb") as f:
+        with open(entered_document_path, "rb") as f:
             try:
                 hasher = hashlib.sha256()
                 for chunk in iter(lambda: f.read(65536), b""):
@@ -53,7 +53,7 @@ def hash_document():
 
 def convert_document_to_html():
     try: 
-        with open(ENTERED_DOCUMENT_PATH, "rb") as f:
+        with open(entered_document_path, "rb") as f:
             try:
                 result = mammoth.convert_to_html(f)
                 html = result.value
@@ -69,30 +69,30 @@ def create_commit_sha_hash(timestamp, user_name, user_email):
     return hashlib.sha256(f'{timestamp}/initial_version/{user_name}/{user_email}'.encode()).hexdigest()
 
 def create_sccs_directory_layout():
-    os.makedirs(DOCUMENT_DIRECTORY_PATH, exist_ok=True)
-    os.makedirs(os.path.join(DOCUMENT_DIRECTORY_PATH, ".sccs"), exist_ok=True)
-    os.makedirs(os.path.join(DOCUMENT_DIRECTORY_PATH, ".sccs", "objects"), exist_ok=True)
-    os.makedirs(os.path.join(DOCUMENT_DIRECTORY_PATH, ".sccs", "objects", "docx"), exist_ok=True)
-    os.makedirs(os.path.join(DOCUMENT_DIRECTORY_PATH, ".sccs", "objects", "html"), exist_ok=True)
-    os.makedirs(os.path.join(DOCUMENT_DIRECTORY_PATH, ".sccs", "objects", "view_html"), exist_ok=True)
-    os.makedirs(os.path.join(DOCUMENT_DIRECTORY_PATH, ".sccs", "branches"), exist_ok=True)
-    os.makedirs(os.path.join(DOCUMENT_DIRECTORY_PATH, ".sccs", "branches", "main"), exist_ok=True)
-    os.makedirs(os.path.join(DOCUMENT_DIRECTORY_PATH, ".sccs", "branches", "main", "history"), exist_ok=True)
-    os.makedirs(os.path.join(DOCUMENT_DIRECTORY_PATH, ".sccs", "branches", "main", "commit_file_hash"), exist_ok=True)
-    os.makedirs(os.path.join(DOCUMENT_DIRECTORY_PATH, ".sccs", "commit_messages"), exist_ok=True)
-    os.makedirs(os.path.join(DOCUMENT_DIRECTORY_PATH, ".sccs", "config"), exist_ok=True)
-    os.makedirs(os.path.join(DOCUMENT_DIRECTORY_PATH, ".sccs", "current_branch"), exist_ok=True)
+    os.makedirs(document_repo_path, exist_ok=True)
+    os.makedirs(os.path.join(document_repo_path, ".sccs"), exist_ok=True)
+    os.makedirs(os.path.join(document_repo_path, ".sccs", "objects"), exist_ok=True)
+    os.makedirs(os.path.join(document_repo_path, ".sccs", "objects", "docx"), exist_ok=True)
+    os.makedirs(os.path.join(document_repo_path, ".sccs", "objects", "html"), exist_ok=True)
+    os.makedirs(os.path.join(document_repo_path, ".sccs", "objects", "view_html"), exist_ok=True)
+    os.makedirs(os.path.join(document_repo_path, ".sccs", "branches"), exist_ok=True)
+    os.makedirs(os.path.join(document_repo_path, ".sccs", "branches", "main"), exist_ok=True)
+    os.makedirs(os.path.join(document_repo_path, ".sccs", "branches", "main", "history"), exist_ok=True)
+    os.makedirs(os.path.join(document_repo_path, ".sccs", "branches", "main", "commit_file_hash"), exist_ok=True)
+    os.makedirs(os.path.join(document_repo_path, ".sccs", "commit_messages"), exist_ok=True)
+    os.makedirs(os.path.join(document_repo_path, ".sccs", "config"), exist_ok=True)
+    os.makedirs(os.path.join(document_repo_path, ".sccs", "current_branch"), exist_ok=True)
 
 def move_document_to_repo_directory():
-    shutil.move(ENTERED_DOCUMENT_PATH, DOCUMENT_DIRECTORY_PATH)
+    shutil.move(entered_document_path, document_repo_path)
 
 def copy_document_to_objects_as_docx_and_html():
-    shutil.copy2(os.path.join(DOCUMENT_DIRECTORY_PATH, Path(ENTERED_DOCUMENT_PATH).name), os.path.join(DOCUMENT_DIRECTORY_PATH, ".sccs", "objects", "docx", f"{sha_hash}.docx"))
+    shutil.copy2(os.path.join(document_repo_path, Path(entered_document_path).name), os.path.join(document_repo_path, ".sccs", "objects", "docx", f"{sha_hash}.docx"))
 
-    with open(os.path.join(DOCUMENT_DIRECTORY_PATH, ".sccs", "objects", "html", f"{sha_hash}.html"), "w", encoding="utf-8", newline="\n") as f:
+    with open(os.path.join(document_repo_path, ".sccs", "objects", "html", f"{sha_hash}.html"), "w", encoding="utf-8", newline="\n") as f:
         f.write(utils.default_styles + html)
 
-    with open(os.path.join(DOCUMENT_DIRECTORY_PATH, ".sccs", "objects", "view_html", f"{sha_hash}.html"), "w", encoding="utf-8", newline="\n") as f:
+    with open(os.path.join(document_repo_path, ".sccs", "objects", "view_html", f"{sha_hash}.html"), "w", encoding="utf-8", newline="\n") as f:
         f.write(utils.wrap_html(html))
 
 def get_current_iso_time():
@@ -117,7 +117,7 @@ def write_history_data():
         }
     }
     try:
-        with open(os.path.join(DOCUMENT_DIRECTORY_PATH, ".sccs", "branches", "main", "history", "commit_history.json"), "w", encoding="utf-8", newline="\n") as f:
+        with open(os.path.join(document_repo_path, ".sccs", "branches", "main", "history", "commit_history.json"), "w", encoding="utf-8", newline="\n") as f:
             try: 
                 json.dump(history_data, f, indent=4)
             except Exception as e:
@@ -132,7 +132,7 @@ def write_commit_message_data():
         f"{sha_hash}": INITIAL_COMMIT_MESSAGE
     }
     try:
-        with open(os.path.join(DOCUMENT_DIRECTORY_PATH, ".sccs", "commit_messages", "commit_messages.json"), "w", encoding="utf-8", newline="\n") as f:
+        with open(os.path.join(document_repo_path, ".sccs", "commit_messages", "commit_messages.json"), "w", encoding="utf-8", newline="\n") as f:
             try:
                 json.dump(commit_message_data, f, indent=4)
             except Exception as e:
@@ -148,7 +148,7 @@ def write_config_data():
         "email": f"{config_user_email}"
     }
     try:
-        with open(os.path.join(DOCUMENT_DIRECTORY_PATH, ".sccs", "config", "config.json"), "w", encoding="utf-8", newline="\n") as f:
+        with open(os.path.join(document_repo_path, ".sccs", "config", "config.json"), "w", encoding="utf-8", newline="\n") as f:
             try:
                 json.dump(config_data, f, indent=4)
             except Exception as e:
@@ -163,7 +163,7 @@ def write_hashed_file_commit_data():
         f"{sha_hash}": hashed_file
     }
     try:
-        with open(os.path.join(DOCUMENT_DIRECTORY_PATH, ".sccs", "branches", "main", "commit_file_hash", "commit_file_hash.json"), "w", encoding="utf-8", newline="\n") as f:
+        with open(os.path.join(document_repo_path, ".sccs", "branches", "main", "commit_file_hash", "commit_file_hash.json"), "w", encoding="utf-8", newline="\n") as f:
             try:
                 json.dump(commit_file_hash_data, f, indent=4)
             except Exception as e:
@@ -179,7 +179,7 @@ def write_branch_data():
         "branches": ["main"]
     }
     try:
-        with open(os.path.join(DOCUMENT_DIRECTORY_PATH, ".sccs", "current_branch", "current_branch.json"), "w", encoding="utf-8", newline="\n") as f:
+        with open(os.path.join(document_repo_path, ".sccs", "current_branch", "current_branch.json"), "w", encoding="utf-8", newline="\n") as f:
             try:
                 json.dump(branches_data, f, indent=4)
             except Exception as e:
@@ -193,7 +193,7 @@ def confirmation_message():
     print("SCCS initialization complete.")
 
 if __name__ == "__main__":
-    check_if_arg_entered(ENTERED_DOCUMENT_PATH)
+    check_if_arg_entered(entered_document_path)
 
     check_for_prev_init()
 
