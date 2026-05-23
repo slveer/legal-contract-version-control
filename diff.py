@@ -178,23 +178,25 @@ def write_redline_html_file(redline, filename="redline.html"):
     with open(filename, "w", encoding="utf-8", newline="\n") as f:
         f.write(wrap_html(str(strip_number_attribute(redline))))
 
-check_sccs()
+if __name__ == "__main__":
 
-validate_commit(COMMIT_TO_DIFF)
+    check_sccs()
 
-docx_current_version_html = convert_current_docx_to_html(DOCX_CURRENT_VERSION)
+    validate_commit(COMMIT_TO_DIFF)
 
-commit_html = get_commit_html(COMMIT_TO_DIFF)
+    docx_current_version_html = convert_current_docx_to_html(DOCX_CURRENT_VERSION)
 
-bs4_docx_current_version_soup = convert_html_to_soup(docx_current_version_html)
+    commit_html = get_commit_html(COMMIT_TO_DIFF)
 
-docx_current_version_list = format_bs4_html_list(bs4_docx_current_version_soup)
+    bs4_docx_current_version_soup = convert_html_to_soup(docx_current_version_html)
 
-bs4_commit_soup = convert_html_to_soup(commit_html)
-commit_list = format_bs4_html_list(bs4_commit_soup)
+    docx_current_version_list = format_bs4_html_list(bs4_docx_current_version_soup)
 
-opcodes = get_opcodes(bs4_commit_soup, bs4_docx_current_version_soup)
+    bs4_commit_soup = convert_html_to_soup(commit_html)
+    commit_list = format_bs4_html_list(bs4_commit_soup)
 
-redline = format_redline_html(get_redline_html(bs4_commit_soup), opcodes, commit_list, docx_current_version_list)
+    opcodes = get_opcodes(bs4_commit_soup, bs4_docx_current_version_soup)
 
-write_redline_html_file(redline)
+    redline = format_redline_html(get_redline_html(bs4_commit_soup), opcodes, commit_list, docx_current_version_list)
+
+    write_redline_html_file(redline)
