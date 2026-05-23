@@ -83,15 +83,15 @@ def get_latest_commit_file_binary_hash(current_branch):
 def compare_hashes(old_hash, new_hash):
     return old_hash == new_hash
 
-def print_changes_message(old_hash, new_hash):
+def print_changes_message_and_exit(old_hash, new_hash):
     if compare_hashes(old_hash, new_hash):
         print("No changes detected since the latest commit. Nothing to commit.")
         sys.exit(0)
     else:
         print("Changes detected since the latest commit. You can proceed with committing these changes.")
-        sys.exit(0)
+        sys.exit(1)
 
 if __name__ == "__main__":
     check_sccs()
     current_branch = get_current_branch()
-    print_changes_message(get_latest_commit_file_binary_hash(current_branch), hash_current_docx_binary(path))
+    print_changes_message_and_exit(get_latest_commit_file_binary_hash(current_branch), hash_current_docx_binary(path))
