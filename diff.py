@@ -156,6 +156,9 @@ def convert_html_to_soup(html):
 def format_bs4_html_list(bs4_obj):
     tags_to_list(number_tags(remove_inline_semantics(copy.copy(bs4_obj))))
 
+def get_opcodes(commit_soup, current_soup):
+    return difflib.SequenceMatcher(None, tags_to_list(remove_inline_semantics(copy.copy(commit_soup))), tags_to_list(remove_inline_semantics(copy.copy(current_soup)))).get_opcodes()
+
 check_sccs()
 
 validate_commit(COMMIT_TO_DIFF)
@@ -171,7 +174,7 @@ docx_current_version_list = format_bs4_html_list(bs4_docx_current_version_soup)
 bs4_commit_soup = convert_html_to_soup(commit_html)
 commit_list = format_bs4_html_list(bs4_commit_soup)
 
-opcodes = difflib.SequenceMatcher(None, tags_to_list(remove_inline_semantics(copy.copy(bs4_commit_soup))), tags_to_list(remove_inline_semantics(copy.copy(bs4_docx_current_version_soup)))).get_opcodes()
+opcodes = get_opcodes(bs4_commit_soup, bs4_docx_current_version_soup)
 redline = number_tags(remove_inline_semantics(copy.copy(bs4_commit_soup)))
 
 for opcode in reversed(opcodes):
