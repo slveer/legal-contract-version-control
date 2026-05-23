@@ -6,32 +6,34 @@ import mammoth
 import difflib
 from sccs_layout_check import check_sccs, wrap_html, directory_path
 import copy
+COMMIT_TO_DIFF = sys.argv[2] if len(sys.argv) > 2 else None 
+DOCX_CURRENT_VERSION = os.path.join(directory_path, f"{os.path.basename(directory_path)}.docx")
+
+def validate_commit(commit_to_diff):
+    if not commit_to_diff:
+        print("No commit file specified.")
+        sys.exit(1)
+
+    if not Path(commit_to_diff).is_file():
+        print("Commit file not found. Please provide a valid commit file path.")
+        sys.exit(1)
+
+    if Path(commit_to_diff).suffix.lower() != ".html":
+        print("Commit file is not a .html file. Please provide a valid .html commit file.")
+        sys.exit(1)
+
+    if not Path(DOCX_CURRENT_VERSION).is_file():
+        print("Docx file not found. Re-initialize SCCS for this file with 'sccs init <file_path>'")
+        sys.exit(1)
 
 
-commit_to_diff = sys.argv[2] if len(sys.argv) > 2 else None 
 
-docx_current_version = os.path.join(directory_path, f"{os.path.basename(directory_path)}.docx")
-
-if not commit_to_diff:
-    print("No commit file specified.")
-    sys.exit(1)
-
-if not Path(commit_to_diff).is_file():
-    print("Commit file not found. Please provide a valid commit file path.")
-    sys.exit(1)
-
-if Path(commit_to_diff).suffix.lower() != ".html":
-    print("Commit file is not a .html file. Please provide a valid .html commit file.")
-    sys.exit(1)
-
-if not Path(docx_current_version).is_file():
-    print("Docx file not found. Re-initialize SCCS for this file with 'sccs init <file_path>'")
-    sys.exit(1)
+validate_commit(COMMIT_TO_DIFF)
 
 check_sccs()
 
 try:
-    with open(docx_current_version, "rb") as f:
+    with open(DOCX_CURRENT_VERSION, "rb") as f:
         docx_current_version_html = mammoth.convert_to_html(f).value
 
 except Exception as e:
@@ -40,7 +42,7 @@ except Exception as e:
 
 
 try:
-    with open(commit_to_diff, "r", encoding="utf-8", newline="\n") as f:
+    with open(COMMIT_TO_DIFF, "r", encoding="utf-8", newline="\n") as f:
         commit_html = f.read()
 except Exception as e:
     print(f"Error reading commit file: {e}")
