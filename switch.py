@@ -56,20 +56,24 @@ def check_branch_to_switch(branch_to_switch, branches):
         print(f"Error: Branch '{branch_to_switch}' does not exist.")
         sys.exit(1)
 
+def get_latest_commit(branch):
+    try: 
+        with open(os.path.join(directory_path, ".sccs", "branches", branch, "history", "commit_history.json"), "r", encoding="utf-8", newline="\n") as f:
+            try:
+                latest_commit = json.load(f).get("history")["latest_commit"]
+                return latest_commit
+            except Exception as e:
+                print(f"Error reading commit history for branch '{branch}': {e}")
+                sys.exit(1)
+    except Exception as e:
+        print(f"Error accessing commit history for branch '{branch}': {e}")
+        sys.exit(1)
+
 branch, branches = get_branch_data()
 
 check_branch_to_switch(branch_to_switch, branches)
 
-try: 
-    with open(os.path.join(directory_path, ".sccs", "branches", branch, "history", "commit_history.json"), "r", encoding="utf-8", newline="\n") as f:
-        try:
-            latest_commit = json.load(f).get("history")["latest_commit"]
-        except Exception as e:
-            print(f"Error reading commit history for branch '{branch}': {e}")
-            sys.exit(1)
-except Exception as e:
-    print(f"Error accessing commit history for branch '{branch}': {e}")
-    sys.exit(1)
+latest_commit = get_latest_commit(branch)
 
 try:
     with open(os.path.join(directory_path, ".sccs", "branches", branch, "commit_file_hash", "commit_file_hash.json"), "r", encoding="utf-8", newline="\n") as f:
