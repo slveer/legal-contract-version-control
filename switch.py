@@ -155,8 +155,8 @@ latest_commit_on_branch_to_switch = get_latest_commit(branch_to_switch)
 
 check_commit(latest_commit_on_branch_to_switch)
 
-update_current_branch(branch_to_switch)
-
 copy_commit_to_main(latest_commit_on_branch_to_switch, branch)
+
+update_current_branch(branch_to_switch)
 
 print_confirmation(branch_to_switch)
