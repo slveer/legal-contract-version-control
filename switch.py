@@ -69,22 +69,25 @@ def get_latest_commit(branch):
         print(f"Error accessing commit history for branch '{branch}': {e}")
         sys.exit(1)
 
+def get_latest_commit_binary_hash(branch, latest_commit):
+    try:
+        with open(os.path.join(directory_path, ".sccs", "branches", branch, "commit_file_hash", "commit_file_hash.json"), "r", encoding="utf-8", newline="\n") as f:
+            try:
+                return json.load(f).get(latest_commit)
+            except Exception as e:
+                print(f"Error reading commit file hash for branch '{branch}': {e}")
+                sys.exit(1)
+    except Exception as e:
+        print(f"Error accessing commit file hash for branch '{branch}': {e}")
+        sys.exit(1)
+
 branch, branches = get_branch_data()
 
 check_branch_to_switch(branch_to_switch, branches)
 
 latest_commit = get_latest_commit(branch)
 
-try:
-    with open(os.path.join(directory_path, ".sccs", "branches", branch, "commit_file_hash", "commit_file_hash.json"), "r", encoding="utf-8", newline="\n") as f:
-        try:
-            latest_commit_file_hash = json.load(f).get(latest_commit)
-        except Exception as e:
-            print(f"Error reading commit file hash for branch '{branch}': {e}")
-            sys.exit(1)
-except Exception as e:
-    print(f"Error accessing commit file hash for branch '{branch}': {e}")
-    sys.exit(1)
+latest_commit_binary_hash = get_latest_commit_binary_hash(branch, latest_commit)
 
 try:
     with open(path, "rb") as f:
@@ -96,7 +99,7 @@ except Exception as e:
     print(f"Error processing .docx file: {e}")
     sys.exit(1)
 
-if not hashed_file == latest_commit_file_hash:
+if not hashed_file == latest_commit_binary_hash:
     print(f"Error: The current file has uncommitted changes on the current branch '{branch}'. Please commit your changes before switching branches." )
     sys.exit(1)
 
