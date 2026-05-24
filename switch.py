@@ -121,6 +121,11 @@ def get_latest_commit(branch):
         print(f"Error reading commit history for branch '{branch}': {e}")
         sys.exit(1)
 
+def check_commit(commit):
+    if not os.path.isfile(os.path.join(directory_path, ".sccs", "objects", "docx", f"{commit}.docx")):
+        print(f"Error: Commit object '{commit}' not found.")
+        sys.exit(1)
+
 branch, branches = get_branch_data()
 
 latest_commit = get_latest_commit(branch)
@@ -137,9 +142,7 @@ check_branch_to_switch(branch_to_switch, branches)
 
 latest_commit_on_branch_to_switch = get_latest_commit(branch_to_switch)
 
-if not os.path.isfile(os.path.join(directory_path, ".sccs", "objects", "docx", f"{latest_commit_on_branch_to_switch}.docx")):
-    print(f"Error: Commit object '{latest_commit_on_branch_to_switch}' not found.")
-    sys.exit(1)
+check_commit(latest_commit_on_branch_to_switch)
 
 update_current_branch(branch_to_switch)
 
