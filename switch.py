@@ -56,6 +56,10 @@ def check_branch_to_switch(branch_to_switch, branches):
         print(f"Error: Branch '{branch_to_switch}' does not exist.")
         sys.exit(1)
 
+    if not branch_to_switch or len(branch_to_switch) == 0:
+        print("No branch specified. Please provide a branch name to switch to.")
+        sys.exit(1)
+
 def get_latest_commit(branch):
     try: 
         with open(os.path.join(directory_path, ".sccs", "branches", branch, "history", "commit_history.json"), "r", encoding="utf-8", newline="\n") as f:
@@ -92,9 +96,15 @@ def hash_current_document():
         print(f"Error processing .docx file: {e}")
         sys.exit(1)
 
-branch, branches = get_branch_data()
+def check_for_changes(branch, latest_commit_binary_hash, current_document_hash):
+    if not current_document_hash == latest_commit_binary_hash:
+        print(f"Error: The current file has uncommitted changes on the current branch '{branch}'. Please commit your changes before switching branches." )
+        sys.exit(1)
 
-check_branch_to_switch(branch_to_switch, branches)
+def sanitize_branch(branch_name):
+    return sanitize_dirname(branch_name)
+
+branch, branches = get_branch_data()
 
 latest_commit = get_latest_commit(branch)
 
@@ -102,17 +112,11 @@ latest_commit_binary_hash = get_latest_commit_binary_hash(branch, latest_commit)
 
 current_document_hash = hash_current_document()
 
-if not current_document_hash == latest_commit_binary_hash:
-    print(f"Error: The current file has uncommitted changes on the current branch '{branch}'. Please commit your changes before switching branches." )
-    sys.exit(1)
+check_for_changes(branch, latest_commit_binary_hash, current_document_hash)
 
+branch_to_switch = sanitize_branch(branch_to_switch)
 
-if branch_to_switch:
-    branch_to_switch = sanitize_dirname(branch_to_switch)
-
-if not branch_to_switch or len(branch_to_switch) == 0:
-    print("No branch specified. Please provide a branch name to switch to.")
-    sys.exit(1)
+check_branch_to_switch(branch_to_switch, branches)
 
 try:
     with open(os.path.join(directory_path, ".sccs",  "branches", branch_to_switch, "history", "commit_history.json"), "r", encoding="utf-8", newline="\n") as f:
