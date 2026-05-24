@@ -55,24 +55,9 @@ def check_branch_to_switch(branch_to_switch, branches):
     if not branch_to_switch or len(branch_to_switch) == 0:
         print("No branch specified. Please provide a branch name to switch to.")
         sys.exit(1)
-        
+
     if branch_to_switch not in branches:
         print(f"Error: Branch '{branch_to_switch}' does not exist.")
-        sys.exit(1)
-
-    
-
-def get_latest_commit(branch):
-    try: 
-        with open(os.path.join(directory_path, ".sccs", "branches", branch, "history", "commit_history.json"), "r", encoding="utf-8", newline="\n") as f:
-            try:
-                latest_commit = json.load(f).get("history")["latest_commit"]
-                return latest_commit
-            except Exception as e:
-                print(f"Error reading commit history for branch '{branch}': {e}")
-                sys.exit(1)
-    except Exception as e:
-        print(f"Error accessing commit history for branch '{branch}': {e}")
         sys.exit(1)
 
 def get_latest_commit_binary_hash(branch, latest_commit):
