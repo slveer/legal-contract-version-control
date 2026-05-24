@@ -130,10 +130,12 @@ def run_specified_subcommand(subcommand, current_branch, branch_data):
     elif subcommand == "list":
         branch_list_subcommand(current_branch, branch_data)
 
-current_branch, branch_data = get_branch_data()
+if __name__ == "__main__":
 
-validate_subcommand()
+    current_branch, branch_data = get_branch_data()
 
-run_specified_subcommand(subcommand, current_branch, branch_data)
+    validate_subcommand()
+
+    run_specified_subcommand(subcommand, current_branch, branch_data)
 
     
