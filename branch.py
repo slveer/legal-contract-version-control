@@ -58,8 +58,7 @@ def branch_create_subcommand(current_branch, branch_data):
         print(f"Branch '{sanitized_branch_name}' already exists, or a directory with the same name exists.")
         sys.exit(1)
         
-    if not os.path.isdir(os.path.join(directory_path, ".sccs", "branches", sanitized_branch_name)):
-        shutil.copytree(os.path.join(directory_path, ".sccs", "branches", current_branch), os.path.join(directory_path, ".sccs", "branches", sanitized_branch_name))
+    shutil.copytree(os.path.join(directory_path, ".sccs", "branches", current_branch), os.path.join(directory_path, ".sccs", "branches", sanitized_branch_name))
 
     try:
         with open(get_current_branch_path(), "w", encoding="utf-8", newline="\n") as current_branch_file:
