@@ -52,13 +52,15 @@ def get_branch_data():
         sys.exit(1)
 
 def check_branch_to_switch(branch_to_switch, branches):
+    if not branch_to_switch or len(branch_to_switch) == 0:
+        print("No branch specified. Please provide a branch name to switch to.")
+        sys.exit(1)
+        
     if branch_to_switch not in branches:
         print(f"Error: Branch '{branch_to_switch}' does not exist.")
         sys.exit(1)
 
-    if not branch_to_switch or len(branch_to_switch) == 0:
-        print("No branch specified. Please provide a branch name to switch to.")
-        sys.exit(1)
+    
 
 def get_latest_commit(branch):
     try: 
