@@ -46,7 +46,7 @@ def validate_subcommand():
 def branch_create_subcommand(current_branch, branch_data):
     sanitized_branch_name = sanitize_dirname(branch_name)
 
-    if not len(sanitized_branch_name) > 0:
+    if not sanitized_branch_name:
         print("Invalid branch name. Please provide a valid branch name.")
         sys.exit(1)
 
