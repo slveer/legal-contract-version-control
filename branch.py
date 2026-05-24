@@ -6,11 +6,12 @@ from sccs_layout_check import check_sccs, directory_path, sanitize_dirname
 
 check_sccs()
 
-current_branch_path = os.path.join(directory_path, ".sccs", "current_branch", "current_branch.json")
+def get_current_branch_path():
+    return os.path.join(directory_path, ".sccs", "current_branch", "current_branch.json")
 
 def get_branch_data():
     try:
-        with open(current_branch_path, "r", encoding="utf-8", newline="\n") as f:
+        with open(get_current_branch_path(), "r", encoding="utf-8", newline="\n") as f:
             try:
                 return json.load(f).get("current_branch"), json.load(f)
                 
@@ -61,7 +62,7 @@ if subcommand == 'create':
         shutil.copytree(os.path.join(directory_path, ".sccs", "branches", current_branch), os.path.join(directory_path, ".sccs", "branches", sanitized_branch_name))
 
     try:
-        with open(current_branch_path, "w", encoding="utf-8", newline="\n") as current_branch_file:
+        with open(get_current_branch_path(), "w", encoding="utf-8", newline="\n") as current_branch_file:
             try:    
                 branch_data["branches"].append(sanitized_branch_name)
                 branch_data["current_branch"] = sanitized_branch_name
@@ -103,7 +104,7 @@ if subcommand == 'delete':
     
 
     try:
-        with open(current_branch_path, "w", encoding="utf-8", newline="\n") as current_branch_file:
+        with open(get_current_branch_path(), "w", encoding="utf-8", newline="\n") as current_branch_file:
             branch_data["branches"].remove(sanitized_branch_name)
             json.dump(branch_data, current_branch_file, indent=4)
         
