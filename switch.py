@@ -134,9 +134,9 @@ current_document_hash = hash_current_document()
 
 check_for_changes(branch, latest_commit_binary_hash, current_document_hash)
 
-branch_to_switch = sanitize_branch(branch_to_switch)
-
 check_branch_to_switch(branch_to_switch, branches)
+
+branch_to_switch = sanitize_branch(branch_to_switch)
 
 latest_commit_on_branch_to_switch = get_latest_commit(branch_to_switch)
 
