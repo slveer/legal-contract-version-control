@@ -180,7 +180,3 @@ def convert_docx_to_html(docx_path=None):
     except Exception as e:
         print(f"Error converting .docx to HTML: {e}")
         sys.exit(1)
-
-current_branch = get_current_branch()
-
-branch_data = get_branch_data()

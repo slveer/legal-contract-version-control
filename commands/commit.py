@@ -39,7 +39,7 @@ def get_history_path(cwd=None, current_branch=None):
     if cwd is None:
         cwd = utils.working_directory_path
     if current_branch is None:
-        current_branch = utils.current_branch
+        current_branch = utils.get_current_branch()
     return os.path.join(cwd, ".sccs", "branches", current_branch, "history", "commit_history.json")
 
 def get_commit_history():
@@ -129,7 +129,7 @@ def update_commit_binary_hash_history(sha_hash, hash_docx_binary, cwd=None, curr
     if cwd is None:
         cwd = utils.working_directory_path
     if current_branch is None:
-        current_branch = utils.current_branch
+        current_branch = utils.get_current_branch()
     commit_file_hash_path = os.path.join(cwd, ".sccs", "branches", current_branch, "commit_file_hash", "commit_file_hash.json")
     if not Path(commit_file_hash_path).is_file():
         print("Commit file hash not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")

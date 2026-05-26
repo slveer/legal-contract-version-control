@@ -121,6 +121,6 @@ if __name__ == "__main__":
 
     validate_subcommand(get_entered_subcommand(), get_entered_branch_name())
 
-    run_specified_subcommand(get_entered_subcommand(), utils.current_branch, utils.branch_data)
+    run_specified_subcommand(get_entered_subcommand(), utils.get_current_branch(), utils.get_branch_data())
 
     

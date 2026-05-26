@@ -9,7 +9,7 @@ def get_log_data(cwd=None, current_branch=None):
     if cwd is None:
         cwd = utils.working_directory_path
     if current_branch is None:
-        current_branch = utils.current_branch
+        current_branch = utils.get_current_branch()
     # Get JSON log data
     log_path = os.path.join(cwd, ".sccs", "branches", current_branch, "history", "commit_history.json")
     if not Path(log_path).is_file():
