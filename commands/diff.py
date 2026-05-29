@@ -25,8 +25,6 @@ def validate_commit(commit_to_diff, docx_current_version):
         print("Docx file not found. Re-initialize SCCS for this file with 'sccs init <file_path>'")
         sys.exit(1)
 
-    return docx_current_version_html
-
 def get_commit_html(commit_path):
     try:
         with open(commit_path, "r", encoding="utf-8", newline="\n") as f:
