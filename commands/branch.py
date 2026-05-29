@@ -100,7 +100,7 @@ def branch_delete_subcommand(current_branch, branch_data, cwd=None, current_bran
             json.dump(branch_data, current_branch_file, indent=4)
     except Exception as e:
         print(f"Error updating branch data after failed deletion: {e}\nThe branch '{sanitized_branch_name}' may be in an inconsistent state.")
-    sys.exit(1)
+        sys.exit(1)
         
     print(f"Branch '{sanitized_branch_name}' was deleted.")
 
