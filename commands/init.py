@@ -176,7 +176,7 @@ if __name__ == "__main__":
 
     write_config_data(config_user_name, config_user_email)
 
-    current_branch_binary_hash = utils.hash_current_docx_binary()
+    current_branch_binary_hash = utils.hash_current_docx_binary(docx_path=os.path.join(get_document_repo_path(), (Path(get_entered_document_path())).name))
 
     write_hashed_file_commit_data(sha_hash, current_branch_binary_hash)
 
