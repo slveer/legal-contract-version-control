@@ -93,13 +93,9 @@ def write_history_data(sha_hash, config_user_name, config_user_email):
     }
     try:
         with open(os.path.join(get_document_repo_path(), ".sccs", "branches", "main", "history", "commit_history.json"), "w", encoding="utf-8", newline="\n") as f:
-            try: 
-                json.dump(history_data, f, indent=4)
-            except Exception as e:
-                print(f"Error writing commit history data: {e}")
-                sys.exit(1)
+            json.dump(history_data, f, indent=4)
     except Exception as e:
-        print(f"Error opening commit history file: {e}")
+        print(f"Error updating commit history file: {e}")
         sys.exit(1)
 
 def write_commit_message_data(sha_hash):
@@ -108,11 +104,7 @@ def write_commit_message_data(sha_hash):
     }
     try:
         with open(os.path.join(get_document_repo_path(), ".sccs", "commit_messages", "commit_messages.json"), "w", encoding="utf-8", newline="\n") as f:
-            try:
-                json.dump(commit_message_data, f, indent=4)
-            except Exception as e:
-                print(f"Error writing commit message data: {e}")
-                sys.exit(1)
+            json.dump(commit_message_data, f, indent=4)
     except Exception as e:
         print(f"Error opening commit message data file: {e}")
         sys.exit(1)
@@ -124,13 +116,9 @@ def write_config_data(config_user_name, config_user_email):
     }
     try:
         with open(os.path.join(get_document_repo_path(), ".sccs", "config", "config.json"), "w", encoding="utf-8", newline="\n") as f:
-            try:
-                json.dump(config_data, f, indent=4)
-            except Exception as e:
-                print(f"Error writing config data: {e}")
-                sys.exit(1)
+            json.dump(config_data, f, indent=4)
     except Exception as e:
-        print(f"Error opening config data file: {e}")
+        print(f"Error updating config data file: {e}")
         sys.exit(1)
 
 def write_hashed_file_commit_data(sha_hash, hashed_file):
@@ -139,13 +127,9 @@ def write_hashed_file_commit_data(sha_hash, hashed_file):
     }
     try:
         with open(os.path.join(get_document_repo_path(), ".sccs", "branches", "main", "commit_file_hash", "commit_file_hash.json"), "w", encoding="utf-8", newline="\n") as f:
-            try:
-                json.dump(commit_file_hash_data, f, indent=4)
-            except Exception as e:
-                print(f"Error writing commit file hash data: {e}")
-                sys.exit(1)
+            json.dump(commit_file_hash_data, f, indent=4)
     except Exception as e:
-        print(f"Error opening commit file hash data file: {e}")
+        print(f"Error updating commit file hash data file: {e}")
         sys.exit(1)
 
 def write_branch_data():
@@ -155,11 +139,7 @@ def write_branch_data():
     }
     try:
         with open(os.path.join(get_document_repo_path(), ".sccs", "current_branch", "current_branch.json"), "w", encoding="utf-8", newline="\n") as f:
-            try:
-                json.dump(branches_data, f, indent=4)
-            except Exception as e:
-                print(f"Error writing branch data: {e}")
-                sys.exit(1)
+            json.dump(branches_data, f, indent=4)
     except Exception as e:
         print(f"Error opening branch data file: {e}")
         sys.exit(1)

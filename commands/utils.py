@@ -141,13 +141,9 @@ def hash_current_docx_binary(docx_path=current_file_docx_path):
 def get_current_branch(file_path=current_branch_path):
     try:
         with open(file_path, "r", encoding="utf-8", newline="\n") as current_branch_file:
-            try:
-                current_branch = json.load(current_branch_file).get("current_branch")
-                if not current_branch:
-                    print("Current branch is missing from JSON. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
-                    sys.exit(1)
-            except json.JSONDecodeError as e:
-                print(f"Error decoding JSON from current branch file: {e}")
+            current_branch = json.load(current_branch_file).get("current_branch")
+            if not current_branch:
+                print("Current branch is missing from JSON. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
                 sys.exit(1)
     except Exception as e:
         print(f"Error reading current branch: {e}")
@@ -157,14 +153,10 @@ def get_current_branch(file_path=current_branch_path):
 def get_branch_data(file_path=current_branch_path, key=None):
     try:
         with open(file_path, "r", encoding="utf-8", newline="\n") as f:
-            try:
-                data = json.load(f)
-                if key:
-                    return data.get(key)
-                return data
-            except json.JSONDecodeError as e:
-                print(f"Error decoding JSON from current branch file: {e}")
-                sys.exit(1)
+            data = json.load(f)
+            if key:
+                return data.get(key)
+            return data
 
     except Exception as e:
         print(f"Error reading current branch data: {e}")

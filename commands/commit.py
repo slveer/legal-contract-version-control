@@ -137,13 +137,9 @@ def update_commit_binary_hash_history(sha_hash, hash_docx_binary, cwd=None, curr
 
     try: 
         with open(commit_file_hash_path, "r", encoding="utf-8", newline="\n") as f:
-            try:
-                commit_file_hash = json.load(f)
-            except Exception as e:
-                print(f"Error reading commit file hash: {e}")
-                sys.exit(1)
+            commit_file_hash = json.load(f)
     except (json.JSONDecodeError, KeyError, TypeError, OSError) as e:
-        print("Commit file hash is missing or corrupted. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
+        print(f"Error loading commit file hash: {e}")
         sys.exit(1)
 
     commit_file_hash[f"{sha_hash}"] = hash_docx_binary
@@ -160,11 +156,7 @@ def atomically_update_history(dict):
     for key, value in dict.items():
         try: 
             with open(Path(value).with_suffix("tmp"), "w", encoding="utf-8", newline="\n") as f:
-                try:
-                    json.dump(key, f)
-                except Exception as e:
-                    print(f"Error writing to temporary file: {e}")
-                    sys.exit(1)
+                json.dump(key, f)
         except Exception as e:
             print(f"Error opening temporary file: {e}")
             sys.exit(1)

@@ -47,15 +47,11 @@ def branch_create_subcommand(current_branch, branch_data, cwd=None, current_bran
         
     shutil.copytree(os.path.join(cwd, ".sccs", "branches", current_branch), os.path.join(cwd, ".sccs", "branches", sanitized_branch_name))
     try:
-        with open(current_branch_path, "w", encoding="utf-8", newline="\n") as current_branch_file:
-            try:    
-                branch_data["branches"].append(sanitized_branch_name)
-                branch_data["current_branch"] = sanitized_branch_name
-                json.dump(branch_data, current_branch_file, indent=4)
-            except Exception as e:
-                print(f"Error updating branch data: {e}")
-                sys.exit(1)
-        
+        with open(current_branch_path, "w", encoding="utf-8", newline="\n") as current_branch_file: 
+            branch_data["branches"].append(sanitized_branch_name)
+            branch_data["current_branch"] = sanitized_branch_name
+            json.dump(branch_data, current_branch_file, indent=4)
+
     except Exception as e:
         print(f"Error creating branch '{sanitized_branch_name}': {e}")
         sys.exit(1)
@@ -97,13 +93,14 @@ def branch_delete_subcommand(current_branch, branch_data, cwd=None, current_bran
 
     except Exception as e:
         print(f"Error deleting branch '{sanitized_branch_name}': {e}")
-        try:
-            with open(current_branch_path, "w", encoding="utf-8", newline="\n") as current_branch_file:
-                branch_data["branches"].append(sanitized_branch_name)
-                json.dump(branch_data, current_branch_file, indent=4)
-        except Exception as e:
-            print(f"Error updating branch data after failed deletion: {e}\nThe branch '{sanitized_branch_name}' may be in an inconsistent state.")
-        sys.exit(1)
+
+    try:
+        with open(current_branch_path, "w", encoding="utf-8", newline="\n") as current_branch_file:
+            branch_data["branches"].append(sanitized_branch_name)
+            json.dump(branch_data, current_branch_file, indent=4)
+    except Exception as e:
+        print(f"Error updating branch data after failed deletion: {e}\nThe branch '{sanitized_branch_name}' may be in an inconsistent state.")
+    sys.exit(1)
         
     print(f"Branch '{sanitized_branch_name}' was deleted.")
 

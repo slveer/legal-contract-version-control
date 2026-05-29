@@ -14,33 +14,19 @@ def update_current_branch(branch, current_branch_path=None, cwd=None):
     if current_branch_path is None:
         current_branch_path = utils.current_branch_path
     try:
-        with open(current_branch_path, "r", encoding="utf-8", newline="\n") as f:
-            try:
+            with open(current_branch_path, "r", encoding="utf-8", newline="\n") as f:
                 current_branch = json.load(f)
                 current_branch["current_branch"] = branch
-            except Exception as e:
-                print(f"Error reading or updating current branch information: {e}")
-                sys.exit(1)
+
+            with open(os.path.join(cwd, ".sccs", "current_branch", "tmp"), "w", encoding="utf-8", newline="\n") as f:
+                json.dump(current_branch, f, indent=4)
+
+            os.replace(os.path.join(cwd, ".sccs", "current_branch", "tmp"), os.path.join(cwd, ".sccs", "current_branch", "current_branch.json"))
+
     except Exception as e:
-        print(f"Error accessing current branch information: {e}")
+        print(f"Error updating current branch information: {e}")
         sys.exit(1)
 
-    try: 
-        with open(os.path.join(cwd, ".sccs", "current_branch", "tmp"), "w", encoding="utf-8", newline="\n") as f:
-            try:
-                json.dump(current_branch, f, indent=4)
-            except Exception as e:
-                print(f"Error updating current branch information: {e}")
-                sys.exit(1)
-    except Exception as e:
-        print(f"Error accessing current branch information: {e}")
-        sys.exit(1)
-    
-    try: 
-        os.replace(os.path.join(cwd, ".sccs", "current_branch", "tmp"), os.path.join(cwd, ".sccs", "current_branch", "current_branch.json"))
-    except Exception as e:
-        print(f"Error replacing current branch information: {e}")
-        sys.exit(1)
 
 def check_branch_to_switch(branch_to_switch, branches):
     if not branch_to_switch or len(branch_to_switch) == 0:
@@ -56,11 +42,7 @@ def get_latest_commit_binary_hash(branch, latest_commit, cwd=None):
         cwd = utils.working_directory_path
     try:
         with open(os.path.join(cwd, ".sccs", "branches", branch, "commit_file_hash", "commit_file_hash.json"), "r", encoding="utf-8", newline="\n") as f:
-            try:
-                return json.load(f).get(latest_commit)
-            except Exception as e:
-                print(f"Error reading commit file hash for branch '{branch}': {e}")
-                sys.exit(1)
+            return json.load(f).get(latest_commit)
     except Exception as e:
         print(f"Error accessing commit file hash for branch '{branch}': {e}")
         sys.exit(1)
@@ -78,16 +60,8 @@ def get_latest_commit(branch, cwd=None):
         cwd = utils.working_directory_path
     try:
         with open(os.path.join(cwd, ".sccs",  "branches", branch, "history", "commit_history.json"), "r", encoding="utf-8", newline="\n") as f:
-            try:
-                history = json.load(f)
-                try:
-                    return history["history"]["latest_commit"]
-                except KeyError as e:
-                    print(f"Error: Missing key {e} in commit history for branch '{branch}'.")
-                    sys.exit(1)
-            except Exception as e:
-                print(f"Error parsing commit history for branch '{branch}': {e}")
-                sys.exit(1)
+            history = json.load(f)
+            return history["history"]["latest_commit"]
     except Exception as e: 
         print(f"Error reading commit history for branch '{branch}': {e}")
         sys.exit(1)
