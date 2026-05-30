@@ -12,7 +12,6 @@ import utils
 def get_entered_document_path():
     """Retrieve the document path entered by the user."""
 
-    # Strip .docx extension from the file name to create a directory
     return sys.argv[2] if len(sys.argv) > 2 else None
 
 
