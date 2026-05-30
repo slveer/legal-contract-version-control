@@ -1,15 +1,12 @@
 import json
-from pathlib import Path
 import os
 import sys
+from pathlib import Path
 
 import utils
 
 
-def get_log_data(
-        cwd=None,
-        current_branch=None
-    ):
+def get_log_data(cwd=None, current_branch=None):
     """Retrieve the commit log data from the history JSON file."""
 
     if cwd is None:
@@ -19,12 +16,7 @@ def get_log_data(
 
     # Get JSON log data
     log_path = os.path.join(
-        cwd,
-        ".sccs",
-        "branches",
-        current_branch,
-        "history",
-        "commit_history.json"
+        cwd, ".sccs", "branches", current_branch, "history", "commit_history.json"
     )
 
     if not Path(log_path).is_file():
@@ -34,12 +26,7 @@ def get_log_data(
         )
         sys.exit(1)
 
-    with open(
-        log_path,
-        "r",
-        encoding="utf-8",
-        newline="\n"
-    ) as log_file:
+    with open(log_path, "r", encoding="utf-8", newline="\n") as log_file:
         log_data = json.load(log_file)
     return log_data
 
@@ -57,6 +44,7 @@ def print_log():
             f"Message: {log_data['log'][entry]['message']}\n"
             "------------------------------"
         )
+
 
 if __name__ == "__main__":
 

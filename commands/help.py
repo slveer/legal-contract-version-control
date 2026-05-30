@@ -1,5 +1,6 @@
 MESSAGES_TO_PRINT = [
-    "SCCS Help", "Available commands:",
+    "SCCS Help",
+    "Available commands:",
     "  init    - Initialize a new SCCS repository",
     "  commit  - Commit changes to a repository",
     "  open    - Restore a previous commit and overwrite the current changes",
@@ -9,20 +10,16 @@ MESSAGES_TO_PRINT = [
     "  status  - Show the status of a repository",
     "  branch  - List, create, and delete branches",
     "  switch  - Switch to a different branch",
-    "  help    - Show this help message"
+    "  help    - Show this help message",
 ]
 
-def print_help(
-        messages
-    ):
+
+def print_help(messages):
     """Print help messages."""
 
     for item in messages:
         print(item)
 
+
 if __name__ == "__main__":
     print_help(MESSAGES_TO_PRINT)
-
-
-
-
