@@ -28,14 +28,14 @@ def validate_commit(commit_to_diff, docx_current_version):
         print(
             "Commit file is not a .html file. Please provide a valid .html "
             "commit file."
-        )        
+        )
         sys.exit(1)
 
     if not Path(docx_current_version).is_file():
         print(
             "Docx file not found. Re-initialize SCCS for this file with "
             "'sccs init <file_path>'"
-        )        
+        )
         sys.exit(1)
 
 

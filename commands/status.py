@@ -81,6 +81,7 @@ def get_latest_commit_file_binary_hash(current_branch=None, cwd=None):
 
     return latest_commit_file_hash
 
+
 def compare_hashes(old_hash, new_hash):
     return old_hash == new_hash
 

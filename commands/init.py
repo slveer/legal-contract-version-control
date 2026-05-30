@@ -138,7 +138,9 @@ def copy_document_to_objects_as_docx_and_html(sha_hash, html, styles=None):
 
     try:
         with open(
-        os.path.join(repo_path, ".sccs", "objects", "view_html", f"{sha_hash}.html"),
+            os.path.join(
+                repo_path, ".sccs", "objects", "view_html", f"{sha_hash}.html"
+            ),
             "w",
             encoding="utf-8",
             newline="\n",
@@ -147,8 +149,6 @@ def copy_document_to_objects_as_docx_and_html(sha_hash, html, styles=None):
     except Exception as e:
         print(f"Error writing view HTML file: {e}")
         sys.exit(1)
-
-
 
 
 def get_current_iso_time():
