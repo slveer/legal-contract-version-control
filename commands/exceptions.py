@@ -88,10 +88,6 @@ class AlreadyInitializedError(SCCSException):
     """Raised when the document has already been initialized with SCCS."""
     pass
 
-class InvalidInputError(SCCSException):
-    """Raised when an invalid input is provided."""
-    pass
-
 class InvalidFileTypeError(SCCSException):
     """Raised when a file of an invalid type is provided."""
     pass
@@ -132,8 +128,15 @@ class UncommittedChangesError(SCCSException):
     """Raised when there are uncommitted changes that prevent an action."""
     pass
 
+# Input Exceptions
 
+class InvalidInputError(SCCSException):
+    """Raised when an invalid input is provided."""
+    pass
 
+class EmptyCommitMessageError(SCCSException):
+    """Raised when an empty commit message is provided."""
+    pass
 
 
 
