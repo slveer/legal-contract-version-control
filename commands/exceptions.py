@@ -38,10 +38,6 @@ class BranchDoesNotExistError(SCCSException):
 
 # File Operation Exceptions
 
-class FileReadError(SCCSException):
-    """Raised when there is an error reading a file."""
-    pass
-
 class FileCopyError(SCCSException):
     """Raised when there is an error copying a file."""
     pass
