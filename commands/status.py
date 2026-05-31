@@ -5,6 +5,7 @@ import sys
 from pathlib import Path
 
 import utils
+import exceptions
 
 
 def get_latest_commit_hash_file(current_branch, cwd=None):

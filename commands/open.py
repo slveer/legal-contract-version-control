@@ -4,6 +4,7 @@ import sys
 from pathlib import Path
 
 import utils
+import exceptions
 
 
 def get_commit_path_input():

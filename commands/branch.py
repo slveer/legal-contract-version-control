@@ -4,6 +4,8 @@ import shutil
 import sys
 
 import utils
+import exceptions
+
 
 
 def get_entered_subcommand():

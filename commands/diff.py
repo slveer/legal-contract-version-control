@@ -4,6 +4,7 @@ import sys
 from pathlib import Path
 
 import utils
+import exceptions
 from bs4 import BeautifulSoup
 
 

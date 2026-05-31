@@ -4,6 +4,7 @@ import sys
 from pathlib import Path
 
 import utils
+import exceptions
 
 
 def get_log_data(cwd=None, current_branch=None):

@@ -6,6 +6,7 @@ import sys
 from pathlib import Path
 
 import mammoth
+import exceptions
 
 working_directory_path = os.getcwd()
 

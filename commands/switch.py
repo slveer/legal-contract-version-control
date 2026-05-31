@@ -5,6 +5,7 @@ import shutil
 import sys
 
 import utils
+import exceptions
 
 
 def get_branch_to_switch():
