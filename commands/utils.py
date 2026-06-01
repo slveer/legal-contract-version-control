@@ -35,7 +35,8 @@ def clean_directory_name(name: str) -> str:
 
 
 def check_sccs_layout(
-    sccs_dir: str = sccs_versions_directory_path, docx_path: str = current_file_docx_path
+    sccs_dir: str = sccs_versions_directory_path,
+    docx_path: str = current_file_docx_path
 ):
 
     if not Path(sccs_dir).is_dir():
@@ -215,7 +216,9 @@ def get_current_branch(file_path: str = current_branch_path) -> str:
     return current_branch
 
 
-def get_branch_data(file_path: str = current_branch_path, key: str = None):
+def get_branch_data(
+    file_path: str = current_branch_path, key: str = None
+) -> dict | str | None:
     try:
         with open(file_path, "r", encoding="utf-8", newline="\n") as f:
             data = json.load(f)

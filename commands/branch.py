@@ -7,13 +7,13 @@ import exceptions
 import utils
 
 
-def get_entered_subcommand():
+def get_entered_subcommand() -> str | None:
     """Retrieve the subcommand entered by the user."""
 
     return sys.argv[2] if len(sys.argv) > 2 else None
 
 
-def get_entered_branch_name():
+def get_entered_branch_name() -> str | None:
     """Retrieve the branch name entered by the user."""
 
     return sys.argv[3] if len(sys.argv) > 3 else None

@@ -142,7 +142,12 @@ def write_view_html(sha_hash: str, docx_html: str, cwd: str = None) -> None:
 
 
 def update_commit_log_history(
-    history: dict, sha_hash: str, timestamp: str, name: str, email: str, commit_message: str
+    history: dict,
+    sha_hash: str,
+    timestamp: str,
+    name: str,
+    email: str,
+    commit_message: str
 ) -> dict[str, dict]:
     """Update the commit log history."""
 

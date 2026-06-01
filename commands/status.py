@@ -42,7 +42,9 @@ def get_latest_commit_hash_file(current_branch: str = None, cwd: str = None) -> 
     return latest_commit_hash
 
 
-def get_latest_commit_file_binary_hash(current_branch: str = None, cwd: str = None) -> str:
+def get_latest_commit_file_binary_hash(
+    current_branch: str = None, cwd: str = None
+) -> str:
     if cwd is None:
         cwd = utils.working_directory_path
     if current_branch is None:
