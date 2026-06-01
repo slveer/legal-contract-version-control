@@ -4,8 +4,6 @@ import sys
 from pathlib import Path
 
 import utils
-import exceptions
-
 
 def get_log_data(cwd=None, current_branch=None):
     """Retrieve the commit log data from the history JSON file."""
