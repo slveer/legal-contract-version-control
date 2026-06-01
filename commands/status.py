@@ -31,7 +31,7 @@ def get_latest_commit_hash_file(current_branch, cwd=None):
             latest_commit_hash = history["history"]["latest_commit"]
 
     except Exception as e:
-        raise exceptions.FileOpenError(f"Error retrieving JSON from history file: {e}")
+        raise exceptions.FileOpenError from e
 
     if not latest_commit_hash:
         raise exceptions.InvalidMetadataError(
@@ -77,7 +77,7 @@ def get_latest_commit_file_binary_hash(current_branch=None, cwd=None):
             )
 
     except Exception as e:
-        raise exceptions.FileOpenError(f"Error reading latest commit file hash: {e}")
+        raise exceptions.FileOpenError from e
 
     return latest_commit_file_hash
 

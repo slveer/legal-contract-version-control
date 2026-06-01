@@ -194,8 +194,7 @@ def hash_current_docx_binary(docx_path=current_file_docx_path):
                 hasher.update(chunk)
             hashed_file = hasher.hexdigest()
     except Exception as e:
-        raise exceptions.DocumentHashingError(f"Error processing .docx file: {e}")
-
+        raise exceptions.DocumentHashingError from e
     return hashed_file
 
 
@@ -211,7 +210,7 @@ def get_current_branch(file_path=current_branch_path):
                     "<file_path>' to initialize SCCS for this file."
                 )
     except Exception as e:
-        raise exceptions.FileOpenError(f"Error reading current branch: {e}")
+        raise exceptions.FileOpenError from e 
 
     return current_branch
 
@@ -225,7 +224,7 @@ def get_branch_data(file_path=current_branch_path, key=None):
             return data
 
     except Exception as e:
-        raise exceptions.FileOpenError(f"Error reading current branch data: {e}")
+        raise exceptions.FileOpenError from e
 
 
 def convert_docx_to_html(docx_path=None):
@@ -236,6 +235,4 @@ def convert_docx_to_html(docx_path=None):
             result = mammoth.convert_to_html(f)
             return result.value
     except Exception as e:
-        raise exceptions.ConvertingDocumentToHTMLError(
-            f"Error converting .docx to HTML: {e}"
-        )
+        raise exceptions.ConvertingDocumentToHTMLError from e

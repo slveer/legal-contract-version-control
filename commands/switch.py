@@ -33,9 +33,7 @@ def update_current_branch(branch, current_branch_path=None, cwd=None):
         )
 
     except Exception as e:
-        raise exceptions.UpdatingMetadataError(
-            f"Error updating current branch information: {e}"
-        )
+        raise exceptions.UpdatingMetadataError from e
 
 
 def check_branch_to_switch(branch_to_switch, branches):
@@ -69,8 +67,7 @@ def get_latest_commit_binary_hash(branch, latest_commit, cwd=None):
         ) as f:
             return json.load(f).get(latest_commit)
     except Exception as e:
-        raise exceptions.FileOpenError(f"Error reading commit file hash: {e}")
-
+        raise exceptions.FileOpenError from e
 
 def check_for_changes(branch, latest_commit_binary_hash, current_document_hash):
     if not current_document_hash == latest_commit_binary_hash:
@@ -99,9 +96,7 @@ def get_latest_commit(branch, cwd=None):
             history = json.load(f)
             return history["history"]["latest_commit"]
     except Exception as e:
-        raise exceptions.FileOpenError(
-            f"Error reading commit history for branch '{branch}': {e}"
-        )
+        raise exceptions.FileOpenError from e 
 
 
 def check_commit(commit, cwd=None):
@@ -122,7 +117,7 @@ def copy_commit_to_main(commit, cwd=None):
             os.path.join(cwd, f"{os.path.basename(cwd)}.docx"),
         )
     except Exception as e:
-        raise exceptions.FileCopyError(f"Error copying commit '{commit}' to main: {e}")
+        raise exceptions.FileCopyError from e
 
 
 def print_confirmation(branch_to_switch):

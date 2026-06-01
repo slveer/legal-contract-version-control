@@ -63,7 +63,7 @@ def copy_file_commit(commit_path, docx_path=None):
     try:
         shutil.copy2(commit_path, docx_path)
     except Exception as e:
-        raise exceptions.FileCopyError(f"Error copying file: {e}")
+        raise exceptions.FileCopyError from e
 
 
 def print_rewrite_confirmation_message(commit_path, docx_path=None):

@@ -76,7 +76,7 @@ def branch_create_subcommand(
         )
     except Exception as e:
         delete_branch_after_error(sanitized_branch_name, cwd=cwd)
-        raise exceptions.FileCopyError(f"Error copying branch '{current_branch}': {e}")
+        raise exceptions.FileCopyError from e
 
     try:
         with open(
@@ -89,9 +89,7 @@ def branch_create_subcommand(
     # Clean up the created directory before raising
     except Exception as e:
         delete_branch_after_error(sanitized_branch_name, cwd=cwd)
-        raise exceptions.BranchCreationError(
-            f"Error creating branch '{sanitized_branch_name}': {e}"
-        )
+        raise exceptions.BranchCreationError from e
 
     print(
         f"Branch '{sanitized_branch_name}' was created from branch '{current_branch}', "
@@ -145,14 +143,15 @@ def branch_delete_subcommand(
             json.dump(branch_data, current_branch_file, indent=4)
 
     except Exception as e:
-        raise exceptions.UpdatingMetadataError(f"Error updating branch data: {e}")
+        raise exceptions.UpdatingMetadataError from e
 
     try:
         shutil.rmtree(branch_path)
 
     except Exception as e:
-        print(f"Error deleting branch '{sanitized_branch_name}': {e}")
         rollback_changes_after_failure(current_branch_path, branch_data=branch_data)
+        raise exceptions.BranchDeletionError from e
+        
 
     print(f"Branch '{sanitized_branch_name}' was deleted.")
 
@@ -175,10 +174,7 @@ def rollback_changes_after_failure(current_branch_path, branch_data=None):
             json.dump(branch_data, current_branch_file, indent=4)
 
     except Exception as e:
-        raise exceptions.UpdatingMetadataError(
-            f"Error updating branch data after failed deletion: {e}. The branch "
-            f"'{sanitized_branch_name}' may be in an inconsistent state."
-        )
+        raise exceptions.UpdatingMetadataError from e
 
 
 def branch_list_subcommand(current_branch, branch_data):

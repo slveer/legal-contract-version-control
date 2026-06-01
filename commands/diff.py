@@ -43,7 +43,7 @@ def get_commit_html(commit_path):
         with open(commit_path, "r", encoding="utf-8", newline="\n") as f:
             commit_html = f.read()
     except Exception as e:
-        raise exceptions.FileOpenError(f"Error reading commit file: {e}")
+        raise exceptions.FileOpenError from e
     return commit_html
 
 

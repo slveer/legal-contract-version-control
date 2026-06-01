@@ -74,7 +74,7 @@ def get_commit_history():
             history = json.load(history_file)
 
     except Exception as e:
-        raise exceptions.FileOpenError(f"Error retrieving JSON from history file: {e}")
+        raise exceptions.FileOpenError from e
 
     return history
 
@@ -190,9 +190,7 @@ def update_commit_messages(sha_hash, commit_message, cwd=None):
         try:
             messages = json.load(commit_messages_file)
         except Exception as e:
-            raise exceptions.FileOpenError(
-                f"Error retrieving JSON from commit messages file: {e}"
-            )
+            raise exceptions.FileOpenError from e
 
     messages[f"{sha_hash}"] = f"{commit_message}"
 
@@ -229,9 +227,7 @@ def update_commit_binary_hash_history(
             commit_file_hash = json.load(f)
 
     except Exception as e:
-        raise exceptions.FileOpenError(
-            f"Error retrieving JSON from commit file hash file: {e}"
-        )
+        raise exceptions.FileOpenError from e
 
     commit_file_hash[f"{sha_hash}"] = hash_docx_binary
 
@@ -257,13 +253,13 @@ def atomically_update_history(update_dict):
             ) as f:
                 json.dump(value, f)
         except Exception as e:
-            raise exceptions.TemporaryFileError(f"Error opening temporary file: {e}")
+            raise exceptions.TemporaryFileError from e
 
     for key, value in update_dict.items():
         try:
             os.replace(f"{Path(key).with_suffix('.tmp')}", f"{Path(key)}")
         except Exception as e:
-            raise exceptions.TemporaryFileError(f"Error replacing temporary file: {e}")
+            raise exceptions.TemporaryFileError from e
 
 
 def print_commit_confirmation_message(sha_hash):

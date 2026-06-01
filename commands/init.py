@@ -122,7 +122,7 @@ def copy_document_to_objects_as_docx_and_html(sha_hash, html, styles=None):
             os.path.join(repo_path, ".sccs", "objects", "docx", f"{sha_hash}.docx"),
         )
     except Exception as e:
-        raise exceptions.FileCopyError(f"Error copying document to objects: {e}")
+        raise exceptions.FileCopyError from e
 
     try:
         with open(
@@ -133,7 +133,7 @@ def copy_document_to_objects_as_docx_and_html(sha_hash, html, styles=None):
         ) as f:
             f.write(styles + html)
     except Exception as e:
-        raise exceptions.FileWriteError(f"Error writing HTML file: {e}")
+        raise exceptions.FileWriteError from e
 
     try:
         with open(
@@ -146,7 +146,7 @@ def copy_document_to_objects_as_docx_and_html(sha_hash, html, styles=None):
         ) as f:
             f.write(utils.wrap_html(html))
     except Exception as e:
-        raise exceptions.FileWriteError(f"Error writing view HTML file: {e}")
+        raise exceptions.FileWriteError from e
 
 
 def get_current_iso_time():
@@ -190,7 +190,7 @@ def write_history_data(sha_hash, config_user_name, config_user_email):
         ) as f:
             json.dump(history_data, f, indent=4)
     except Exception as e:
-        raise exceptions.FileOpenError(f"Error opening history data file: {e}")
+        raise exceptions.FileOpenError from e
 
 
 def write_commit_message_data(sha_hash):
@@ -212,7 +212,7 @@ def write_commit_message_data(sha_hash):
         ) as f:
             json.dump(commit_message_data, f, indent=4)
     except Exception as e:
-        raise exceptions.FileOpenError(f"Error opening commit message data file: {e}")
+        raise exceptions.FileOpenError from e
 
 
 def write_config_data(config_user_name, config_user_email):
@@ -228,7 +228,7 @@ def write_config_data(config_user_name, config_user_email):
         ) as f:
             json.dump(config_data, f, indent=4)
     except Exception as e:
-        raise exceptions.UpdatingMetadataError(f"Error updating config data file: {e}")
+        raise exceptions.UpdatingMetadataError from e
 
 
 def write_hashed_file_commit_data(sha_hash, hashed_file):
@@ -251,9 +251,7 @@ def write_hashed_file_commit_data(sha_hash, hashed_file):
         ) as f:
             json.dump(commit_file_hash_data, f, indent=4)
     except Exception as e:
-        raise exceptions.UpdatingMetadataError(
-            f"Error updating commit file hash data file: {e}"
-        )
+        raise exceptions.UpdatingMetadataError from e
 
 
 def write_branch_data():
@@ -274,9 +272,7 @@ def write_branch_data():
         ) as f:
             json.dump(branches_data, f, indent=4)
     except Exception as e:
-        raise exceptions.UpdatingMetadataError(
-            f"Error updating branches data file: {e}"
-        )
+        raise exceptions.UpdatingMetadataError from e
 
 
 def confirmation_message():
