@@ -42,7 +42,10 @@ def validate_subcommand(subcommand: str, branch_name: str) -> None:
 
 
 def branch_create_subcommand(
-    current_branch: str, branch_data: dict, cwd: str = None, current_branch_path: str = None
+    current_branch: str,
+    branch_data: dict,
+    cwd: str = None,
+    current_branch_path: str = None
 ) -> None:
     """Create a new branch from the current branch."""
 
@@ -107,7 +110,10 @@ def delete_branch_after_error(branch_name: str, cwd: str = None) -> None:
 
 
 def branch_delete_subcommand(
-    current_branch: str, branch_data: dict, cwd: str = None, current_branch_path: str = None
+    current_branch: str,
+    branch_data: dict,
+    cwd: str = None,
+    current_branch_path: str = None
 ) -> None:
     """Delete an existing branch."""
 
@@ -155,7 +161,9 @@ def branch_delete_subcommand(
     print(f"Branch '{sanitized_branch_name}' was deleted.")
 
 
-def rollback_changes_after_failure(current_branch_path: str, branch_data: dict = None) -> None:
+def rollback_changes_after_failure(
+    current_branch_path: str, branch_data: dict = None
+) -> None:
     """Rollback changes after a failed branch deletion."""
 
     if current_branch_path is None:
@@ -187,7 +195,9 @@ def branch_list_subcommand(current_branch: str, branch_data: dict) -> None:
             print(f"  {branch}")
 
 
-def run_specified_subcommand(subcommand: str, current_branch: str, branch_data: dict) -> None:
+def run_specified_subcommand(
+    subcommand: str, current_branch: str, branch_data: dict
+) -> None:
     """Run the specified subcommand."""
 
     if subcommand == "create":

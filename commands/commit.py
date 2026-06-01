@@ -86,7 +86,9 @@ def get_parent_hash(history: dict) -> str:
     return parent_hash
 
 
-def generate_commit_hash(timestamp: str, commit_message: str, name: str, email: str, parent_hash: str) -> str:
+def generate_commit_hash(
+    timestamp: str, commit_message: str, name: str, email: str, parent_hash: str
+) -> str:
     """Generate a SHA-256 hash for the commit."""
 
     return hashlib.sha256(
@@ -107,7 +109,9 @@ def copy_docx_to_objects(sha_hash: str, docx_path: str = None, cwd: str = None) 
     )
 
 
-def write_diff_html(sha_hash: str, docx_html: str, cwd: str = None, styles: str = None) -> None:
+def write_diff_html(
+    sha_hash: str, docx_html: str, cwd: str = None, styles: str = None
+) -> None:
     """Write the diff HTML file."""
 
     if cwd is None:
@@ -168,7 +172,9 @@ def update_commit_log_history(
     return {commit_history_path: history}
 
 
-def update_commit_messages(sha_hash: str, commit_message: str, cwd: str = None) -> dict[str, dict]:
+def update_commit_messages(
+    sha_hash: str, commit_message: str, cwd: str = None
+) -> dict[str, dict]:
     """Update commit messages."""
 
     # Check if commit messages file exists

@@ -107,7 +107,9 @@ def move_document_to_repo_directory() -> None:
     shutil.move(get_entered_document_path(), get_document_repo_path())
 
 
-def copy_document_to_objects_as_docx_and_html(sha_hash: str, html: str, styles: str = None):
+def copy_document_to_objects_as_docx_and_html(
+    sha_hash: str, html: str, styles: str = None
+):
     """Copy the document into objects as both .docx and .html."""
 
     if styles is None:
@@ -155,7 +157,9 @@ def get_current_iso_time() -> str:
     return datetime.now().isoformat()
 
 
-def write_history_data(sha_hash: str, config_user_name: str, config_user_email: str) -> None:
+def write_history_data(
+    sha_hash: str, config_user_name: str, config_user_email: str
+) -> None:
     """Write the initial commit history JSON file."""
 
     history_data = {

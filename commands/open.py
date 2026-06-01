@@ -23,7 +23,9 @@ def check_commit_path_input(commit_path: str) -> None:
         raise exceptions.InvalidFileTypeError("Commit file is not a .docx file.")
 
 
-def confirm_before_proceeding(commit_path: str, docx_path: str = None, cwd: str = None) -> None:
+def confirm_before_proceeding(
+    commit_path: str, docx_path: str = None, cwd: str = None
+) -> None:
     if docx_path is None:
         docx_path = utils.current_file_docx_path
     if cwd is None:
