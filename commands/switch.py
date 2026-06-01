@@ -1,3 +1,5 @@
+"""Switch between document branches."""
+
 import json
 import os
 import shutil

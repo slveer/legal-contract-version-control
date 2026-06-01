@@ -1,3 +1,5 @@
+"""Initialize a document with SCCS."""
+
 import hashlib
 import json
 import os

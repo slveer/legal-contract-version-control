@@ -1,3 +1,5 @@
+"""Open a commit file and update the current document."""
+
 import os
 import shutil
 import sys

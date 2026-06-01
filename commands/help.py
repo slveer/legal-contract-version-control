@@ -1,3 +1,5 @@
+"""Print a list of all available commands."""
+
 import sys
 
 import exceptions

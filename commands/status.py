@@ -1,3 +1,5 @@
+"""Check the status of the current document for uncommitted changes."""
+
 import json
 import os
 import sys

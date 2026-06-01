@@ -1,3 +1,5 @@
+"""Print a list of past commits for the current branch."""
+
 import json
 import os
 import sys

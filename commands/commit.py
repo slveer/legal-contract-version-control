@@ -1,3 +1,5 @@
+"""Commit latest changes to the current branch."""
+
 import hashlib
 import json
 import os

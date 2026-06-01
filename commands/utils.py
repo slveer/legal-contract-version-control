@@ -1,3 +1,5 @@
+"""Module for utility functions used in SCCS."""
+
 import hashlib
 import json
 import os

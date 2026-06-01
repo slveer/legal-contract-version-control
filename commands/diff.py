@@ -1,3 +1,5 @@
+"""Create and display HTML diffs between commits."""
+
 import copy
 import difflib
 import sys
