@@ -20,7 +20,7 @@ def get_latest_commit_hash_file(current_branch, cwd=None):
             "History file not found. Please run 'sccs init <file_path>' to initialize "
             "SCCS for this file."
         )
-        raise exceptions.FileNotFoundError("History file not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
+        raise FileNotFoundError("History file not found. Please run 'sccs init <file_path>' to initialize SCCS for this file.")
 
     try:
         with open(history_path, "r", encoding="utf-8", newline="\n") as history_file:
