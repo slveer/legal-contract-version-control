@@ -26,10 +26,6 @@ def get_script_directory():
     return os.path.dirname(os.path.realpath(__file__))
 
 
-def check_if_command_is_valid(command, COMMANDS):
-    return command in COMMANDS
-
-
 def run_command(command, script_directory):
     sys.exit(
         subprocess.run([
@@ -41,7 +37,7 @@ def run_command(command, script_directory):
 
 
 def execute_command(command, script_directory, COMMANDS):
-    if not check_if_command_is_valid(command, COMMANDS):
+    if command not in COMMANDS:
         raise exceptions.UnknownCommandError(f"Unknown command: {command}. Please use 'init', 'commit', 'open', 'log', 'diff', 'status', 'help', 'branch', or 'switch', along with required arguments. For help, use the 'sccs help' command.")
     run_command(command, script_directory)
 
