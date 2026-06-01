@@ -86,7 +86,7 @@ def compare_hashes(old_hash, new_hash):
     return old_hash == new_hash
 
 
-def print_changes_message_and_exit(old_hash, new_hash):
+def compare_changes_and_exit(old_hash, new_hash):
     if compare_hashes(old_hash, new_hash):
         print("No changes detected since the latest commit. Nothing to commit.")
         sys.exit(0)
@@ -99,6 +99,6 @@ def print_changes_message_and_exit(old_hash, new_hash):
 
 if __name__ == "__main__":
     utils.check_sccs_layout()
-    print_changes_message_and_exit(
+    compare_changes_and_exit(
         get_latest_commit_file_binary_hash(), utils.hash_current_docx_binary()
     )
