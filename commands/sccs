@@ -21,20 +21,14 @@ COMMANDS = [
 def get_entered_command():
     return sys.argv[1] if len(sys.argv) > 1 else None
 
+
 def get_script_directory():
     return os.path.dirname(os.path.realpath(__file__))
+
 
 def check_if_command_is_valid(command, COMMANDS):
     return command in COMMANDS
 
-def print_unknown_command_error(command):
-    print(f"Unknown command: {command}")
-    print(
-        "Invalid command. Please use 'init', 'commit', 'open', 'log', 'diff', 'status"
-        "', 'help', 'branch', or 'switch', along with required arguments."
-    )
-    print("For help, use the 'sccs help' command.")
-    raise exceptions.UnknownCommandError(f"Unknown command: {command}. Please use 'init', 'commit', 'open', 'log', 'diff', 'status', 'help', 'branch', or 'switch', along with required arguments.")
 
 def run_command(command, script_directory):
     sys.exit(
@@ -45,10 +39,12 @@ def run_command(command, script_directory):
         ).returncode
     )
 
+
 def execute_command(command, script_directory, COMMANDS):
     if not check_if_command_is_valid(command, COMMANDS):
-        print_unknown_command_error(command)
+        raise exceptions.UnknownCommandError(f"Unknown command: {command}. Please use 'init', 'commit', 'open', 'log', 'diff', 'status', 'help', 'branch', or 'switch', along with required arguments. For help, use the 'sccs help' command.")
     run_command(command, script_directory)
+
 
 if __name__ == "__main__":
 
