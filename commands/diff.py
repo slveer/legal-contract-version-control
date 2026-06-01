@@ -225,41 +225,44 @@ def write_redline_html_file(redline, filename="redline.html"):
 
 
 def main():
-    if __name__ == "__main__":
+    utils.check_sccs_layout()
 
-        utils.check_sccs_layout()
+    validate_commit(get_entered_commit_to_diff(), utils.current_file_docx_path)
 
-        validate_commit(get_entered_commit_to_diff(), utils.current_file_docx_path)
+    docx_current_version_html = utils.convert_docx_to_html()
 
-        docx_current_version_html = utils.convert_docx_to_html()
+    commit_html = get_commit_html(get_entered_commit_to_diff())
 
-        commit_html = get_commit_html(get_entered_commit_to_diff())
+    bs4_docx_current_version_soup = convert_html_to_soup(docx_current_version_html)
 
-        bs4_docx_current_version_soup = convert_html_to_soup(docx_current_version_html)
+    docx_current_version_list = format_bs4_html_list(bs4_docx_current_version_soup)
 
-        docx_current_version_list = format_bs4_html_list(bs4_docx_current_version_soup)
+    bs4_commit_soup = convert_html_to_soup(commit_html)
+    commit_list = format_bs4_html_list(bs4_commit_soup)
 
-        bs4_commit_soup = convert_html_to_soup(commit_html)
-        commit_list = format_bs4_html_list(bs4_commit_soup)
+    opcodes = get_opcodes(bs4_commit_soup, bs4_docx_current_version_soup)
 
-        opcodes = get_opcodes(bs4_commit_soup, bs4_docx_current_version_soup)
+    base_redline_html = get_redline_html(bs4_commit_soup)
 
-        base_redline_html = get_redline_html(bs4_commit_soup)
+    redline = format_redline_html(
+        base_redline_html, opcodes, commit_list, docx_current_version_list
+    )
 
-        redline = format_redline_html(
-            base_redline_html, opcodes, commit_list, docx_current_version_list
-        )
-
-        write_redline_html_file(redline)
-
-    else:
-        raise exceptions.FileImportedAsModuleError(
-            "This file cannot be run as a module. Please run it as a script."
-        )
+    write_redline_html_file(redline)
 
 
-try:
-    main()
-except Exception as e:
-    print(f"An unexpected error occurred:\n\n{type(e).__name__}: {e}\n")
-    raise exceptions.SCCSException
+if __name__ == "__main__":
+    try:
+        main()
+
+    except exceptions.SCCSException as e:
+        print(f"An error occurred:\n{e}\n")
+        sys.exit(1)
+
+    except Exception as e:
+        print(f"An unexpected error occurred:\n\n{type(e).__name__}: {e}\n")
+        sys.exit(2)
+else:
+    raise exceptions.FileImportedAsModuleError(
+        "This file cannot be run as a module. Please run it as a script."
+    )

@@ -199,25 +199,29 @@ def run_specified_subcommand(subcommand, current_branch, branch_data):
 
 
 def main():
-    if __name__ == "__main__":
+    utils.check_sccs_layout()
 
-        utils.check_sccs_layout()
+    validate_subcommand(get_entered_subcommand(), get_entered_branch_name())
 
-        validate_subcommand(get_entered_subcommand(), get_entered_branch_name())
-
-        run_specified_subcommand(
-            get_entered_subcommand(),
-            utils.get_current_branch(),
-            utils.get_branch_data(),
-        )
-    else:
-        raise exceptions.FileImportedAsModuleError(
-            "This file cannot be run as a module. Please run it as a script."
-        )
+    run_specified_subcommand(
+        get_entered_subcommand(),
+        utils.get_current_branch(),
+        utils.get_branch_data(),
+    )
 
 
-try:
-    main()
-except Exception as e:
-    print(f"An unexpected error occurred:\n\n{type(e).__name__}: {e}\n")
-    raise exceptions.SCCSException
+if __name__ == "__main__":
+    try:
+        main()
+
+    except exceptions.SCCSException as e:
+        print(f"An error occurred:\n{e}\n")
+        sys.exit(1)
+
+    except Exception as e:
+        print(f"An unexpected error occurred:\n\n{type(e).__name__}: {e}\n")
+        sys.exit(2)
+else:
+    raise exceptions.FileImportedAsModuleError(
+        "This file cannot be run as a module. Please run it as a script."
+    )

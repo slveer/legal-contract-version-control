@@ -47,19 +47,23 @@ def print_log():
 
 
 def main():
-    if __name__ == "__main__":
+    utils.check_sccs_layout()
 
-        utils.check_sccs_layout()
-
-        print_log()
-    else:
-        raise exceptions.FileImportedAsModuleError(
-            "This file cannot be run as a module. Please run it as a script."
-        )
+    print_log()
 
 
-try:
-    main()
-except Exception as e:
-    print(f"An unexpected error occurred:\n\n{type(e).__name__}: {e}\n")
-    raise exceptions.SCCSException
+if __name__ == "__main__":
+    try:
+        main()
+
+    except exceptions.SCCSException as e:
+        print(f"An error occurred:\n{e}\n")
+        sys.exit(1)
+
+    except Exception as e:
+        print(f"An unexpected error occurred:\n\n{type(e).__name__}: {e}\n")
+        sys.exit(2)
+else:
+    raise exceptions.FileImportedAsModuleError(
+        "This file cannot be run as a module. Please run it as a script."
+    )
