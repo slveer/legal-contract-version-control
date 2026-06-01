@@ -24,14 +24,14 @@ def validate_subcommand(subcommand, branch_name):
 
     if not subcommand:
         raise exceptions.InvalidSubcommandError(
-            "No subcommand provided. Please use 'create', 'delete', or 'list' along with"
-            " required arguments."
+            "No subcommand provided. Please use 'create', 'delete', or 'list' along "
+            "with required arguments."
         )
 
     if subcommand not in ["create", "delete", "list"]:
         raise exceptions.InvalidSubcommandError(
-            f"Invalid subcommand: {subcommand}. Please use 'create', 'delete', or 'list'"
-            f" along with required arguments."
+            f"Invalid subcommand: {subcommand}. Please use 'create', 'delete', or 'list"
+            f"' along with required arguments."
         )
 
     if subcommand in ["create", "delete"]:
@@ -208,7 +208,7 @@ def main():
         run_specified_subcommand(
             get_entered_subcommand(),
             utils.get_current_branch(),
-            utils.get_branch_data(),
+            utils.get_branch_data()
         )
     else:
         raise exceptions.FileImportedAsModuleError(
