@@ -14,7 +14,7 @@ def get_latest_commit_hash_file(current_branch: str = None, cwd: Path = None) ->
         cwd = utils.working_directory_path
     # get the latest commit filename hash from commit history
     history_path = Path(
-        cwd, ".sccs", "branches", current_branch, "history", "commit_history.json"
+        cwd / ".sccs" / "branches" / current_branch / "history" / "commit_history.json"
     )
     if not Path(history_path).is_file():
         print(
@@ -55,12 +55,12 @@ def get_latest_commit_file_binary_hash(
     # get the hash of the latest committed file
     latest_commit_hash = get_latest_commit_hash_file(current_branch, cwd=cwd)
     latest_commit_file_hash_path = Path(
-        cwd,
-        ".sccs",
-        "branches",
-        current_branch,
-        "commit_file_hash",
-        "commit_file_hash.json",
+        cwd /
+        ".sccs" /
+        "branches" /
+        current_branch /
+        "commit_file_hash" /
+        "commit_file_hash.json"
     )
     if not Path(latest_commit_file_hash_path).is_file():
         raise FileNotFoundError(

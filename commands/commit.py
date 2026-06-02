@@ -17,9 +17,9 @@ def get_key_from_config(key: str, cwd: Path = None) -> str:
     if cwd is None:
         cwd = utils.working_directory_path
     # Get name and email entered on init
-    config_path = Path(cwd, ".sccs", "config", "config.json")
+    config_path = Path(cwd / ".sccs" / "config" / "config.json")
 
-    if not Path(config_path).is_file():
+    if not config_path.is_file():
         raise FileNotFoundError(
             "Configuration file not found. Please run 'sccs init <file_path>' to "
             "initialize SCCS for this file."
@@ -56,7 +56,7 @@ def get_history_path(cwd: Path = None, current_branch: str = None) -> Path:
     if current_branch is None:
         current_branch = utils.get_current_branch()
     return Path(
-        cwd, ".sccs", "branches", current_branch, "history", "commit_history.json"
+        cwd / ".sccs" / "branches" / current_branch / "history" / "commit_history.json"
     )
 
 
@@ -64,7 +64,7 @@ def get_commit_history() -> dict:
     """Retrieve the commit history from the commit history file."""
 
     history_path = get_history_path()
-    if not Path(history_path).is_file():
+    if not history_path.is_file():
         raise FileNotFoundError(
             "History file not found. Please run 'sccs init <file_path>' to initialize "
             "SCCS for this file."
@@ -107,8 +107,8 @@ def copy_docx_to_objects(
     if cwd is None:
         cwd = utils.working_directory_path
     shutil.copy2(
-        Path(cwd, docx_path.name),
-        Path(cwd, ".sccs", "objects", "docx", f"{sha_hash}.docx"),
+        Path(cwd / docx_path.name),
+        Path(cwd / ".sccs" / "objects" / "docx" / f"{sha_hash}.docx"),
     )
 
 
@@ -122,7 +122,7 @@ def write_diff_html(
     if styles is None:
         styles = utils.default_html_styles
     with open(
-        Path(cwd, ".sccs", "objects", "html", f"{sha_hash}.html"),
+        Path(cwd / ".sccs" / "objects" / "html" / f"{sha_hash}.html"),
         "w",
         encoding="utf-8",
         newline="\n",
@@ -136,7 +136,7 @@ def write_view_html(sha_hash: str, docx_html: str, cwd: Path = None) -> None:
     if cwd is None:
         cwd = utils.working_directory_path
     with open(
-        Path(cwd, ".sccs", "objects", "view_html", f"{sha_hash}.html"),
+        Path(cwd / ".sccs" / "objects" / "view_html" / f"{sha_hash}.html"),
         "w",
         encoding="utf-8",
         newline="\n",
@@ -156,7 +156,7 @@ def update_commit_log_history(
 
     # Check if history file exists
     commit_history_path = get_history_path()
-    if not Path(commit_history_path).is_file():
+    if not commit_history_path.is_file():
         raise FileNotFoundError(
             "History file not found. Please run 'sccs init <file_path>' to initialize "
             "SCCS for this file."
@@ -188,9 +188,9 @@ def update_commit_messages(
     # Check if commit messages file exists
     if cwd is None:
         cwd = utils.working_directory_path
-    commit_messages_path = Path(cwd, ".sccs", "commit_messages", "commit_messages.json")
+    commit_messages_path = Path(cwd / ".sccs" / "commit_messages" / "commit_messages.json")
 
-    if not Path(commit_messages_path).is_file():
+    if not commit_messages_path.is_file():
         raise FileNotFoundError(
             "Commit messages file not found. Please run 'sccs init <file_path>' to "
             "initialize SCCS for this file."
@@ -221,14 +221,14 @@ def update_commit_binary_hash_history(
         current_branch = utils.get_current_branch()
 
     commit_file_hash_path = Path(
-        cwd,
-        ".sccs",
-        "branches",
-        current_branch,
-        "commit_file_hash",
-        "commit_file_hash.json",
+        cwd /
+        ".sccs" /
+        "branches" /
+        current_branch /
+        "commit_file_hash" /
+        "commit_file_hash.json"
     )
-    if not Path(commit_file_hash_path).is_file():
+    if not commit_file_hash_path.is_file():
         raise FileNotFoundError(
             "Commit file hash not found. Please run 'sccs init <file_path>' to "
             f"initialize SCCS for this file."

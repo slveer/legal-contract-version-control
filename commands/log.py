@@ -18,7 +18,7 @@ def get_log_data(cwd: Path = None, current_branch: str = None) -> dict:
 
     # Get JSON log data
     log_path = Path(
-        cwd, ".sccs", "branches", current_branch, "history", "commit_history.json"
+        cwd / ".sccs" / "branches" / current_branch / "history" / "commit_history.json"
     )
 
     if not Path(log_path).is_file():

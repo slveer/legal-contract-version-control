@@ -27,13 +27,13 @@ def update_current_branch(
             current_branch = json.load(f)
             current_branch["current_branch"] = branch
 
-        tmp_path = Path(cwd, ".sccs", "current_branch", "tmp")
+        tmp_path = cwd / ".sccs" / "current_branch" / "tmp"
 
         with open(tmp_path, "w", encoding="utf-8", newline="\n") as f:
             json.dump(current_branch, f, indent=4)
 
         Path(tmp_path).replace(
-            Path(cwd, ".sccs", "current_branch", "current_branch.json")
+            Path(cwd / ".sccs" / "current_branch" / "current_branch.json")
         )
 
     except Exception as e:
@@ -62,12 +62,12 @@ def get_latest_commit_binary_hash(
     try:
         with open(
             Path(
-                cwd,
-                ".sccs",
-                "branches",
-                branch,
-                "commit_file_hash",
-                "commit_file_hash.json",
+                cwd /
+                ".sccs" /
+                "branches" /
+                branch /
+                "commit_file_hash" /
+                "commit_file_hash.json"
             ),
             "r",
             encoding="utf-8",
@@ -100,7 +100,7 @@ def get_latest_commit(branch: str, cwd: Path = None) -> str:
         cwd = utils.working_directory_path
     try:
         with open(
-            Path(cwd, ".sccs", "branches", branch, "history", "commit_history.json"),
+            Path(cwd / ".sccs" / "branches" / branch / "history" / "commit_history.json"),
             "r",
             encoding="utf-8",
             newline="\n",
@@ -115,7 +115,7 @@ def check_commit(commit: str, cwd: Path = None) -> None:
     """Check if the commit object exists."""
     if cwd is None:
         cwd = utils.working_directory_path
-    if not Path(cwd, ".sccs", "objects", "docx", f"{commit}.docx").is_file():
+    if not Path(cwd / ".sccs" / "objects" / "docx" / f"{commit}.docx").is_file():
         raise exceptions.CommitNotFoundError(f"Commit object '{commit}' not found.")
 
 
@@ -125,8 +125,8 @@ def copy_commit_to_main(commit: str, cwd: Path = None) -> None:
         cwd = utils.working_directory_path
     try:
         shutil.copy2(
-            Path(cwd, ".sccs", "objects", "docx", f"{commit}.docx"),
-            Path(cwd, f"{cwd.name}.docx"),
+            Path(cwd / ".sccs" / "objects" / "docx" / f"{commit}.docx"),
+            Path(cwd / f"{cwd.name}.docx")
         )
     except Exception as e:
         raise exceptions.FileCopyError from e

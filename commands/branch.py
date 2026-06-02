@@ -69,15 +69,15 @@ def branch_create_subcommand(
             f"Branch '{sanitized_branch_name}' already exists."
         )
 
-    if Path(cwd, ".sccs", "branches", sanitized_branch_name).is_dir():
+    if Path(cwd / ".sccs" / "branches" / sanitized_branch_name).is_dir():
         raise exceptions.BranchAlreadyExistsError(
             f"Branch '{sanitized_branch_name}' already exists."
         )
 
     try:
         shutil.copytree(
-            Path(cwd, ".sccs", "branches", current_branch),
-            Path(cwd, ".sccs", "branches", sanitized_branch_name),
+            Path(cwd / ".sccs" / "branches" / current_branch),
+            Path(cwd / ".sccs" / "branches" / sanitized_branch_name),
         )
     except Exception as e:
         delete_branch_after_error(sanitized_branch_name, cwd=cwd)
@@ -108,7 +108,7 @@ def delete_branch_after_error(branch_name: str, cwd: Path = None) -> None:
     if cwd is None:
         cwd = utils.working_directory_path
 
-    branch_path = Path(cwd, ".sccs", "branches", branch_name)
+    branch_path = Path(cwd / ".sccs" / "branches" / branch_name)
     if branch_path.is_dir():
         shutil.rmtree(branch_path)
 
@@ -128,7 +128,7 @@ def branch_delete_subcommand(
 
     sanitized_branch_name = utils.clean_directory_name(get_entered_branch_name())
 
-    branch_path = Path(cwd, ".sccs", "branches", sanitized_branch_name)
+    branch_path = Path(cwd / ".sccs" / "branches" / sanitized_branch_name)
 
     if sanitized_branch_name == current_branch:
         raise exceptions.BranchDeletionError(
