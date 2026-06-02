@@ -126,8 +126,7 @@ def copy_commit_to_main(commit: str, cwd: Path = None) -> None:
     try:
         shutil.copy2(
             Path(cwd, ".sccs", "objects", "docx", f"{commit}.docx"),
-            cwd,
-            f"{cwd.name}.docx",
+            Path(cwd, f"{cwd.name}.docx")
         )
     except Exception as e:
         raise exceptions.FileCopyError from e
