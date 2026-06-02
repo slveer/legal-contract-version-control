@@ -50,8 +50,7 @@ def confirm_before_proceeding(
 
 
 def check_changes(commit_path: str, docx_path: str = None) -> None:
-    """Check if there are any changes between the commit file and the current
-    document."""
+    """Check if the commit_path and docx_path refer to the same file."""
     if docx_path is None:
         docx_path = utils.current_file_docx_path
     if (
@@ -63,6 +62,8 @@ def check_changes(commit_path: str, docx_path: str = None) -> None:
             "The commit file is the same as the current file. No changes will be made."
         )
         sys.exit(0)
+
+
 
 
 def copy_file_commit(commit_path: str, docx_path: str = None) -> None:

@@ -94,8 +94,8 @@ def compare_hashes(old_hash: str, new_hash: str) -> bool:
 
 
 def compare_changes_and_exit(old_hash: str, new_hash: str) -> None:
-    """Compare the old and new hashes and exit with 0 if no changes are detected and 1
-    if changes are detected."""
+    """Compare the old and new hashes and exit with 0 if no changes are detected and
+    raise exceptions.UncommittedChangesError if changes are detected."""
     if compare_hashes(old_hash, new_hash):
         print("No changes detected since the latest commit. Nothing to commit.")
         sys.exit(0)
