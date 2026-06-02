@@ -84,20 +84,20 @@ def create_sccs_directory_layout() -> None:
         raise exceptions.InvalidArgumentError("No file path provided.")
 
     repo_path.mkdir(parents=True, exist_ok=True)
-    Path(repo_path / ".sccs").mkdir(parents=True, exist_ok=True)
-    Path(repo_path / ".sccs" / "objects").mkdir(parents=True, exist_ok=True)
-    Path(repo_path / ".sccs" / "objects" / "docx").mkdir(parents=True, exist_ok=True)
-    Path(repo_path / ".sccs" / "objects" / "html").mkdir(parents=True, exist_ok=True)
-    Path(repo_path / ".sccs" / "objects" / "view_html").mkdir(parents=True, exist_ok=True)
-    Path(repo_path / ".sccs" / "branches").mkdir(parents=True, exist_ok=True)
-    Path(repo_path / ".sccs" / "branches" / "main").mkdir(parents=True, exist_ok=True)
-    Path(repo_path / ".sccs" / "branches" / "main" / "history").mkdir(
+    (repo_path / ".sccs").mkdir(parents=True, exist_ok=True)
+    (repo_path / ".sccs" / "objects").mkdir(parents=True, exist_ok=True)
+    (repo_path / ".sccs" / "objects" / "docx").mkdir(parents=True, exist_ok=True)
+    (repo_path / ".sccs" / "objects" / "html").mkdir(parents=True, exist_ok=True)
+    (repo_path / ".sccs" / "objects" / "view_html").mkdir(parents=True, exist_ok=True)
+    (repo_path / ".sccs" / "branches").mkdir(parents=True, exist_ok=True)
+    (repo_path / ".sccs" / "branches" / "main").mkdir(parents=True, exist_ok=True)
+    (repo_path / ".sccs" / "branches" / "main" / "history").mkdir(
         parents=True, exist_ok=True
     )
-    Path(repo_path / ".sccs" / "commit_messages").mkdir(parents=True, exist_ok=True)
-    Path(repo_path / ".sccs" / "config").mkdir(parents=True, exist_ok=True)
-    Path(repo_path / ".sccs" / "current_branch").mkdir(parents=True, exist_ok=True)
-    Path(repo_path / ".sccs" / "branches" / "main" / "commit_file_hash").mkdir(
+    (repo_path / ".sccs" / "commit_messages").mkdir(parents=True, exist_ok=True)
+    (repo_path / ".sccs" / "config").mkdir(parents=True, exist_ok=True)
+    (repo_path / ".sccs" / "current_branch").mkdir(parents=True, exist_ok=True)
+    (repo_path / ".sccs" / "branches" / "main" / "commit_file_hash").mkdir(
         parents=True, exist_ok=True
     )
 
@@ -121,15 +121,15 @@ def copy_document_to_objects_as_docx_and_html(
 
     try:
         shutil.copy2(
-            Path(repo_path / doc_name),
-            Path(repo_path / ".sccs" / "objects" / "docx" / f"{sha_hash}.docx"),
+            (repo_path / doc_name),
+            (repo_path / ".sccs" / "objects" / "docx" / f"{sha_hash}.docx"),
         )
     except Exception as e:
         raise exceptions.FileCopyError from e
 
     try:
         with open(
-            Path(repo_path / ".sccs" / "objects" / "html" / f"{sha_hash}.html"),
+            (repo_path / ".sccs" / "objects" / "html" / f"{sha_hash}.html"),
             "w",
             encoding="utf-8",
             newline="\n",
@@ -140,7 +140,7 @@ def copy_document_to_objects_as_docx_and_html(
 
     try:
         with open(
-            Path(repo_path / ".sccs" / "objects" / "view_html" / f"{sha_hash}.html"),
+            (repo_path / ".sccs" / "objects" / "view_html" / f"{sha_hash}.html"),
             "w",
             encoding="utf-8",
             newline="\n",
@@ -179,7 +179,7 @@ def write_history_data(
     }
     try:
         with open(
-            Path(
+            (
                 get_document_repo_path() /
                 ".sccs" /
                 "branches" /
@@ -205,7 +205,7 @@ def write_commit_message_data(sha_hash: str) -> None:
     }
     try:
         with open(
-            Path(
+            (
                 get_document_repo_path() /
                 ".sccs" /
                 "commit_messages" /
@@ -226,7 +226,7 @@ def write_config_data(config_user_name: str, config_user_email: str) -> None:
     config_data = {"name": f"{config_user_name}", "email": f"{config_user_email}"}
     try:
         with open(
-            Path(get_document_repo_path() / ".sccs" / "config" / "config.json"),
+            (get_document_repo_path() / ".sccs" / "config" / "config.json"),
             "w",
             encoding="utf-8",
             newline="\n",
@@ -242,7 +242,7 @@ def write_hashed_file_commit_data(sha_hash: str, hashed_file: str) -> None:
     commit_file_hash_data = {f"{sha_hash}": hashed_file}
     try:
         with open(
-            Path(
+            (
                 get_document_repo_path() /
                 ".sccs" /
                 "branches" /
@@ -265,7 +265,7 @@ def write_branch_data() -> None:
     branches_data = {"current_branch": "main", "branches": ["main"]}
     try:
         with open(
-            Path(
+            (
                 get_document_repo_path() /
                 ".sccs" /
                 "current_branch" /
@@ -320,7 +320,7 @@ def main() -> None:
     write_config_data(config_user_name, config_user_email)
 
     current_branch_binary_hash = utils.hash_current_docx_binary(
-        docx_path=Path(get_document_repo_path() / Path(get_entered_document_path()).name)
+        docx_path = get_document_repo_path() / Path(get_entered_document_path()).name
     )
 
     write_hashed_file_commit_data(sha_hash, current_branch_binary_hash)

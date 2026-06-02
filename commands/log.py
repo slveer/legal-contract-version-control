@@ -17,7 +17,7 @@ def get_log_data(cwd: Path = None, current_branch: str = None) -> dict:
         current_branch = utils.get_current_branch()
 
     # Get JSON log data
-    log_path = Path(
+    log_path = (
         cwd / ".sccs" / "branches" / current_branch / "history" / "commit_history.json"
     )
 

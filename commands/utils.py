@@ -11,11 +11,11 @@ import mammoth
 working_directory_path = Path.cwd()
 
 
-current_file_docx_path = Path(
+current_file_docx_path = (
     working_directory_path / f"{working_directory_path.name}.docx"
 )
 
-sccs_versions_directory_path = Path(working_directory_path / ".sccs")
+sccs_versions_directory_path = (working_directory_path / ".sccs")
 
 default_html_styles = (
     "<style>\n* {\nfont-family: Arial, Helvetica, sans-serif;\n}\n\n"
@@ -26,7 +26,7 @@ default_html_styles = (
     ".center {\ndisplay: flex;\njustify-content: center;\n}\n</style>"
 )
 
-current_branch_path = Path(
+current_branch_path = (
     working_directory_path / ".sccs" / "current_branch" / "current_branch.json"
 )
 
@@ -48,13 +48,13 @@ def check_sccs_layout(
             "<file_path>' to initialize SCCS for this file."
         )
 
-    if not Path(sccs_dir / "current_branch").is_dir():
+    if not (sccs_dir / "current_branch").is_dir():
         raise exceptions.BranchNotFoundError(
             "Current branch directory not found. Please run 'sccs init <file_path>' to "
             "initialize SCCS for this file."
         )
 
-    if not Path(sccs_dir / "current_branch" / "current_branch.json").is_file():
+    if not (sccs_dir / "current_branch" / "current_branch.json").is_file():
         raise exceptions.BranchNotFoundError(
             "Current branch file not found. Please run 'sccs init <file_path>' to "
             "initialize SCCS for this file."
@@ -62,7 +62,7 @@ def check_sccs_layout(
 
     try:
         with open(
-            Path(sccs_dir / "current_branch" / "current_branch.json"),
+            (sccs_dir / "current_branch" / "current_branch.json"),
             "r",
             encoding="utf-8",
             newline="\n",
@@ -91,15 +91,13 @@ def check_sccs_layout(
             "Commit file hash directory not found. Please run 'sccs init <file_path>' "
             "to initialize SCCS for this file."
         )
-    if not Path(
-        Path(
+    if not (
             sccs_dir /
             "branches" /
             current_branch /
             "commit_file_hash" /
             "commit_file_hash.json"
-        )
-    ).is_file():
+        ).is_file():
         raise FileNotFoundError(
             "Commit file hash JSON not found. Please run 'sccs init <file_path>' to "
             "initialize SCCS for this file."
