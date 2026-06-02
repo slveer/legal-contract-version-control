@@ -37,8 +37,8 @@ def confirm_before_proceeding(
         cwd = utils.working_directory_path
     confirm = (
         input(
-            f"Are you sure you want to overwrite '{cwd}/{Path(docx_path).name}' "
-            f"with the contents of '{cwd}/{Path(commit_path).name}'?\nThis "
+            f"Are you sure you want to overwrite '{cwd}/{docx_path.name}' "
+            f"with the contents of '{cwd}/{commit_path.name}'?\nThis "
             f"action will replace the current content of the .docx file. (Y/N): "
         )
         .strip()
@@ -54,9 +54,9 @@ def check_changes(commit_path: Path, docx_path: Path = None) -> None:
     if docx_path is None:
         docx_path = utils.current_file_docx_path
     if (
-        Path(docx_path).exists()
-        and Path(commit_path).exists()
-        and Path(docx_path, commit_path).samefile()
+        docx_path.exists()
+        and commit_path.exists()
+        and docx_path.samefile(commit_path)
     ):
         print(
             "The commit file is the same as the current file. No changes will be made."
@@ -80,8 +80,8 @@ def print_rewrite_confirmation_message(commit_path: Path, docx_path: Path = None
     if docx_path is None:
         docx_path = utils.current_file_docx_path
     print(
-        f"File '{Path(docx_path).name}' has been updated with the contents of "
-        f"'{Path(commit_path).name}'."
+        f"File '{docx_path.name}' has been updated with the contents of "
+        f"'{commit_path.name}'."
     )
 
 

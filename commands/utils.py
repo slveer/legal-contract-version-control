@@ -42,13 +42,13 @@ def check_sccs_layout(
 ) -> None:
     """Validate that required SCCS folders, files, and metadata exist."""
 
-    if not Path(sccs_dir).is_dir():
+    if not sccs_dir.is_dir():
         raise exceptions.SCCSNotInitializedError(
             "This file has not been initialized with SCCS.\nPlease run 'sccs init "
             "<file_path>' to initialize SCCS for this file."
         )
 
-    if not Path(Path(sccs_dir, "current_branch")).is_dir():
+    if not Path(sccs_dir, "current_branch").is_dir():
         raise exceptions.BranchNotFoundError(
             "Current branch directory not found. Please run 'sccs init <file_path>' to "
             "initialize SCCS for this file."
@@ -82,7 +82,7 @@ def check_sccs_layout(
             "<file_path>' to initialize SCCS for this file."
         ) from e
 
-    if not Path(Path(sccs_dir, "branches", current_branch)).is_dir():
+    if not Path(sccs_dir, "branches", current_branch).is_dir():
         raise exceptions.BranchNotFoundError(
             "Branch directory not found. Please run 'sccs init <file_path>' to "
             "initialize SCCS for this file."
@@ -109,7 +109,7 @@ def check_sccs_layout(
             "initialize SCCS for this file."
         )
 
-    if not Path(Path(sccs_dir, "commit_messages")).is_dir():
+    if not Path(sccs_dir, "commit_messages").is_dir():
         raise FileNotFoundError(
             "Commit messages directory not found. Please run 'sccs init <file_path>' to"
             " initialize SCCS for this file."
@@ -123,44 +123,44 @@ def check_sccs_layout(
             "initialize SCCS for this file."
         )
 
-    if not Path(Path(sccs_dir, "objects")).is_dir():
+    if not Path(sccs_dir, "objects").is_dir():
 
         raise FileNotFoundError(
             "Objects directory not found. Please run 'sccs init <file_path>' to "
             "initialize SCCS for this file."
         )
 
-    if not Path(Path(sccs_dir, "objects", "docx")).is_dir():
+    if not Path(sccs_dir, "objects", "docx").is_dir():
         raise FileNotFoundError(
             "Docx objects directory not found. Please run 'sccs init <file_path>' to "
             "initialize SCCS for this file."
         )
 
-    if not Path(Path(sccs_dir, "objects", "html")).is_dir():
+    if not Path(sccs_dir, "objects", "html").is_dir():
         raise FileNotFoundError(
             "HTML objects directory not found. Please run 'sccs init <file_path>' to "
             "initialize SCCS for this file."
         )
 
-    if not Path(Path(sccs_dir, "objects", "view_html")).is_dir():
+    if not Path(sccs_dir, "objects", "view_html").is_dir():
         raise FileNotFoundError(
             "View HTML objects directory not found. Please run 'sccs init <file_path>' "
             "to initialize SCCS for this file."
         )
 
-    if not Path(Path(sccs_dir, "config")).is_dir():
+    if not Path(sccs_dir, "config").is_dir():
         raise FileNotFoundError(
             "Config directory not found. Please run 'sccs init <file_path>' to "
             "initialize SCCS for this file."
         )
 
-    if not Path(Path(sccs_dir, "config", "config.json")).is_file():
+    if not Path(sccs_dir, "config", "config.json").is_file():
         raise FileNotFoundError(
             "Config file not found. Please run 'sccs init <file_path>' to "
             "initialize SCCS for this file."
         )
 
-    if not Path(Path(sccs_dir, "branches", current_branch, "history")).is_dir():
+    if not Path(sccs_dir, "branches", current_branch, "history").is_dir():
         raise FileNotFoundError(
             "History directory not found. Please run 'sccs init <file_path>' to "
             "initialize SCCS for this file."
@@ -176,7 +176,7 @@ def check_sccs_layout(
             "initialize SCCS for this file."
         )
 
-    if not Path(docx_path).is_file():
+    if not docx_path.is_file():
         raise FileNotFoundError(
             "Docx file not found. Re-initialize SCCS for this file with 'sccs init "
             "<file_path>'"

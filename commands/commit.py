@@ -105,7 +105,7 @@ def copy_docx_to_objects(sha_hash: str, docx_path: Path = None, cwd: Path = None
     if cwd is None:
         cwd = utils.working_directory_path
     shutil.copy2(
-        Path(cwd, Path(docx_path).name),
+        Path(cwd, docx_path.name),
         Path(cwd, ".sccs", "objects", "docx", f"{sha_hash}.docx"),
     )
 

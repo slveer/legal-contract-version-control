@@ -22,17 +22,17 @@ def validate_commit(commit_to_diff: Path, docx_current_version: Path) -> None:
     if not commit_to_diff:
         raise exceptions.InvalidArgumentError("No commit file path provided.")
 
-    if not Path(commit_to_diff).is_file():
+    if not commit_to_diff.is_file():
         raise FileNotFoundError(
             "Commit file not found. Please provide a valid commit file path."
         )
 
-    if Path(commit_to_diff).suffix.lower() != ".html":
+    if commit_to_diff.suffix.lower() != ".html":
         raise exceptions.InvalidArgumentError(
             "Commit file is not a .html file. Please provide a valid .html commit file"
         )
 
-    if not Path(docx_current_version).is_file():
+    if not docx_current_version.is_file():
         raise FileNotFoundError(
             "Docx file not found. Please provide a valid docx file path."
         )
