@@ -54,7 +54,7 @@ def check_sccs_layout(
             "initialize SCCS for this file."
         )
 
-    if not Path(Path(sccs_dir, "current_branch", "current_branch.json")).is_file():
+    if not Path(sccs_dir, "current_branch", "current_branch.json").is_file():
         raise exceptions.BranchNotFoundError(
             "Current branch file not found. Please run 'sccs init <file_path>' to "
             "initialize SCCS for this file."
