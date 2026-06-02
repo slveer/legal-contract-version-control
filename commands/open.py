@@ -75,7 +75,9 @@ def copy_file_commit(commit_path: Path, docx_path: Path = None) -> None:
         raise exceptions.FileCopyError from e
 
 
-def print_rewrite_confirmation_message(commit_path: Path, docx_path: Path = None) -> None:
+def print_rewrite_confirmation_message(
+    commit_path: Path, docx_path: Path = None
+) -> None:
     """Print the confirmation message after rewriting the file."""
     if docx_path is None:
         docx_path = utils.current_file_docx_path

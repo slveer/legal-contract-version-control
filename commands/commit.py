@@ -97,7 +97,9 @@ def generate_commit_hash(
     ).hexdigest()
 
 
-def copy_docx_to_objects(sha_hash: str, docx_path: Path = None, cwd: Path = None) -> None:
+def copy_docx_to_objects(
+    sha_hash: str, docx_path: Path = None, cwd: Path = None
+) -> None:
     """Copy the current document to the objects directory."""
 
     if docx_path is None:

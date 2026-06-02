@@ -32,8 +32,8 @@ def validate_subcommand(subcommand: str, branch_name: str) -> None:
 
     if subcommand not in ["create", "delete", "list"]:
         raise exceptions.InvalidSubcommandError(
-            f"Invalid subcommand: {subcommand}. Please use 'create', 'delete', or 'list'"
-            f" along with required arguments."
+            f"Invalid subcommand: {subcommand}. Please use 'create', 'delete', or "
+            f"'list' along with required arguments."
         )
 
     if subcommand in ["create", "delete"]:
